@@ -7,10 +7,10 @@ defmodule StoreWeb.Config do
   @conn StoreWeb.Endpoint
 
   def pages(conn) do
-    base_pages(conn)
+    base_pages()
   end
 
-  defp base_pages(conn) do
+  defp base_pages do
     [
       %{
         key: :products,
