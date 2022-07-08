@@ -4,8 +4,18 @@ defmodule StoreWeb.ProductLiveTest do
   import Phoenix.LiveViewTest
   import Store.InventoryFixtures
 
-  @create_attrs %{description: "some description", name: "some name", price: 42, type: "some type"}
-  @update_attrs %{description: "some updated description", name: "some updated name", price: 43, type: "some updated type"}
+  @create_attrs %{
+    description: "some description",
+    name: "some name",
+    price: 42,
+    type: "some type"
+  }
+  @update_attrs %{
+    description: "some updated description",
+    name: "some updated name",
+    price: 43,
+    type: "some updated type"
+  }
   @invalid_attrs %{description: nil, name: nil, price: nil, type: nil}
 
   defp create_product(_) do

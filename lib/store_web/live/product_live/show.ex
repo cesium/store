@@ -15,5 +15,4 @@ defmodule StoreWeb.ProductLive.Show do
      |> assign(:current_page, :products)
      |> assign(:product, Inventory.get_product!(id))}
   end
-
 end

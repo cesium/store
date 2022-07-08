@@ -6,12 +6,10 @@ defmodule StoreWeb.HomeLive.Index do
     {:ok, socket}
   end
 
-    @impl true
+  @impl true
   def handle_params(_params, _url, socket) do
     {:noreply,
-      socket
-      |> assign(:current_page, :home)}
+     socket
+     |> assign(:current_page, :home)}
   end
-
-
 end
