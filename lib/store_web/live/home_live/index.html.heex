@@ -22,20 +22,19 @@
   </div>
 </div> -->
 
-<div class="relative m-auto">
-  <div class="t-20 mr-64 ml-64">
+<div class="relative mx-auto max-w-7xl">
+  <div class="my-8 ">
     <div class="flex flex-row">
-      
-      <img
-        class="scale-100 my-8 ml-48 mr-20 float rounded-lg basis-1/4 ml"
-        src="https://tailwindui.com/img/ecommerce-images/home-page-03-hero-image-tile-01.jpg"
-      />
-      <div class="sm:max-w-lg l-50 mt-20 basis-1/2">
-        <h1
-          class="text-4xl font font-extrabold tracking-tight text-gray-900 sm:text-6xl"
-        >
+      <div class="ml-[20%] mr-[5%]">
+        <img
+          class="scale-100 my-8  float rounded-lg basis-1/3 ml"
+          src="https://tailwindui.com/img/ecommerce-images/home-page-03-hero-image-tile-01.jpg"
+        />
+      </div>
+      <div class="sm:max-w-lg l-50 mt-20 basis-2/3">
+        <p class="text-4xl font font-extrabold tracking-tight text-gray-900 sm:text-6xl">
           Summer styles are finally here
-        </h1>
+        </p>
         <p class="mt-4 text-xl text-gray-500">
           This year, our new summer collection will shelter you from the harsh
           elements of a world that doesn't care if you live or die.
@@ -46,10 +45,23 @@
   </div>
 </div>
 
+<div class="relative max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+  <div class="md:flex">
+    <div class="md:shrink-0">
+      <img class="h-48 w-full object-cover md:h-full md:w-48" src="https://tailwindui.com/img/ecommerce-images/home-page-03-hero-image-tile-01.jpg" alt="Man looking at item at a store">
+    </div>
+    <div class="p-8">
+      <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Case study</div>
+      <a href="#" class="block mt-1 text-lg leading-tight font-medium text-black hover:underline">Finding customers for your new business</a>
+      <p class="mt-2 text-slate-500">Getting a new business off the ground is a lot of hard work. Here are five ideas you can use to find your first customers.</p>
+    </div>
+  </div>
+</div>
+
 <div class="bg-gray-200 max-w-7xl mx-auto rounded-lg">
   <div class=" flex overflow-x-auto">
     <%= for _ <- 1..10 do %>   
-      <div class="scroll-mx-6 snap-start flex-shrink-0 mt-6 mx-3 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+      <div class=" scroll-mx-6 snap-start flex-shrink-0 mt-6 mx-3 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
         <div class="group relative">
           <div
             class="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none"
