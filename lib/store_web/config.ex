@@ -17,8 +17,7 @@ defmodule StoreWeb.Config do
         title: "Products",
         url: Routes.product_index_path(@conn, :index),
         tabs: []
-      },
+      }
     ]
   end
-
 end
