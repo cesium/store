@@ -27,6 +27,7 @@ import "phoenix_html"
 // Establish Phoenix Socket and LiveView configuration.
 import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
+import "../vendor/alpine";
 import topbar from "../vendor/topbar"
 
 let Hooks = {};
