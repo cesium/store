@@ -18,6 +18,12 @@ defmodule StoreWeb.Config do
         url: Routes.product_index_path(@conn, :index),
         tabs: []
       },
+      %{
+        key: :orders,
+        title: "Orders",
+        url: Routes.order_index_path(@conn, :index),
+        tabs: []
+      }
     ]
   end
 

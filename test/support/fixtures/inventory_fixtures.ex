@@ -19,4 +19,18 @@ defmodule Store.InventoryFixtures do
 
     product
   end
+
+  @doc """
+  Generate a order.
+  """
+  def order_fixture(attrs \\ %{}) do
+    {:ok, order} =
+      attrs
+      |> Enum.into(%{
+        redeemed: true
+      })
+      |> Store.Inventory.create_order()
+
+    order
+  end
 end
