@@ -1,4 +1,3 @@
-
 defmodule Store.Repo.Seeds do
   @moduledoc """
   Script for populating the database. You can run it as:
@@ -8,7 +7,7 @@ defmodule Store.Repo.Seeds do
 
   def run do
     [
-      "inventory.exs",
+      "inventory.exs"
     ]
     |> Enum.each(fn file ->
       Code.require_file("#{@seeds_dir}/#{file}")
