@@ -35,7 +35,6 @@ defmodule StoreWeb.Router do
 
     live "/orders/:id", OrderLive.Show, :show
     live "/orders/:id/show/edit", OrderLive.Show, :edit
-
   end
 
   # Other scopes may use custom stacks.
