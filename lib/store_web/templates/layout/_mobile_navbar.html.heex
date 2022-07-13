@@ -1,0 +1,23 @@
+<div x-data="{navbar:false }" class="flex relative">
+    <!-- Menu Button -->
+    <button @click="navbar = !navbar" type="button" class="flex items-center p-2 text-gray-400 bg-white rounded-md hover:text-gray-500"> 
+        <span class="sr-only">Open menu</span>
+        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">   <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+    </button>
+    <!-- Dropdown Menu -->
+    <div  x-show="navbar" class="absolute z-10 mt-14 w-36 p-2 -ml-5 bg-white rounded-md ring-1 ring-black ring-opacity-5 shadow-lg origin-top-right p-13y-2 m mt-13 mt- w-50 focus:outline-none">
+        <%= for page <- StoreWeb.Config.pages(@socket) do %>  
+                <%= live_redirect page.title, to: page.url, class: "#{@current_page == page.key && "border-orange-600 text-orange-600" || "border-transparent text-gray-700 hover:text-gray-800"} flex items-center text-sm font-medium  my-2" %>
+        <% end %>
+    </div>
+    <!-- Search -->
+    <a href="#" class="p-2 ml-2 text-gray-400 hover:text-gray-500">
+        <span class="sr-only">Search</span>
+        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+    </a>
+</div>
+
+
