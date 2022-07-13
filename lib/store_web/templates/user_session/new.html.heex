@@ -1,4 +1,4 @@
-<h1>Log in</h1>
+<p class="sr-only">Log in</p>
 
 <.form let={f} for={@conn} action={Routes.user_session_path(@conn, :create)} as={:user}>
   <%= if @error_message do %>
@@ -7,52 +7,34 @@
     </div>
   <% end %>
 
-  <%= label f, :email %>
+  <%# <%= label f, :email %>
 
-  <%= label f, :password %>
+  <%# <%= label f, :password %>
 
-  <%= label f, :remember_me, "Keep me logged in for 60 days" %>
-  <%= checkbox f, :remember_me %>
+  <%# <%= label f, :remember_me, "Keep me logged in for 60 days" %>
+  <%# <%= checkbox f, :remember_me %> 
 
-  <div>
-  </div>
 
-<p>
-  <%= link "Register", to: Routes.user_registration_path(@conn, :new) %> |
-  <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new) %>
-</p>
+  <p class="text-red-500">
+    <%# <%= link "Register", to: Routes.user_registration_path(@conn, :new) %>
+    <%# <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new) %> 
+  </p>
 
-<!--
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
--->
-<!--
-  This example requires updating your template:
 
-  ```
-  <html class="h-full bg-gray-50">
-  <body class="h-full">
-  ```
--->
-<div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+  <!--
+    This example requires updating your template:
+
+    ```
+    <html class="h-full bg-gray-50">
+    <body class="h-full">
+    ```
+  -->
+  <div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-md">
-    <img class="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow">
+    <%# <img class="h-12 w-auto" src={Routes.static_path(@socket, "/images/logos/logo.svg")} alt="CeSIUM"> %>
+    <img class="h-12 w-auto mx-auto" src="/images/logos/logo.svg" alt="CeSIUM">
     <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
     <p class="mt-2 text-center text-sm text-gray-600">
-      Or
-      <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500"> start your 14-day free trial </a>
     </p>
   </div>
 
@@ -60,13 +42,15 @@
     <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
       <form class="space-y-6" action="#" method="POST">
         <div>
-          <label for="email" class="block text-sm font-medium text-gray-700"> Email address </label>
+          <%= label f, :email, class: "block text-sm font-medium text-gray-700" %>
+          <%# <label for="email" class="block text-sm font-medium text-gray-700"> Email address </label> %>
           <div class="mt-1">
             <%= email_input f, :email, required: true, class: "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
           </div>
         </div>
 
         <div>
+          <%# <%= label f, :password ,class:"block text-sm font-medium text-gray-700"%>
           <label for="password" class="block text-sm font-medium text-gray-700"> Password </label>
           <div class="mt-1">
             <%= password_input f, :password, required: true, class: "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
@@ -75,24 +59,34 @@
 
         <div class="flex items-center justify-between">
           <div class="flex items-center">
-            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-            <label for="remember-me" class="ml-2 block text-sm text-gray-900"> Remember me </label>
+            <%# <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+            <label for="remember-me" class="ml-2 block text-sm text-gray-900"> Remember me </label> %>
+            <%= label f, :remember_me, "Remember me", class: "ml-2 block text-sm text-gray-900"%>
+            <%= checkbox f, :remember_me ,class: "h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"%>
+          
           </div>
 
-          <div class="text-sm">
-            <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500"> Forgot your password? </a>
+          <div class="text-sm font-medium text-[#c65932] hover:text-[#ed7950]">
+            <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new) %>
           </div>
         </div>
 
         <div>
 
         <%= submit do %>
-          <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Sign in</button>
+          <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#ed7950] hover:bg-[#c65932]">Sign in</button>
         <% end %>
         </div>
+
+        <div class="text-sm text-right font-medium text-[#c65932] hover:text-[#ed7950] mt-1">
+          <%= link "Register", to: Routes.user_registration_path(@conn, :new) %>
+        </div>
+
+
+
       </form>
 
-      <div class="mt-6">
+      <div class="mt-3">
         <div class="relative">
           <div class="absolute inset-0 flex items-center">
             <div class="w-full border-t border-gray-300"></div>
@@ -133,7 +127,7 @@
       </div>
     </div>
   </div>
-</div>
+  </div>
 
 
 </.form>
