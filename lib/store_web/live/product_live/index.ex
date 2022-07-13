@@ -12,8 +12,8 @@ defmodule StoreWeb.ProductLive.Index do
   @impl true
   def handle_params(_params, _url, socket) do
     {:noreply,
-      socket
-      |> assign(:current_page, :products)}
+     socket
+     |> assign(:current_page, :products)}
   end
 
   @impl true
