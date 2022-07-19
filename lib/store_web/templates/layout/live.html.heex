@@ -22,23 +22,9 @@
               </div>
             </div>
             <!-- Mobile menu and search (lg-) -->
-            <div class="flex-1 flex items-center lg:hidden">
+            <div  class="flex-1 flex items-center lg:hidden">
               <!-- Mobile menu toggle, controls the 'mobileMenuOpen' state. -->
-              <button type="button" class="-ml-2 bg-white p-2 rounded-md text-gray-400">
-                <span class="sr-only">Open menu</span>
-                <!-- Heroicon name: outline/menu -->
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
-              <!-- Search -->
-              <a href="#" class="ml-2 p-2 text-gray-400 hover:text-gray-500">
-                <span class="sr-only">Search</span>
-                <!-- Heroicon name: outline/search -->
-                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </a>
+              <%= render("_mobile_navbar.html", assigns) %> 
             </div>
             <%= live_redirect to: Routes.home_index_path(@socket, :index) do %>
               <img class="h-8 w-auto lg:hidden" src={Routes.static_path(@socket, "/images/logos/logo.svg")} alt="">
@@ -57,19 +43,27 @@
                   </div>
                   <div class="flex">
                     <a href="#" class="-m-2 p-2 text-gray-400 hover:text-gray-500">
-                      <span class="sr-only">Account</span>
-                      <%= link to: Routes.user_session_path(@socket, :new) do %>
+                      <%= link to: Routes.user_session_path(@socket, :new),class: "text-gray-400 hover:text-gray-500" do %>
                         <!-- Heroicon name: outline/user -->
-                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                        <svg class="flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                       <% end %>
                     </a>
                   </div>
+                  <ul>
+                    <%#= if @current_user do %>
+                      <li><%= link "Settings", to: Routes.user_settings_path(@socket, :edit) %></li>
+                      <li><%= link "Log out", to: Routes.user_session_path(@socket, :delete), method: :delete %></li>
+                    <%# else %>
+                      <li><%#= link "Register", to: Routes.user_registration_path(@socket, :new) %></li>
+                      <li><%#= link "Log in", to: Routes.user_session_path(@socket, :new) %></li>
+                    <%# end %>
+                  </ul>
                 </div>
                 <span class="mx-4 h-6 w-px bg-gray-200 lg:mx-6" aria-hidden="true"></span>
                 <div class="flow-root">
-                  <a href="#" class="group -m-2 p-2 flex items-center">
+                  <a href="#" class="group -m-2 p-2 flex items-center ">
                     <!-- Heroicon name: outline/shopping-cart -->
                     <svg class="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
