@@ -1,4 +1,4 @@
-<header x-data="{ navbar: false }" class="px-8 lg:px-14 xl:px-20">
+<header x-data="{ navbar: false }" class="px-8 lg:px-14 xl:px-20 relative mx-auto max-w-7xl bg-white">
   <%= render("_mobile_navbar.html", assigns) %>
   <%= render("_desktop_navbar.html", assigns) %>
 </header>
@@ -18,7 +18,7 @@
 
 
  <!--Footer-->
- <footer aria-labelledby="footer-heading" class="bg-white">
+<footer aria-labelledby="footer-heading" class="bg-white">
   <h2 id="footer-heading" class="sr-only">Footer</h2>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="py-20 xl:grid xl:grid-cols-3 xl:gap-8">

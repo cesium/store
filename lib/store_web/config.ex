@@ -26,5 +26,4 @@ defmodule StoreWeb.Config do
       }
     ]
   end
-
 end
