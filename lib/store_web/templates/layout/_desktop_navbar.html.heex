@@ -9,7 +9,7 @@
       <% end %>
     </div>
     <div class="ml-8 hidden lg:flex lg:items-center">
-      <%= for {page,index} <- Enum.with_index(StoreWeb.Config.pages) do %>
+      <%= for {page} <- Enum.with_index(StoreWeb.Config.pages) do %>
           <span class={"#{@current_page == page.title} inline-flex mx-4 px-2"}>
             <%= live_redirect(page.title, to: page.url, class: "#{@current_page == page.key && "text-[#c65932] hover:text-[#ed7950]" || "border-transparent text-gray-400 hover:text-gray-500"} text-sm font-medium inline-flex xl:text-base ") %>
           </span>
@@ -40,14 +40,14 @@
         </div>
         <span class="mx-4 h-6 w-px bg-gray-200 lg:mx-6" aria-hidden="true"></span>
         <div class="flow-root">
-          <a href="#" class="group -m-2 p-2 flex items-center ">
+          <button class="group -m-2 p-2 flex items-center " @click="cart = !cart">
           <!-- Heroicon name: outline/shopping-cart -->
             <svg class="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
             <span class="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
-              <span class="sr-only">items in cart, view bag</span>
-          </a>
+            <span class="sr-only">items in cart, view bag</span>
+          </button>
         </div>
       </div>
     </div>
