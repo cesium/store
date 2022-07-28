@@ -90,10 +90,9 @@ defmodule StoreWeb.Router do
 
   scope "/", StoreWeb do
     pipe_through [:browser, :require_authenticated_user]
-
     live_session :logged_in, on_mount: [{StoreWeb.Hooks, :current_user}] do
       scope "/admin", Administration, as: :admin do
-        live "/", DashboardLive.Index, :index
+        live "/dashboard", DashboardLive.Index, :index
       end
       get "/users/settings", UserSettingsController, :edit
       put "/users/settings", UserSettingsController, :update
