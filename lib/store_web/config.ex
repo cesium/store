@@ -10,6 +10,13 @@ defmodule StoreWeb.Config do
     base_pages()
   end
 
+
+  def role_pages(conn, user) do
+    case user.role do
+      :admin -> admin_pages(conn)
+    end
+  end
+
   defp base_pages do
     [
       %{
@@ -22,6 +29,17 @@ defmodule StoreWeb.Config do
         key: :orders,
         title: "Orders",
         url: Routes.order_index_path(@conn, :index),
+        tabs: []
+      }
+    ]
+  end
+
+  def admin_pages(conn) do
+    [
+      %{
+        key: :dashboard,
+        title: "Dashboard",
+        url: Routes.dashboard_path(@conn, :index),
         tabs: []
       }
     ]

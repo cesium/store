@@ -91,9 +91,14 @@ defmodule StoreWeb.Router do
   scope "/", StoreWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    get "/users/settings", UserSettingsController, :edit
-    put "/users/settings", UserSettingsController, :update
-    get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
+    live_session :logged_in, on_mount: [{StoreWeb.Hooks, :current_user}] do
+      scope "/admin", Administration, as: :admin do
+        live "/", DashboardLive.Index, :index
+      end
+      get "/users/settings", UserSettingsController, :edit
+      put "/users/settings", UserSettingsController, :update
+      get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
+    end
   end
 
   scope "/", StoreWeb do

@@ -2,6 +2,10 @@ defmodule Store.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @roles ~w(admin attendee)a
+  @required_fields ~w(email password name role)a
+
+
   schema "users" do
     field :email, :string
     field :password, :string, virtual: true, redact: true
@@ -30,7 +34,7 @@ defmodule Store.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, @required_fields)
     |> validate_email()
     |> validate_password(opts)
   end
@@ -66,6 +70,19 @@ defmodule Store.Accounts.User do
       |> delete_change(:password)
     else
       changeset
+    end
+  end
+
+  defp generate_random_password(changeset, opts) do
+    generate_password? = Keyword.get(opts, :generate_password, true)
+
+    if generate_password? do
+      changeset
+      |> put_change(:password, Base.encode64(:crypto.strong_rand_bytes(32)))
+      |> maybe_hash_password(hash_password: true)
+    else
+      changeset
+      |> put_change(:hashed_password, Base.encode64(:crypto.strong_rand_bytes(32)))
     end
   end
 
