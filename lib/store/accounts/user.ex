@@ -2,7 +2,7 @@ defmodule Store.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @roles ~w(admin attendee)a
+  @roles ~w(admin user)a
   @required_fields ~w(email password name role)a
 
 
