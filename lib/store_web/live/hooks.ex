@@ -4,7 +4,7 @@ defmodule StoreWeb.Hooks do
   """
   import Phoenix.LiveView
 
-  alias Parzival.Accounts
+  alias StoreWeb.Accounts
 
   def on_mount(:default, _params, _session, socket) do
     {:cont, assign(socket, :page_title, "Cesium Store")}
