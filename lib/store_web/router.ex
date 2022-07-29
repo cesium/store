@@ -23,18 +23,11 @@ defmodule StoreWeb.Router do
     live "/", HomeLive.Index, :index
 
     live "/products", ProductLive.Index, :index
-    live "/products/new", ProductLive.Index, :new
-    live "/products/:id/edit", ProductLive.Index, :edit
-
     live "/products/:id", ProductLive.Show, :show
-    live "/products/:id/show/edit", ProductLive.Show, :edit
 
     live "/orders", OrderLive.Index, :index
     live "/orders/new", OrderLive.Index, :new
-    live "/orders/:id/edit", OrderLive.Index, :edit
-
     live "/orders/:id", OrderLive.Show, :show
-    live "/orders/:id/show/edit", OrderLive.Show, :edit
 
     get "/users/register", UserRegistrationController, :new
     post "/users/register", UserRegistrationController, :create
@@ -55,13 +48,12 @@ defmodule StoreWeb.Router do
   # If your application does not have an admins-only section yet,
   # you can use Plug.BasicAuth to set up some basic authentication
   # as long as you are also using SSL (which you should anyway).
+
   if Mix.env() in [:dev, :test] do
     import Phoenix.LiveDashboard.Router
 
     scope "/" do
       pipe_through :browser
-
-      live_dashboard "/dashboard", metrics: StoreWeb.Telemetry
     end
   end
 
@@ -91,8 +83,10 @@ defmodule StoreWeb.Router do
   scope "/", StoreWeb do
     pipe_through [:browser, :require_authenticated_user]
     live_session :logged_in, on_mount: [{StoreWeb.Hooks, :current_user}] do
-      scope "/admin", Administration, as: :admin do
+      scope "/", Administration, as: :admin do
         live "/dashboard", DashboardLive.Index, :index
+        live "/products/new", ProductLive.New, :new
+        live "/products/:id/edit", ProductLive.Edit, :edit
       end
       get "/users/settings", UserSettingsController, :edit
       put "/users/settings", UserSettingsController, :update
