@@ -6,7 +6,7 @@ defmodule StoreWeb.Config do
 
   @conn StoreWeb.Endpoint
 
-  def pages(conn) do
+  def pages() do
     base_pages()
   end
 

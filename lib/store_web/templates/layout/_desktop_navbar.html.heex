@@ -1,0 +1,56 @@
+<div>
+  <div class="w-full flex justify-between items-center h-16 text-gray-400">
+    <button class="lg:hidden flex-1" type="button" @click="navbar = !navbar">
+      <%= Heroicons.icon("menu", type: "outline", class: "w-5 h-5 text-gray-400") %>
+      <%# <Heroicons.Outline.menu class="w-5 h-5 text-gray-400" /> %>
+    </button>
+    <div class="object-center">
+      <%= live_redirect to: Routes.home_index_path(@socket, :index) do %>
+        <img class="h-8 w-auto" src={Routes.static_path(@socket, "/images/logos/logo.svg")} alt="">
+      <% end %>
+    </div>
+    <div class="ml-8 hidden lg:flex lg:items-center">
+      <%= for {page,index} <- Enum.with_index(StoreWeb.Config.pages) do %>
+          <span class={"#{@current_page == page.title} inline-flex mx-4 px-2"}>
+            <%= live_redirect(page.title, to: page.url, class: "#{@current_page == page.key && "text-[#c65932] hover:text-[#ed7950]" || "border-transparent text-gray-400 hover:text-gray-500"} text-sm font-medium inline-flex xl:text-base ") %>
+          </span>
+      <% end %>  
+    </div>
+    <div class="flex-1 flex items-center justify-end">
+      <div class="flex items-center lg:ml-8">
+        <div class="flex space-x-8">
+          <div class="hidden lg:flex">
+            <a href="#" class="-m-2 p-2 text-gray-400 hover:text-gray-500">
+              <span class="sr-only">Search</span>
+                <!-- Heroicon name: outline/search -->
+                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </a>
+          </div>
+          <div class="flex">
+            <a href="#" class="-m-2 p-2 text-gray-400 hover:text-gray-500">
+              <%= link to: Routes.user_session_path(@socket, :new),class: "text-gray-400 hover:text-gray-500" do %>
+                <!-- Heroicon name: outline/user -->
+                <svg class="flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              <% end %>
+            </a>
+          </div>
+        </div>
+        <span class="mx-4 h-6 w-px bg-gray-200 lg:mx-6" aria-hidden="true"></span>
+        <div class="flow-root">
+          <a href="#" class="group -m-2 p-2 flex items-center ">
+          <!-- Heroicon name: outline/shopping-cart -->
+            <svg class="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <span class="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
+              <span class="sr-only">items in cart, view bag</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
