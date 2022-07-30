@@ -50,4 +50,11 @@ defmodule StoreWeb.Inventory.Product do
     product
     |> cast_attachments(attrs, [:image])
   end
+
+  def max_per_user_changeset(product, attrs) do
+    product
+    |> cast(attrs, [:max_per_user])
+    |> validate_required([:max_per_user])
+    |> validate_number(:max_per_user, greater_than_or_equal_to: 0)
+  end
 end

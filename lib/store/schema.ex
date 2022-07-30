@@ -13,8 +13,8 @@ defmodule StoreWeb.Schema do
       import Ecto.Changeset
       import Ecto.Query
 
-      @primary_key {:id, :binary_id, autogenerate: true}
-      @foreign_key_type :binary_id
+      #@primary_key {:id, :binary_id, autogenerate: true}
+      #@foreign_key_type :binary_id
 
       def validate_email_address(changeset, field) do
         changeset
@@ -39,6 +39,26 @@ defmodule StoreWeb.Schema do
         validate_change(changeset, field, fn _field, value ->
           if NaiveDateTime.compare(value, date) == :lt do
             [{field, "date requires to be after %{date}"}]
+          else
+            []
+          end
+        end)
+      end
+
+      def validate_password(changeset, field) do
+        validate_change(changeset, field, fn _field, value ->
+          if value.length < 8 do
+            [{field, "must be at least 8 characters"}]
+          else
+            []
+          end
+        end)
+      end
+
+      def validate_password_confirmation(changeset, field) do
+        validate_change(changeset, field, fn _field, value ->
+          if value != changeset.get(:password) do
+            [{field, "must match password"}]
           else
             []
           end
