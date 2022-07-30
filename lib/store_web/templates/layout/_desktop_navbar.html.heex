@@ -1,4 +1,4 @@
-<div>
+<div  x-data="{search: false}">
   <div class="w-full flex justify-between items-center h-16 text-gray-400">
     <button class="lg:hidden flex-1" type="button" @click="navbar = !navbar">
       <%= Heroicons.icon("menu", type: "outline", class: "w-5 h-5 text-gray-400") %>
@@ -10,7 +10,7 @@
       <% end %>
     </div>
     <div class="ml-8 hidden lg:flex lg:items-center">
-      <%= for {page,index} <- Enum.with_index(StoreWeb.Config.pages) do %>
+      <%= for {page,_} <- Enum.with_index(StoreWeb.Config.pages) do %>
           <span class={"#{@current_page == page.title} inline-flex mx-4 px-2"}>
             <%= live_redirect(page.title, to: page.url, class: "#{@current_page == page.key && "text-[#c65932] hover:text-[#ed7950]" || "border-transparent text-gray-400 hover:text-gray-500"} text-sm font-medium inline-flex xl:text-base ") %>
           </span>
@@ -18,14 +18,23 @@
     </div>
     <div class="flex-1 flex items-center justify-end">
       <div class="flex items-center lg:ml-8">
-        <div class="flex space-x-8">
+        <div class="flex space-x-8 items-center">
           <div class="hidden lg:flex">
-            <a href="#" class="-m-2 p-2 text-gray-400 hover:text-gray-500">
+            <a @click.away="search = false" href="#" class="-m-2 p-2 text-gray-400 ">
               <span class="sr-only">Search</span>
                 <!-- Heroicon name: outline/search -->
-                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
+              <svg @click="search=!search" x-show="!search"class="w-6 h-6 hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <form x-show="search" class="flex-1">   
+                <div class="relative">
+                    <input type="search" id="default-search" class="block p-4 pr-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-quaternary focus:border-quaternary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-quaternary dark:focus:border-quaternary" placeholder="Search Mockups, Logos..." required>
+                    <button type="submit" class="flex absolute inset-y-0 right-0 items-center pr-3 pointer-events-none">
+                        <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </button>
+                </div>
+                <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">Search</label>
+              </form>
             </a>
           </div>
           <div class="flex">
