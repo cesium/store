@@ -1,7 +1,7 @@
 defmodule Store.Repo.Seeds.Inventory do
   alias Store.Repo
 
-  alias Store.Inventory.Product
+  alias StoreWeb.Inventory.Product
 
   def run do
     seed_products()
@@ -15,20 +15,26 @@ defmodule Store.Repo.Seeds.Inventory do
             name: "Saco",
             description: "É um saco",
             price: 200,
-            type: "saco"
+            stock: 0
           },
           %{
             name: "Caderno",
             description: "É um caderno",
             price: 200,
-            type: "saco"
+            stock: 0
           },
           %{
             name: "Caneta",
             description: "É uma caneta",
             price: 200,
-            type: "saco"
-          }
+            stock: 0
+          },
+          %{
+            name: "Lápis",
+            description: "É um lápis",
+            price: 200,
+            stock: 0
+          },
         ]
         |> Enum.each(&insert_product/1)
 
