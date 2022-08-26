@@ -9,6 +9,10 @@ defmodule Store.Accounts.User do
   @required_fields ~w(email password name role)a
 
 
+  @roles ~w(admin user)a
+  @required_fields ~w(email password name role)a
+
+
   schema "users" do
     field :email, :string
     field :password, :string, virtual: true, redact: true
