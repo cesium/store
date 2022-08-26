@@ -26,7 +26,7 @@ defmodule StoreWeb.Router do
     live "/products", ProductLive.Index, :index
     live "/products/new", ProductLive.Index, :new
     live "/products/:id/edit", ProductLive.Index, :edit
-
+    live "/dashboard" , DashboardLive.Index, :index
     live "/products/:id", ProductLive.Show, :show
     live "/products/:id/show/edit", ProductLive.Show, :edit
 
@@ -91,14 +91,9 @@ defmodule StoreWeb.Router do
 
   scope "/", StoreWeb do
     pipe_through [:browser, :require_authenticated_user]
-    live_session :logged_in, on_mount: [{StoreWeb.Hooks, :current_user}] do
-      scope "/admin", Administration, as: :admin do
-        live "/dashboard", DashboardLive.Index, :index
-      end
       get "/users/settings", UserSettingsController, :edit
       put "/users/settings", UserSettingsController, :update
       get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
-    end
   end
 
   scope "/", StoreWeb do
