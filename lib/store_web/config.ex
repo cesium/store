@@ -10,7 +10,6 @@ defmodule StoreWeb.Config do
     base_pages()
   end
 
-
   def role_pages(conn, user) do
     case user.role do
       :admin -> admin_pages(conn)
@@ -44,5 +43,4 @@ defmodule StoreWeb.Config do
       }
     ]
   end
-
 end

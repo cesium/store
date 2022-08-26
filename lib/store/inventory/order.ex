@@ -9,9 +9,9 @@ defmodule Store.Inventory.Order do
   ]
 
   schema "orders" do
-    field :redeemed, :boolean, default: false
+    field(:redeemed, :boolean, default: false)
 
-    has_many :products, Product
+    has_many(:products, Product)
 
     timestamps()
   end
