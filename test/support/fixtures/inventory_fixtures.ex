@@ -15,7 +15,7 @@ defmodule Store.InventoryFixtures do
         name: "some name",
         type: "some type"
       })
-      |> Store.Inventory.create_product()
+      |> Inventory.create_product()
 
     product
   end
@@ -29,7 +29,7 @@ defmodule Store.InventoryFixtures do
       |> Enum.into(%{
         redeemed: true
       })
-      |> Store.Inventory.create_order()
+      |> Inventory.create_order()
 
     order
   end

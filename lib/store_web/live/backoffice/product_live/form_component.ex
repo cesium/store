@@ -1,6 +1,7 @@
 defmodule StoreWeb.Administration.ProductLive.FormComponent do
   @moduledoc false
   use StoreWeb, :live_component
+  alias Store.Inventory
 
   @extensions_whitelist ~w(.jpg .jpeg .gif .png)
 
@@ -13,7 +14,7 @@ defmodule StoreWeb.Administration.ProductLive.FormComponent do
 
   @impl true
   def update(%{product: product} = assigns, socket) do
-    changeset = Store.change_product(product)
+    changeset = Inventory.change_product(product)
 
     {:ok,
      socket
@@ -25,7 +26,7 @@ defmodule StoreWeb.Administration.ProductLive.FormComponent do
   def handle_event("validate", %{"product" => product_params}, socket) do
     changeset =
       socket.assigns.product
-      |> Store.change_product(product_params)
+      |> Inventory.change_product(product_params)
       |> Map.put(:action, :validate)
 
     {:noreply, assign(socket, :changeset, changeset)}
@@ -42,7 +43,7 @@ defmodule StoreWeb.Administration.ProductLive.FormComponent do
   end
 
   defp save_product(socket, :edit, product_params) do
-    case Store.update_product(
+    case Inventory.update_product(
            socket.assigns.product,
            product_params,
            &consume_image_data(socket, &1)
@@ -59,7 +60,7 @@ defmodule StoreWeb.Administration.ProductLive.FormComponent do
   end
 
   defp save_product(socket, :new, product_params) do
-    case Store.create_product(
+    case Inventory.create_product(
            product_params,
            &consume_image_data(socket, &1)
          ) do
@@ -76,7 +77,7 @@ defmodule StoreWeb.Administration.ProductLive.FormComponent do
 
   defp consume_image_data(socket, product) do
     consume_uploaded_entries(socket, :image, fn %{path: path}, entry ->
-      Store.update_product_image(product, %{
+      Inventory.update_product_image(product, %{
         "image" => %Plug.Upload{
           content_type: entry.client_type,
           filename: entry.client_name,

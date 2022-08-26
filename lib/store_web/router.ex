@@ -58,11 +58,11 @@ defmodule StoreWeb.Router do
   if Mix.env() in [:dev, :test] do
     import Phoenix.LiveDashboard.Router
 
-    scope "/" do
-      pipe_through(:browser)
-
-      live_dashboard("/dashboard", metrics: StoreWeb.Telemetry)
-    end
+    #    scope "/" do
+    #     pipe_through(:browser)
+    #
+    #     live_dashboard("/dashboard", metrics: StoreWeb.Telemetry)
+    #  end
   end
 
   # Enables the Swoosh mailbox preview in development.
