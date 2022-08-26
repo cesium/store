@@ -4,7 +4,7 @@ defmodule Store.InventoryTest do
   alias Store.Inventory
 
   describe "products" do
-    alias Store.Inventory.Product
+    alias StoreWeb.Inventory.Product
 
     import Store.InventoryFixtures
 
