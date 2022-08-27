@@ -1,7 +1,7 @@
 defmodule Store.Accounts.User do
   use Store.Schema
 
-  @required_fields ~w(email password name role)a
+  @required_fields ~w(email password)a
 
   schema "users" do
     field :email, :string
@@ -33,7 +33,7 @@ defmodule Store.Accounts.User do
     user
     |> cast(attrs, @required_fields)
     |> validate_email()
-    |> validate_password(opts)
+    |> validate_current_password(opts)
   end
 
   defp validate_email(changeset) do
@@ -76,7 +76,7 @@ defmodule Store.Accounts.User do
     user
     |> cast(attrs, [:password])
     |> validate_confirmation(:password, message: "does not match password")
-    |> validate_password(opts)
+    |> validate_current_password(opts)
   end
 
   @doc """

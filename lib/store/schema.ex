@@ -45,25 +45,6 @@ defmodule Store.Schema do
         end)
       end
 
-      def validate_password(changeset, field) do
-        validate_change(changeset, field, fn _field, value ->
-          if value.length < 8 do
-            [{field, "must be at least 8 characters"}]
-          else
-            []
-          end
-        end)
-      end
-
-      def validate_password_confirmation(changeset, field) do
-        validate_change(changeset, field, fn _field, value ->
-          if value != changeset.get(:password) do
-            [{field, "must match password"}]
-          else
-            []
-          end
-        end)
-      end
     end
   end
 end
