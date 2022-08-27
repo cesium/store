@@ -2,6 +2,7 @@ defmodule StoreWeb.HomeLive.Index do
   @moduledoc false
   use StoreWeb, :live_view
 
+  @impl true
   def mount(_params, _session, socket) do
     {:ok, socket}
   end

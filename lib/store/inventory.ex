@@ -5,8 +5,8 @@ defmodule Store.Inventory do
 
   import Ecto.Query, warn: false
   alias Store.Repo
-
   alias StoreWeb.Inventory.Product
+  use Store.Context
 
   @doc """
   Returns the list of products.
@@ -49,10 +49,11 @@ defmodule Store.Inventory do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_product(attrs \\ %{}) do
+  def create_product(attrs \\ %{}, after_save \\ &{:ok, &1}) do
     %Product{}
     |> Product.changeset(attrs)
     |> Repo.insert()
+    |> after_save(after_save)
   end
 
   @doc """
@@ -67,9 +68,21 @@ defmodule Store.Inventory do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_product(%Product{} = product, attrs) do
+  def update_product(
+        %Product{} = product,
+        attrs,
+        after_save \\ &{:ok, &1}
+      ) do
     product
     |> Product.changeset(attrs)
+    |> Repo.update()
+    |> after_save(after_save)
+  end
+
+
+  def update_product_image(%Product{} = product, attrs) do
+    product
+    |> Product.image_changeset(attrs)
     |> Repo.update()
   end
 

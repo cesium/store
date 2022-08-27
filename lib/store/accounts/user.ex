@@ -1,17 +1,7 @@
 defmodule Store.Accounts.User do
   use Store.Schema
 
-  @roles ~w(admin user)a
-  @required_fields ~w(email password name role)a
-
-
-  @roles ~w(admin user)a
-  @required_fields ~w(email password name role)a
-
-
-  @roles ~w(admin user)a
-  @required_fields ~w(email password name role)a
-
+  @required_fields ~w(email password)a
 
   schema "users" do
     field :email, :string
@@ -43,7 +33,7 @@ defmodule Store.Accounts.User do
     user
     |> cast(attrs, @required_fields)
     |> validate_email()
-    |> validate_password(opts)
+    |> validate_current_password(opts)
   end
 
   defp validate_email(changeset) do
@@ -55,33 +45,7 @@ defmodule Store.Accounts.User do
     |> unique_constraint(:email)
   end
 
-  defp maybe_hash_password(changeset, opts) do
-    hash_password? = Keyword.get(opts, :hash_password, true)
-    password = get_change(changeset, :password)
 
-    if hash_password? && password && changeset.valid? do
-      changeset
-      # If using Bcrypt, then further validate it is at most 72 bytes long
-      |> validate_length(:password, max: 72, count: :bytes)
-      |> put_change(:hashed_password, Bcrypt.hash_pwd_salt(password))
-      |> delete_change(:password)
-    else
-      changeset
-    end
-  end
-
-  defp generate_random_password(changeset, opts) do
-    generate_password? = Keyword.get(opts, :generate_password, true)
-
-    if generate_password? do
-      changeset
-      |> put_change(:password, Base.encode64(:crypto.strong_rand_bytes(32)))
-      |> maybe_hash_password(hash_password: true)
-    else
-      changeset
-      |> put_change(:hashed_password, Base.encode64(:crypto.strong_rand_bytes(32)))
-    end
-  end
 
   @doc """
   A user changeset for changing the email.
@@ -114,7 +78,7 @@ defmodule Store.Accounts.User do
     user
     |> cast(attrs, [:password])
     |> validate_confirmation(:password, message: "does not match password")
-    |> validate_password(opts)
+    |> validate_current_password(opts)
   end
 
   @doc """
