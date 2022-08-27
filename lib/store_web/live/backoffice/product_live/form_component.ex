@@ -2,7 +2,6 @@ defmodule StoreWeb.Administration.ProductLive.FormComponent do
   @moduledoc false
   use StoreWeb, :live_component
 
-
   @extensions_whitelist ~w(.jpg .jpeg .gif .png)
 
   @impl true
