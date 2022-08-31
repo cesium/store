@@ -1,0 +1,177 @@
+<div class="min-h-full">
+  <header class="bg-white shadow-sm lg:static lg:overflow-y-visible">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="relative flex justify-between xl:grid xl:grid-cols-12 lg:gap-8">
+        <div class="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-6">
+          <div class="flex items-center px-6 py-4 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0">
+            <div class="w-full">
+              <label for="search" class="sr-only">Search</label>
+              <div class="relative">
+                <div class="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
+                  <!-- Heroicon name: solid/search -->
+                  <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <input id="search" name="search" class="block w-full bg-white border border-gray-300 rounded-md py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-rose-500 focus:border-rose-500 sm:text-sm" placeholder="Search" type="search">
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+
+    <!-- Mobile menu, show/hide based on menu state. -->
+    <nav class="lg:hidden" aria-label="Global">
+      <div class="max-w-3xl mx-auto px-2 pt-2 pb-3 space-y-1 sm:px-4">
+        <!-- Current: "bg-gray-100 text-gray-900", Default: "hover:bg-gray-50" -->
+        <a href="#" aria-current="page" class="bg-gray-100 text-gray-900 block rounded-md py-2 px-3 text-base font-medium">Home</a>
+
+        <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Action Logs</a>
+
+        <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Products</a>
+
+        <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Orders</a>
+
+        <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Users</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="py-10">
+    <div class="max-w-3xl mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-12 lg:gap-8">
+      <div class="hidden lg:block lg:col-span-3 xl:col-span-2">
+        <nav aria-label="Sidebar" class="sticky top-4 divide-y divide-gray-300">
+          <div class="pb-8 space-y-1">
+            <!-- Current: "bg-gray-200 text-gray-900", Default: "text-gray-600 hover:bg-gray-50" -->
+            <a href="#" class="bg-gray-200 text-gray-900 group flex items-center px-3 py-2 text-sm font-medium rounded-md" aria-current="page">
+              <!-- Heroicon name: outline/home -->
+              <svg class="text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+              <span class="truncate"> Home </span>
+            </a>
+
+            <a href="#" class="text-gray-600 hover:bg-gray-50 group flex items-center px-3 py-2 text-sm font-medium rounded-md">
+              <!-- Heroicon name: outline/fire -->
+              <svg class="text-gray-400 group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
+              </svg>
+              <span class="truncate"> Action Logs </span>
+            </a>
+
+            <a href="#" class="text-gray-600 hover:bg-gray-50 group flex items-center px-3 py-2 text-sm font-medium rounded-md">
+              <!-- Heroicon name: outline/user-group -->
+              <svg class="text-gray-400 group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z" />
+              </svg>
+              <span class="truncate"> Products </span>              
+            </a>
+            
+            <a href="#" class="text-gray-600 hover:bg-gray-50 group flex items-center px-3 py-2 text-sm font-medium rounded-md">
+                <!-- Heroicon name: outline/trending-up -->
+                <svg class="text-gray-400 group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                </svg>                  
+                <span class="truncate"> Orders </span>
+            </a>
+
+            <a href="#" class="text-gray-600 hover:bg-gray-50 group flex items-center px-3 py-2 text-sm font-medium rounded-md">
+              <!-- Heroicon name: outline/trending-up -->
+              <svg class="text-gray-400 group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>            
+              <span class="truncate"> Users </span>
+            </a>
+            
+          </div>
+          <div class="pt-10">
+          </div>
+        </nav>
+      </div>
+      <main class="lg:col-span-9 xl:col-span-6">
+        <div class="px-4 sm:px-0">
+          <div class="sm:hidden">
+            <label for="question-tabs" class="sr-only">Select a tab</label>
+            <select id="question-tabs" class="block w-full rounded-md border-gray-300 text-base font-medium text-gray-900 shadow-sm focus:border-rose-500 focus:ring-rose-500">
+              <option selected>Products</option>
+
+              <option>Orders</option>
+
+              <option>Users</option>
+            </select>
+          </div>
+          <div x-data="product: true; orders: false; users: false" class="hidden sm:block">
+            <nav class="relative z-0 rounded-lg shadow flex divide-x divide-gray-200" aria-label="Tabs">
+              <!-- Current: "text-gray-900", Default: "text-gray-500 hover:text-gray-700" -->
+              <a href="#" aria-current="page" class="text-gray-900 rounded-l-lg group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-6 text-sm font-medium text-center hover:bg-gray-50 focus:z-10">
+                <span @click="product = true; orders = false; users = false">Products</span>
+                <span x-show="product" aria-hidden="true" class="bg-rose-500 absolute inset-x-0 bottom-0 h-0.5"></span>
+              </a>
+
+              <a href="#" class="text-gray-500 hover:text-gray-700 group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-6 text-sm font-medium text-center hover:bg-gray-50 focus:z-10">
+                <span @click="product = false; orders = true; users = false">Orders</span>
+                <span x-show="orders" aria-hidden="true" class="bg-transparent absolute inset-x-0 bottom-0 h-0.5"></span>
+              </a>
+
+              <a href="#" class="text-gray-500 hover:text-gray-700 rounded-r-lg group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-6 text-sm font-medium text-center hover:bg-gray-50 focus:z-10"
+                @click="product = false; orders = false; users = true">
+                <span>Users</span>
+                <span x-show="users" aria-hidden="true" class="bg-transparent absolute inset-x-0 bottom-0 h-0.5"></span>
+              </a>
+            </nav>
+          </div>
+        </div>
+        <div class="">
+          <ul role="list">
+            <li class="bg-white px-4 pb-4 shadow sm:p-4 sm:rounded-lg">
+                <%= for _ <- 1..2 do %> 
+                    <section aria-labelledby="4376-heading">            
+                      <div class="mb-6 flow-root border-gray-200 divide-y divide-gray-200">
+                        <div class="py-2 sm:flex">
+                          <div class="flex space-x-4 sm:min-w-0 sm:flex-1 sm:space-x-6 lg:space-x-8">
+                            <img src="https://tailwindui.com/img/ecommerce-images/order-history-page-07-product-01.jpg" alt="Brass puzzle in the shape of a jack with overlapping rounded posts." class="flex-none w-20 h-20 rounded-md object-center object-cover sm:w-48 sm:h-48">
+                            <div class="pt-1.5 min-w-0 flex-1 sm:pt-0">
+                              <h3 class="text-sm font-medium text-gray-900">
+                                <a href="#">Machined Brass Puzzle</a>
+                              </h3>
+                              <p class="text-sm text-gray-500 truncate">
+                                <span>Brass</span>
+                                <span class="mx-1 text-gray-400" aria-hidden="true">&middot;</span>
+                                <span>3&quot; x 3&quot; x 3&quot;</span>
+                              </p>
+                              <p class="mt-1 font-medium text-gray-900">$95.00</p>
+                            </div>
+                          </div>
+                          <div class="mt-6 space-y-4 sm:mt-0 sm:ml-6 sm:flex-none sm:w-40">
+                            <button type="button" class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-300  w-full flex items-center justify-center bg-orange-600 py-2 px-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-orange-700 sm:w-full sm:flex-grow-0">Buy again</button>
+                            <button type="button" class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-300  w-full flex items-center justify-center bg-white py-2 px-2.5 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 sm:w-full sm:flex-grow-0">Shop similar</button>
+                          </div>
+                        </div>  
+                      </div>
+                    </section>
+                <%= end %>
+            </li>
+
+            <!-- More questions... -->
+          </ul>
+        </div>
+      </main>
+      <aside class="hidden xl:block xl:col-span-4">
+        <div class="sticky top-4 space-y-4">
+          <section aria-labelledby="who-to-follow-heading">
+            <div class="bg-white rounded-lg shadow">
+              <div class="p-6">
+                <h2 id="who-to-follow-heading" class="text-base font-bold text-gray-900">Action Logs</h2>
+                <div class="mt-6">
+                  <a href="#" class="w-full block text-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"> View all </a>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
