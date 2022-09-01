@@ -10,7 +10,6 @@ defmodule StoreWeb.Config do
     base_pages()
   end
 
-
   def role_pages(conn, user) do
     case user.role do
       :admin -> admin_pages(conn)
@@ -20,17 +19,33 @@ defmodule StoreWeb.Config do
   defp base_pages do
     [
       %{
+        key: :home,
+        title: "Novidades",
+        emoji: "💡",
+        url: Routes.home_index_path(@conn, :index),
+        tabs: []
+      },
+      %{
         key: :products,
-        title: "Products",
+        title: "Roupa",
+        emoji: "👕",
         url: Routes.product_index_path(@conn, :index),
         tabs: []
       },
       %{
-        key: :orders,
-        title: "Orders",
-        url: Routes.order_index_path(@conn, :index),
+        key: :products,
+        title: "Acessórios",
+        emoji: "⌚",
+        url: Routes.product_index_path(@conn, :index),
         tabs: []
-      }
+      },
+      %{
+        key: :products,
+        title: "Papelaria",
+        emoji: "📘",
+        url: Routes.product_index_path(@conn, :index),
+        tabs: []
+      },
     ]
   end
 
@@ -44,5 +59,4 @@ defmodule StoreWeb.Config do
       }
     ]
   end
-
 end

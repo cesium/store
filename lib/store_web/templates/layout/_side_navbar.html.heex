@@ -1,0 +1,27 @@
+<div class="flex min-h-0 flex-1 flex-col border-r border-gray-200 w-64 h-screen fixed left-0 top-0">
+  <div class="px-6 flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
+    
+    <div class="relative flex flex-shrink-0 items-center mt-10">
+      <%= link to: "https://cesium.di.uminho.pt/" do %>
+        <img class="w-40 opacity-80" src={Routes.static_path(@socket, "/images/logos/logo_lettering.svg")} alt="">
+      <% end %>
+    </div>
+    
+    <nav class="mt-14 flex-1" aria-label="Sidebar">
+      <div class="font-bold text-xl">
+        Explora
+      </div>
+      <div class="mt-8 space-y-6">
+        <%= for page <- StoreWeb.Config.pages do %>
+          <%= live_redirect to: page.url, class: "#{ if @current_page == page.key do "font-bold text-gray-900" else "text-gray-400" end} group flex items-center text-lg font-medium rounded-md" do %>
+            <%= page.emoji%> 
+            <p class="pl-4">
+            <%= page.title %>
+            </p>
+          <% end %>  
+        <% end %>  
+      </div>
+    </nav>
+
+  </div>
+</div>

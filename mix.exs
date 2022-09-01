@@ -54,7 +54,7 @@ defmodule Store.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
-      {:ex_heroicons, "~> 0.6.0"}
+      {:icons, "~> 0.9"}
     ]
   end
 

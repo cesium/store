@@ -98,7 +98,11 @@ defmodule StoreWeb do
 
       import StoreWeb.ErrorHelpers
       import StoreWeb.Gettext
+
       alias StoreWeb.Router.Helpers, as: Routes
+
+      alias Icons.{Heroicons}
+
     end
   end
 

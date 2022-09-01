@@ -25,9 +25,9 @@
 
       <button @click="navbar = false" class="inline-flex justify-center items-center p-2 text-gray-400 hover:text-gray-500">
         <span class="sr-only">Close main menu</span>
-        <%= Heroicons.icon("x", type: "outline", class: "w-5 h-5 text-gray-400") %>
+        <%#= Heroicons.icon("x", type: "outline", class: "w-5 h-5 text-gray-400") %>
 
-        <%# <Heroicons.Solid.x class="w-6 h-6" /> %>
+        <Heroicons.Solid.x class="w-6 h-6" />
       </button>
       <%= live_redirect to: Routes.home_index_path(@socket, :index) do %>
         <img class="h-8 w-auto" src={Routes.static_path(@socket, "/images/logos/logo_pure.svg")} alt="CeSIUM Logo">

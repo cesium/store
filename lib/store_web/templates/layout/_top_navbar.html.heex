@@ -1,0 +1,38 @@
+<header x-data="{ navbar: false, cart: false}" class="">
+  <%= render("_mobile_navbar.html", assigns) %>
+  <%= render("_shopping_cart.html", assigns) %>
+
+<div>
+  <div class="w-full flex justify-between items-center pb-10">
+    <div class="flex-1 flex items-center justify-between">
+
+      <div class="flex flex-1 items-center">
+        <div class="w-full max-w-[1000px] hover:-translate-y-1 hover:scale-105 duration-80 transition ease-in-out delay-150">
+          <label for="search" class="sr-only">Search</label>
+          <div class="relative">
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+            🔍
+            </div>
+            <div class="block w-full rounded-xl shadow-xl bg-[#d3dbc3] py-4 pl-14 pr-3 sm:text-sm text-[#656b5b]">
+              Search for Items, Collections and will to live ...
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex space-x-4 justify-between">
+
+        <%= link to: Routes.user_session_path(@socket, :new), class: "inline-flex items-center rounded-md border border-transparent bg-[#c3b1e1] px-8 py-4 text-sm font-medium text-[#3c3645] bg-opacity-60 hover:-translate-y-1 hover:scale-105 duration-80 transition ease-in-out delay-150" do %>  
+          Login
+        <% end %>
+
+        <%= link to: Routes.user_session_path(@socket, :new), class: "inline-flex items-center rounded-md border border-transparent bg-[#ffeaea] px-8 py-4 text-sm font-medium text-[#c29595] bg-opacity-60 hover:-translate-y-1 hover:scale-105 duration-80 transition ease-in-out delay-150" do %>  
+          Sign Up
+        <% end %>
+        
+      </div>
+
+    </div>
+  </div>
+</div>
+</header>
