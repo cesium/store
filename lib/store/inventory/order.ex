@@ -2,11 +2,7 @@ defmodule Store.Inventory.Order do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @required_fields ~w(user_id product_id)a
 
-  @optional_fields [
-    :redeemed
-  ]
 
   schema "orders" do
     field :redeemed, :boolean, default: false
