@@ -10,7 +10,7 @@
       <% end %>
     </div>
     <div class="ml-8 hidden lg:flex lg:items-center">
-      <%= for {page,index} <- Enum.with_index(StoreWeb.Config.pages) do %>
+      <%= for {page} <- Enum.with_index(StoreWeb.Config.pages) do %>
           <span class={"#{@current_page == page.title} inline-flex mx-4 px-2"}>
             <%= live_redirect(page.title, to: page.url, class: "#{@current_page == page.key && "text-[#c65932] hover:text-[#ed7950]" || "border-transparent text-gray-400 hover:text-gray-500"} text-sm font-medium inline-flex xl:text-base ") %>
           </span>
