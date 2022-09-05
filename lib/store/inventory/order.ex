@@ -2,8 +2,6 @@ defmodule Store.Inventory.Order do
   use Ecto.Schema
   import Ecto.Changeset
 
-
-
   schema "orders" do
     field :redeemed, :boolean, default: false
 
