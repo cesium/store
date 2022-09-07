@@ -1,6 +1,5 @@
 defmodule Store.Accounts.UserToken do
-  use Ecto.Schema
-  import Ecto.Query
+  use Store.Schema
   alias Store.Accounts.UserToken
 
   @hash_algorithm :sha256
