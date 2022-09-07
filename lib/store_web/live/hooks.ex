@@ -4,7 +4,6 @@ defmodule StoreWeb.Hooks do
   """
   import Phoenix.LiveView
 
-
   def on_mount(:default, _params, _session, socket) do
     {:cont, assign(socket, :page_title, "Cesium Store")}
   end

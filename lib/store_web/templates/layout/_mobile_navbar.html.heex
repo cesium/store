@@ -25,27 +25,25 @@
 
       <button @click="navbar = false" class="inline-flex justify-center items-center p-2 text-gray-400 hover:text-gray-500">
         <span class="sr-only">Close main menu</span>
-        <%= Heroicons.icon("x", type: "outline", class: "w-5 h-5 text-gray-400") %>
-
-        <%# <Heroicons.Solid.x class="w-6 h-6" /> %>
+        <Heroicons.Solid.x class="w-6 h-6" />
       </button>
       <%= live_redirect to: Routes.home_index_path(@socket, :index) do %>
-        <img class="h-8 w-auto" src={Routes.static_path(@socket, "/images/logos/logo_pure.svg")} alt="CeSIUM Logo">
+        <img class="h-8 w-auto" src={Routes.static_path(@socket, "/images/logos/logo_lettering.svg")} alt="CeSIUM Logo">
       <% end %>
       <div class="h-[40px] w-[40px]"> </div>
 
     </div>
 
     <div class="flex flex-col items-center w-full mx-auto overflow-scroll gap-y-8 my-6 h-[75%]">
-      <%= for page <- StoreWeb.Config.pages() do %>
-        <%= if page.key != :login || ! assigns[:current_user] do %>
-          <%= live_redirect to: page.url do %>
-            <span @click="navbar = false" class={"#{@current_page == page.title && "font-bold"}  text-gray-400 hover:text-gray-500 text-lg text-center"}>
-              <%= page.title %>
-            </span>
-          <% end %>
-        <% end %>
-      <% end %>
+      <%= for page <- StoreWeb.Config.pages do %>
+        <div class="relative flex items-center">
+          <%= live_redirect page.title, to: page.url, class: "#{@current_page == page.key && "" || "hover:text-[#f47c58]"} text-lg font-semibold text-black" %>
+          <span class={@current_page == page.key && "bg-black w-6 h-[3px] absolute -bottom-1 left-0" || ""}/>
+        </div>
+      <% end %> 
+      
+      <%= link "About us", to: "https://cesium.di.uminho.pt/", class: "hover:text-[#f47c58] flex items-center text-lg font-semibold text-black" %>
+      
       <%#= if assigns[:current_user] do %>
         <%#= live_redirect to: Routes.dashboard_index_path(@socket, :index) do %>
           <%# <span @click="navbar = false" class="text-lg text-center text-white hover:text-gray-300">

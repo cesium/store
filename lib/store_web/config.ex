@@ -10,10 +10,14 @@ defmodule StoreWeb.Config do
     base_pages()
   end
 
-
-
   defp base_pages do
     [
+      %{
+        key: :home,
+        title: "Home",
+        url: Routes.home_index_path(@conn, :index),
+        tabs: []
+      },
       %{
         key: :products,
         title: "Products",
@@ -28,6 +32,4 @@ defmodule StoreWeb.Config do
       }
     ]
   end
-
-
 end
