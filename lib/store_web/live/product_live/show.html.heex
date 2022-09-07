@@ -1,79 +1,16 @@
-<%# <h1>Show Product</h1> %>
-
-<%#= if @live_action in [:edit] do %>
-  <%# <.modal return_to={Routes.product_show_path(@socket, :show, @product)}>
-    <.live_component
-      module={StoreWeb.ProductLive.FormComponent}
-      id={@product.id}
-      title={@page_title}
-      action={@live_action}
-      product={@product}
-      return_to={Routes.product_show_path(@socket, :show, @product)}
-    />
-  </.modal> %>
-<%# end %>
-
-
-    <%#= @product.name %>
-    <%#= @product.description %>
-    <%#= @product.type %>
-    <%#= @product.price %>
-    <%#= live_patch "Edit", to: Routes.product_show_path(@socket, :edit, @product), class: "button" %>
-    <%#= live_redirect "Back", to: Routes.product_index_path(@socket, :index) %>
-
-<div class="bg-white">
-  <!--
-    Mobile menu
-
-    Off-canvas menu for mobile, show/hide based on off-canvas menu state.
-  -->
-  <div class="relative z-40 lg:hidden" role="dialog" aria-modal="true">
-    <!--
-      Off-canvas menu backdrop, show/hide based on off-canvas menu state.
-
-      Entering: "transition-opacity ease-linear duration-300"
-        From: "opacity-0"
-        To: "opacity-100"
-      Leaving: "transition-opacity ease-linear duration-300"
-        From: "opacity-100"
-        To: "opacity-0"
-    -->
-    <div class="fixed inset-0 bg-black bg-opacity-25"></div>
-
-    <div class="fixed inset-0 flex z-40">
-      <!--
-        Off-canvas menu, show/hide based on off-canvas menu state.
-
-        Entering: "transition ease-in-out duration-300 transform"
-          From: "-translate-x-full"
-          To: "translate-x-0"
-        Leaving: "transition ease-in-out duration-300 transform"
-          From: "translate-x-0"
-          To: "-translate-x-full"
-      -->
-      <div class="relative max-w-xs w-full bg-white shadow-xl pb-12 flex flex-col overflow-y-auto">
-        <div class="px-4 pt-5 pb-2 flex">
-          <button type="button" class="-m-2 p-2 rounded-md inline-flex items-center justify-center text-gray-400">
-            <span class="sr-only">Close menu</span>
-            <!-- Heroicon name: outline/x -->
-            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-
-        <!-- Links -->
-        <div class="mt-2">
-          <div class="border-b border-gray-200">
-            <div class="-mb-px flex px-4 space-x-8" aria-orientation="horizontal" role="tablist">
-              <!-- Selected: "text-orange-600 border-orange-600", Not Selected: "text-gray-900 border-transparent" -->
-              <button id="tabs-1-tab-1" class="text-gray-900 border-transparent flex-1 whitespace-nowrap py-4 px-1 border-b-2 text-base font-medium" aria-controls="tabs-1-panel-1" role="tab" type="button">Women</button>
-
-              <!-- Selected: "text-orange-600 border-orange-600", Not Selected: "text-gray-900 border-transparent" -->
-              <button id="tabs-1-tab-2" class="text-gray-900 border-transparent flex-1 whitespace-nowrap py-4 px-1 border-b-2 text-base font-medium" aria-controls="tabs-1-panel-2" role="tab" type="button">Men</button>
-            </div>
-          </div>
-        </div>
+<div class="w-full flex flex-col md:flex-row md:space-x-8">
+  <div class="w-full md:w-1/2 lg:w-2/3 sm:flex flex-row lg:space-x-4">
+    <div class="hidden lg:w-1/4 lg:flex lg:flex-col lg:space-y-4">
+      <img src="https://tailwindui.com/img/ecommerce-images/product-page-03-product-01.jpg" alt="" class="w-full h-full object-center object-cover brightness-90" >
+      <img src="https://tailwindui.com/img/ecommerce-images/product-page-03-product-01.jpg" alt="" class="w-full h-full object-center object-cover brightness-90" >
+    </div>
+    <div class="w-full lg:w-3/4 flex flex-col space-y-4">
+      <%= live_redirect to: Routes.product_index_path(@socket, :index), class: "flex flex-row space-x-4 uppercase font-semibold pt-4 hover:text-[#f47c58]" do %>
+        <%= "< Return" %> 
+      <% end %>
+      <div class="w-full h-full flex flex-row lg:space-x-4">
+        <img src="https://tailwindui.com/img/ecommerce-images/product-page-03-product-01.jpg" alt="" class="hidden lg:block xl:w-1/2 h-full object-center object-cover brightness-90" >
+        <img src="https://tailwindui.com/img/ecommerce-images/product-page-03-product-01.jpg" alt="" class="block lg:hidden xl:block xl:w-1/2 h-full object-center object-cover brightness-90" >
       </div>
     </div>
   </div>
