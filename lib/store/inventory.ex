@@ -79,7 +79,6 @@ defmodule Store.Inventory do
     |> after_save(after_save)
   end
 
-
   def update_product_image(%Product{} = product, attrs) do
     product
     |> Product.image_changeset(attrs)

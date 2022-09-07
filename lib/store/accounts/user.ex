@@ -45,8 +45,6 @@ defmodule Store.Accounts.User do
     |> unique_constraint(:email)
   end
 
-
-
   @doc """
   A user changeset for changing the email.
 

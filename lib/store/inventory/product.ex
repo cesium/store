@@ -9,7 +9,6 @@ defmodule StoreWeb.Inventory.Product do
 
   @optional_fields []
 
-
   @derive {
     Flop.Schema,
     filterable: [],
@@ -34,7 +33,7 @@ defmodule StoreWeb.Inventory.Product do
   def changeset(product, attrs) do
     product
     |> cast(attrs, @required_fields ++ @optional_fields)
-    #|> cast_attachments(attrs, [:image])
+    # |> cast_attachments(attrs, [:image])
     |> validate_required(@required_fields)
   end
 
@@ -46,7 +45,7 @@ defmodule StoreWeb.Inventory.Product do
   end
 
   def image_changeset(product, attrs) do
-   product
-   |> cast_attachments(attrs, [:image])
+    product
+    |> cast_attachments(attrs, [:image])
   end
 end

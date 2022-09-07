@@ -17,6 +17,9 @@ config :store, StoreWeb.Endpoint,
   pubsub_server: Store.PubSub,
   live_view: [signing_salt: "5kFWBsBn"]
 
+config :icons,
+  collection: [Heroicons, Ionicons]
+
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails
