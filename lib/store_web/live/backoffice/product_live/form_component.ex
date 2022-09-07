@@ -1,4 +1,4 @@
-defmodule StoreWeb.Administration.ProductLive.FormComponent do
+defmodule StoreWeb.Backoffice.ProductLive.FormComponent do
   @moduledoc false
   use StoreWeb, :live_component
 

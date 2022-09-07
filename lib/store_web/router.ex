@@ -25,11 +25,8 @@ defmodule StoreWeb.Router do
     live "/cart", CartLive.Index, :index
 
     live "/products", ProductLive.Index, :index
-    live "/products/new", ProductLive.Index, :new
-    live "/products/:id/edit", ProductLive.Index, :edit
     live "/dashboard", DashboardLive.Index, :index
     live "/products/:id", ProductLive.Show, :show
-    live "/products/:id/show/edit", ProductLive.Show, :edit
 
     live "/orders", OrderLive.Index, :index
     live "/orders/new", OrderLive.Index, :new
@@ -101,5 +98,23 @@ defmodule StoreWeb.Router do
     post "/users/confirm", UserConfirmationController, :create
     get "/users/confirm/:token", UserConfirmationController, :edit
     post "/users/confirm/:token", UserConfirmationController, :update
+  end
+
+  scope "/", StoreWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live_session :logged_in, on_mount: [{StoreWeb.Hooks, :current_user}] do
+      scope "/admin", Backoffice, as: :admin do
+        live "/dashboard", DashboardLive.Index, :index
+
+        live "/product/new", ProductLive.New, :new
+        live "/product/:id/edit", ProductLive.Edit, :edit
+
+        live "/orders", OrderLive.Index, :index
+        live "/orders/:id/edit", OrderLive.Edit, :edit
+        live "/orders/:id", OrderLive.Show, :show
+        live "/orders/:id/show/edit", OrderLive.Edit, :edit
+      end
+    end
   end
 end

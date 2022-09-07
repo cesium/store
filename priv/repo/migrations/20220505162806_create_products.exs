@@ -9,6 +9,8 @@ defmodule Store.Repo.Migrations.CreateProducts do
       add :type, :string
       add :price, :integer
       add :stock, :integer
+      add :max_per_user, :integer
+      add :image, :string
 
       timestamps()
     end
