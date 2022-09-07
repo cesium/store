@@ -1,4 +1,4 @@
-defmodule StoreWeb.Adminstration.ProductLive.Edit do
+defmodule StoreWeb.Backoffice.ProductLive.Edit do
   @moduledoc false
   use StoreWeb, :live_view
 
