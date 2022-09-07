@@ -2,11 +2,13 @@ defmodule Store.Accounts.User do
   use Store.Schema
 
   @required_fields ~w(email password)a
+  @roles ~w(user admin)a
 
   schema "users" do
     field :email, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
+    field(:role, Ecto.Enum, values: @roles)
     field :confirmed_at, :naive_datetime
 
     timestamps()
