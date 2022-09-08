@@ -24,26 +24,28 @@ defmodule StoreWeb.Router do
   scope "/", StoreWeb do
     pipe_through :browser
 
-    live "/", HomeLive.Index, :index
+    live_session :user, on_mount: [{StoreWeb.Hooks, :current_user}] do
+      live "/", HomeLive.Index, :index
 
-    live "/cart", CartLive.Index, :index
+      live "/cart", CartLive.Index, :index
 
-    live "/products", ProductLive.Index, :index
-    live "/dashboard", DashboardLive.Index, :index
-    live "/products/:id", ProductLive.Show, :show
+      live "/products", ProductLive.Index, :index
+      live "/dashboard", DashboardLive.Index, :index
+      live "/products/:id", ProductLive.Show, :show
 
-    live "/orders", OrderLive.Index, :index
-    live "/orders/new", OrderLive.Index, :new
-    live "/orders/:id/edit", OrderLive.Index, :edit
+      live "/orders", OrderLive.Index, :index
+      live "/orders/new", OrderLive.Index, :new
+      live "/orders/:id/edit", OrderLive.Index, :edit
 
-    live "/orders/:id", OrderLive.Show, :show
-    live "/orders/:id/show/edit", OrderLive.Show, :edit
+      live "/orders/:id", OrderLive.Show, :show
+      live "/orders/:id/show/edit", OrderLive.Show, :edit
 
-    get "/users/register", UserRegistrationController, :new
-    post "/users/register", UserRegistrationController, :create
+      get "/users/register", UserRegistrationController, :new
+      post "/users/register", UserRegistrationController, :create
 
-    get "/users/log_in", UserSessionController, :new
-    post "/users/log_in", UserSessionController, :create
+      get "/users/log_in", UserSessionController, :new
+      post "/users/log_in", UserSessionController, :create
+    end
   end
 
   # Other scopes may use custom stacks.
