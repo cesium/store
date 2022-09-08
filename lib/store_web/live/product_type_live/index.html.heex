@@ -1,0 +1,39 @@
+<h1>Listing Product types</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.product_type_index_path(@socket, :index)}>
+    <.live_component
+      module={StoreWeb.ProductTypeLive.FormComponent}
+      id={@product_type.id || :new}
+      title={@page_title}
+      action={@live_action}
+      product_type={@product_type}
+      return_to={Routes.product_type_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="product_types">
+    <%= for product_type <- @product_types do %>
+      <tr id={"product_type-#{product_type.id}"}>
+        <td><%= product_type.name %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.product_type_show_path(@socket, :show, product_type) %></span>
+          <span><%= live_patch "Edit", to: Routes.product_type_index_path(@socket, :edit, product_type) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: product_type.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Product type", to: Routes.product_type_index_path(@socket, :new) %></span>

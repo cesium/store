@@ -5,7 +5,7 @@ defmodule Store.Inventory do
 
   import Ecto.Query, warn: false
   alias Store.Repo
-  alias StoreWeb.Inventory.Product
+  alias Store.Inventory.Product
   use Store.Context
 
   @doc """
@@ -208,5 +208,101 @@ defmodule Store.Inventory do
   """
   def change_order(%Order{} = order, attrs \\ %{}) do
     Order.changeset(order, attrs)
+  end
+
+  alias Store.Inventory.ProductType
+
+  @doc """
+  Returns the list of product_types.
+
+  ## Examples
+
+      iex> list_product_types()
+      [%ProductType{}, ...]
+
+  """
+  def list_product_types do
+    Repo.all(ProductType)
+  end
+
+  @doc """
+  Gets a single product_type.
+
+  Raises `Ecto.NoResultsError` if the Product type does not exist.
+
+  ## Examples
+
+      iex> get_product_type!(123)
+      %ProductType{}
+
+      iex> get_product_type!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_product_type!(id), do: Repo.get!(ProductType, id)
+
+  @doc """
+  Creates a product_type.
+
+  ## Examples
+
+      iex> create_product_type(%{field: value})
+      {:ok, %ProductType{}}
+
+      iex> create_product_type(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_product_type(attrs \\ %{}) do
+    %ProductType{}
+    |> ProductType.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a product_type.
+
+  ## Examples
+
+      iex> update_product_type(product_type, %{field: new_value})
+      {:ok, %ProductType{}}
+
+      iex> update_product_type(product_type, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_product_type(%ProductType{} = product_type, attrs) do
+    product_type
+    |> ProductType.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a product_type.
+
+  ## Examples
+
+      iex> delete_product_type(product_type)
+      {:ok, %ProductType{}}
+
+      iex> delete_product_type(product_type)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_product_type(%ProductType{} = product_type) do
+    Repo.delete(product_type)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking product_type changes.
+
+  ## Examples
+
+      iex> change_product_type(product_type)
+      %Ecto.Changeset{data: %ProductType{}}
+
+  """
+  def change_product_type(%ProductType{} = product_type, attrs \\ %{}) do
+    ProductType.changeset(product_type, attrs)
   end
 end

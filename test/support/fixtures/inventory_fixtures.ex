@@ -33,4 +33,18 @@ defmodule Store.InventoryFixtures do
 
     order
   end
+
+  @doc """
+  Generate a product_type.
+  """
+  def product_type_fixture(attrs \\ %{}) do
+    {:ok, product_type} =
+      attrs
+      |> Enum.into(%{
+        name: "some name"
+      })
+      |> Store.Inventory.create_product_type()
+
+    product_type
+  end
 end
