@@ -107,8 +107,8 @@ defmodule StoreWeb.Router do
       scope "/admin", Backoffice, as: :admin do
         live "/dashboard", DashboardLive.Index, :index
 
-        live "/product/new", ProductLive.New, :new
-        live "/product/:id/edit", ProductLive.Edit, :edit
+        live "/products/new", ProductLive.New, :new
+        live "/products/:id/edit", ProductLive.Edit, :edit
 
         live "/orders", OrderLive.Index, :index
         live "/orders/:id/edit", OrderLive.Edit, :edit
