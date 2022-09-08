@@ -17,6 +17,10 @@ defmodule StoreWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :admin do
+    plug StoreWeb.Auth.AllowedRoles, [:admin]
+  end
+
   scope "/", StoreWeb do
     pipe_through :browser
 
@@ -101,20 +105,18 @@ defmodule StoreWeb.Router do
   end
 
   scope "/", StoreWeb do
-    pipe_through [:browser, :require_authenticated_user]
+    pipe_through [:browser, :require_authenticated_user, :admin]
 
-    live_session :logged_in, on_mount: [{StoreWeb.Hooks, :current_user}] do
-      scope "/admin", Backoffice, as: :admin do
-        live "/dashboard", DashboardLive.Index, :index
+    scope "/admin", Backoffice, as: :admin do
+      live "/dashboard", DashboardLive.Index, :index
 
-        live "/product/new", ProductLive.New, :new
-        live "/product/:id/edit", ProductLive.Edit, :edit
+      live "/product/new", ProductLive.New, :new
+      live "/product/:id/edit", ProductLive.Edit, :edit
 
-        live "/orders", OrderLive.Index, :index
-        live "/orders/:id/edit", OrderLive.Edit, :edit
-        live "/orders/:id", OrderLive.Show, :show
-        live "/orders/:id/show/edit", OrderLive.Edit, :edit
-      end
+      live "/orders", OrderLive.Index, :index
+      live "/orders/:id/edit", OrderLive.Edit, :edit
+      live "/orders/:id", OrderLive.Show, :show
+      live "/orders/:id/show/edit", OrderLive.Edit, :edit
     end
   end
 end

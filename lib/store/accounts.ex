@@ -351,10 +351,9 @@ defmodule Store.Accounts do
     end
   end
 
-
   def list_users(params \\ %{})
 
-  def list_users(_opts)do
+  def list_users(_opts) do
     User
     |> Repo.all()
   end

@@ -1,8 +1,5 @@
 defmodule Store.Accounts.User do
   use Store.Schema
-  alias Store.Repo
-  alias Store.Accounts.User
-  import Ecto.Query
 
   @required_fields ~w(email password role)a
   @roles ~w(user admin)a
@@ -143,5 +140,4 @@ defmodule Store.Accounts.User do
       changeset
     end
   end
-
 end
