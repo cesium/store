@@ -3,14 +3,16 @@ defmodule Store.Repo.Migrations.CreateProducts do
 
   def change do
     create table(:products, primary_key: false) do
+
       add :id, :binary_id, primary_key: true
+
       add :name, :string
       add :description, :text
-      add :type, :string
       add :price, :integer
       add :stock, :integer
-      add :max_per_user, :integer
       add :image, :string
+
+      add :product_type_id, references(:product_types, on_delete: :nothing, type: :binary_id)
 
       timestamps()
     end

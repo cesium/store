@@ -1,11 +1,13 @@
-defmodule StoreWeb.Inventory.Product do
+defmodule Store.Inventory.Product do
   @moduledoc """
   A product.
   """
   use Store.Schema
 
+  alias Store.Inventory.ProductType
+
   @required_fields ~w(name description
-                      price stock)a
+                      price stock product_type_id)a
 
   @optional_fields []
 
@@ -25,6 +27,8 @@ defmodule StoreWeb.Inventory.Product do
     field :description, :string
     field :price, :integer
     field :stock, :integer
+
+    belongs_to :product_type, ProductType
 
     timestamps()
   end

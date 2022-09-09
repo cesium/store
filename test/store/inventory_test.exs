@@ -4,7 +4,8 @@ defmodule Store.InventoryTest do
   alias Store.Inventory
 
   describe "products" do
-    alias StoreWeb.Inventory.Product
+
+    alias Store.Inventory.Product
 
     import Store.InventoryFixtures
 
@@ -125,6 +126,60 @@ defmodule Store.InventoryTest do
     test "change_order/1 returns a order changeset" do
       order = order_fixture()
       assert %Ecto.Changeset{} = Inventory.change_order(order)
+    end
+  end
+
+  describe "product_types" do
+    alias Store.Inventory.ProductType
+
+    import Store.InventoryFixtures
+
+    @invalid_attrs %{name: nil}
+
+    test "list_product_types/0 returns all product_types" do
+      product_type = product_type_fixture()
+      assert Inventory.list_product_types() == [product_type]
+    end
+
+    test "get_product_type!/1 returns the product_type with given id" do
+      product_type = product_type_fixture()
+      assert Inventory.get_product_type!(product_type.id) == product_type
+    end
+
+    test "create_product_type/1 with valid data creates a product_type" do
+      valid_attrs = %{name: "some name"}
+
+      assert {:ok, %ProductType{} = product_type} = Inventory.create_product_type(valid_attrs)
+      assert product_type.name == "some name"
+    end
+
+    test "create_product_type/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Inventory.create_product_type(@invalid_attrs)
+    end
+
+    test "update_product_type/2 with valid data updates the product_type" do
+      product_type = product_type_fixture()
+      update_attrs = %{name: "some updated name"}
+
+      assert {:ok, %ProductType{} = product_type} = Inventory.update_product_type(product_type, update_attrs)
+      assert product_type.name == "some updated name"
+    end
+
+    test "update_product_type/2 with invalid data returns error changeset" do
+      product_type = product_type_fixture()
+      assert {:error, %Ecto.Changeset{}} = Inventory.update_product_type(product_type, @invalid_attrs)
+      assert product_type == Inventory.get_product_type!(product_type.id)
+    end
+
+    test "delete_product_type/1 deletes the product_type" do
+      product_type = product_type_fixture()
+      assert {:ok, %ProductType{}} = Inventory.delete_product_type(product_type)
+      assert_raise Ecto.NoResultsError, fn -> Inventory.get_product_type!(product_type.id) end
+    end
+
+    test "change_product_type/1 returns a product_type changeset" do
+      product_type = product_type_fixture()
+      assert %Ecto.Changeset{} = Inventory.change_product_type(product_type)
     end
   end
 end

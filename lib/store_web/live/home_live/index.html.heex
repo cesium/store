@@ -1,0 +1,7 @@
+<div class="grid grid-cols-6 gap-4">
+    <%= for product_type <- @product_types do %>
+        <div class="w-full h-40 bg-black text-white hover:bg-[#f47c58]">
+        <%= product_type.name %>
+        </div>
+    <% end %>
+</div>

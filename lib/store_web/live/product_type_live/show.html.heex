@@ -1,0 +1,26 @@
+<h1>Show Product type</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.product_type_show_path(@socket, :show, @product_type)}>
+    <.live_component
+      module={StoreWeb.ProductTypeLive.FormComponent}
+      id={@product_type.id}
+      title={@page_title}
+      action={@live_action}
+      product_type={@product_type}
+      return_to={Routes.product_type_show_path(@socket, :show, @product_type)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @product_type.name %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.product_type_show_path(@socket, :edit, @product_type), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.product_type_index_path(@socket, :index) %></span>
