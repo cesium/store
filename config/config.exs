@@ -20,6 +20,11 @@ config :store, StoreWeb.Endpoint,
 config :icons,
   collection: [Heroicons, Ionicons]
 
+config :waffle,
+  storage: Waffle.Storage.Local,
+  storage_dir_prefix: "priv",
+  asset_host: {:system, "ASSET_HOST"}
+
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails
