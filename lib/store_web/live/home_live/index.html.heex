@@ -1,0 +1,9 @@
+<%= if  @current_user && @current_user.role in [:admin]  do %>
+    <%= live_patch to: Routes.admin_product_new_path(@socket, :new), class: "button" do%>
+        <div type="button" class="w-full inline-flex items-center bg-black py-4 text-white shadow-sm font-bold" id="sort-menu-button" aria-expanded="false" aria-haspopup="true">
+            <span class="w-full text-center">
+                New
+            </span>
+        </div>
+    <% end %>
+<% end %>
