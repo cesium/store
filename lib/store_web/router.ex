@@ -11,6 +11,11 @@ defmodule StoreWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_user
+    plug Plug.Static,
+      at: "/store",
+      from: :store,
+      gzip: false,
+      only: ~w(css fonts images store js favicon.ico robots.txt)
   end
 
   pipeline :api do
@@ -20,6 +25,7 @@ defmodule StoreWeb.Router do
   pipeline :admin do
     plug StoreWeb.Auth.AllowedRoles, [:admin]
   end
+
 
   scope "/", StoreWeb do
     pipe_through :browser
@@ -78,11 +84,11 @@ defmodule StoreWeb.Router do
     end
   end
 
+
   ## Authentication routes
 
   scope "/", StoreWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
-
     get "/users/reset_password", UserResetPasswordController, :new
     post "/users/reset_password", UserResetPasswordController, :create
     get "/users/reset_password/:token", UserResetPasswordController, :edit

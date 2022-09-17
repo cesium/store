@@ -2,7 +2,7 @@ defmodule StoreWeb.ProductLive.Show do
   use StoreWeb, :live_view
 
   alias Store.Inventory
-
+  alias Store.Uploaders
   @impl true
   def mount(_params, _session, socket) do
     {:ok, socket}
