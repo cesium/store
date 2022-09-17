@@ -228,7 +228,7 @@ defmodule Store.Inventory do
       :update_stock,
       Product.stock_changeset(product, %{stock: product.stock - 1})
     )
-    |> Multi.insert(:insert, %Order{user_id: user.id, product_id: product.id})
+    |> Multi.insert(:insert, %Order{user_id: user.id})
     |> Repo.transaction()
     |> case do
       {:ok, transaction} ->
