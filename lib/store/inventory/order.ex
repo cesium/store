@@ -4,7 +4,7 @@ defmodule Store.Inventory.Order do
   alias Store.Accounts.User
   alias StoreWeb.Inventory.Product
 
-  @required_fields ~w(user_id product_id)a
+  @required_fields ~w()a
 
   @optional_fields [
     :redeemed
@@ -23,8 +23,10 @@ defmodule Store.Inventory.Order do
 
   schema "orders" do
     field :redeemed, :boolean, default: false
+
     belongs_to :user , Accounts.User
-    has_many :products , Inventory.Product
+
+    has_many :products , Product
     timestamps()
   end
 

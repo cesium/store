@@ -32,7 +32,6 @@ defmodule StoreWeb.Inventory.Product do
 
     field :image, Uploaders.ProductImage.Type
 
-    belongs_to :orders, Order
     timestamps()
   end
 

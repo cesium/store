@@ -23,6 +23,7 @@ defmodule StoreWeb.ProductLive.Show do
   end
 
   def redeem_quantity(user_id, product_id) do
+    IO.inspect(user_id)
     order_quantity = Enum.count(Inventory.list_orders(where: [user_id: user_id]))
 
     quantity =
