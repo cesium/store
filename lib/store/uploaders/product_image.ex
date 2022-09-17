@@ -35,7 +35,6 @@ defmodule Store.Uploaders.ProductImage do
   end
 
   def storage_dir(_version, {_file, %Product{} = scope}) do
-    IO.inspect(scope)
     "uploads/store/#{scope.id}"
   end
 

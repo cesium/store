@@ -24,15 +24,14 @@ defmodule Store.Inventory.Order do
   schema "orders" do
     field :redeemed, :boolean, default: false
     belongs_to :user , Accounts.User
-    has_many :products, Product
-
+    has_many :products , Inventory.Product
     timestamps()
   end
 
   @doc false
   def changeset(order, attrs) do
     order
-    |> cast(attrs, [:redeemed])
-    |> validate_required([:redeemed])
+    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
   end
 end
