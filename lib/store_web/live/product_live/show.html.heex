@@ -64,41 +64,37 @@
         class="flex justify-between items-center uppercase font-bold border-b-2 border-gray-200 py-8"
       >
         <p>Units</p>
-        <p>1</p>
+        <p><%= @product.max_per_user %></p>
       </div>
-      <div
-        class="flex justify-between items-center uppercase font-bold border-b-2 border-gray-200 py-8"
-      >
+      <div class="flex justify-between items-center uppercase font-bold border-b-2 border-gray-200 py-8">
         <p>Choose a size</p>
         <p>M</p>
       </div>
       <div class="py-8"><%= @product.description %></div>
     </div>
     <div class="flex flex-col justify-between space-y-4">
-      <%= if @current_user && @current_user.role in [:admin] do %> <%=
-      live_patch to: Routes.admin_product_edit_path(@socket, :edit,
-      @product),class: "button" do %>
-      <div
-        type="button"
-        class="w-full inline-flex items-center bg-black py-4 text-white shadow-sm font-bold"
-        id="sort-menu-button"
-        aria-expanded="false"
-        aria-haspopup="true"
-      >
-        <span class="w-full text-center"> Edit </span>
-      </div>
-      <% end %> <% else %>
-      <button
-        type="button"
-        class="w-full inline-flex items-center bg-black py-4 text-white shadow-sm hover:bg-[#f47c58] font-bold"
-      >
-        <span class="w-full text-center"> Add to Cart </span>
-      </button>
+      <%= if @current_user && @current_user.role in [:admin] do %> 
+        <%= live_patch to: Routes.admin_product_edit_path(@socket, :edit,@product),class: "button" do %>
+        <div type="button" class="w-full inline-flex items-center bg-black py-4 text-white shadow-sm font-bold" id="sort-menu-button" aria-expanded="false"aria-haspopup="true">
+          <span class="w-full text-center"> Edit </span>
+        </div>
+        <% end %> 
+      <% else %>
+        <%= if @current_user  do %>
+          <button phx-click="purchase" phx-disable-with="Purchasing..." class="">
+            <div type="button" class="w-full inline-flex items-center bg-black py-4 text-white shadow-sm font-bold" id="sort-menu-button" aria-expanded="false"aria-haspopup="true">
+              <span class="w-full text-center"> Add to cart </span>
+            </div>
+          </button>
+        <% else %>
+          <a href="/users/log_in">
+            <div type="button" class="w-full inline-flex items-center bg-black py-4 text-white shadow-sm font-bold" id="sort-menu-button" aria-expanded="false"aria-haspopup="true">
+              <span class="w-full text-center"> Add to cart </span>
+            </div>
+          </a>
+        <% end %>
       <% end %>
-      <button
-        type="button"
-        class="w-full inline-flex items-center bg-white py-4 text-black hover:text-white border-2 border-gray-200 hover:border-[#f47c58] hover:border-2 shadow-sm hover:bg-[#f47c58] font-bold"
-      >
+      <button type="button" class="w-full inline-flex items-center bg-white py-4 text-black hover:text-white border-2 border-gray-200 hover:border-[#f47c58] hover:border-2 shadow-sm hover:bg-[#f47c58] font-bold">
         <span class="w-full text-center"> Similar products </span>
       </button>
     </div>

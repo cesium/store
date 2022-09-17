@@ -1,10 +1,29 @@
 defmodule Store.Inventory.Order do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use Store.Schema
+  alias Store.Accounts.QRCode
+  alias Store.Accounts.User
+  alias StoreWeb.Inventory.Product
+
+  @required_fields ~w(user_id product_id)a
+
+  @optional_fields [
+    :redeemed
+  ]
+
+  @derive {
+    Flop.Schema,
+    filterable: [],
+    sortable: [],
+    compound_fields: [search: []],
+    default_order: %{
+      order_by: [],
+      order_directions: [:asc]
+    }
+  }
 
   schema "orders" do
     field :redeemed, :boolean, default: false
-
+    belongs_to :user , Accounts.User
     has_many :products, Product
 
     timestamps()

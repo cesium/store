@@ -4,9 +4,11 @@ defmodule Store.Inventory do
   """
 
   import Ecto.Query, warn: false
-  alias Store.Repo
-  alias StoreWeb.Inventory.Product
   use Store.Context
+  alias Ecto.Multi
+
+  alias StoreWeb.Inventory.Product
+  alias Store.Inventory.Order
 
   @doc """
   Returns the list of products.
@@ -98,7 +100,11 @@ defmodule Store.Inventory do
 
   """
   def delete_product(%Product{} = product) do
-    Repo.delete(product)
+    product
+    |> Ecto.Changeset.change()
+    |> Ecto.Changeset.foreign_key_constraint(:orders, name: :orders_product_id_fkey, message: "cannot delete product because it has orders")
+    |> Repo.delete()
+    |> broadcast(:deleted)
   end
 
   @doc """
@@ -208,5 +214,48 @@ defmodule Store.Inventory do
   """
   def change_order(%Order{} = order, attrs \\ %{}) do
     Order.changeset(order, attrs)
+  end
+
+  def subscribe(topic) when topic in ["purchased", "updated", "deleted"] do
+    Phoenix.PubSub.subscribe(Store.PubSub, topic)
+  end
+
+  def purchase(user, product) do
+    IO.inspect(user)
+    IO.inspect(product)
+    Multi.new()
+    |> Multi.update(
+      :update_stock,
+      Product.stock_changeset(product, %{stock: product.stock - 1})
+    )
+    |> Multi.insert(:insert, %Order{user_id: user.id, product_id: product.id})
+    |> Repo.transaction()
+    |> case do
+      {:ok, transaction} ->
+        broadcast({:ok, transaction.update_stock}, :purchased)
+
+      {:error, _transaction, changeset, _} ->
+        {:error, changeset}
+    end
+  end
+
+  defp broadcast({:error, _reason} = error, _event), do: error
+
+  defp broadcast({:ok, %Product{} = product}, event)
+       when event in [:purchased] do
+    Phoenix.PubSub.broadcast!(Store.PubSub, "purchased", {event, product.stock})
+    {:ok, product}
+  end
+
+  defp broadcast({:ok, %Product{} = product}, event)
+       when event in [:updated] do
+    Phoenix.PubSub.broadcast!(Store.PubSub, "updated", {event, product})
+    {:ok, product}
+  end
+
+  defp broadcast({:ok, %Product{} = product}, event)
+       when event in [:deleted] do
+    Phoenix.PubSub.broadcast!(Store.PubSub, "deleted", {event, product})
+    {:ok, product}
   end
 end

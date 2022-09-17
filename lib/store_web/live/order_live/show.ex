@@ -14,9 +14,16 @@ defmodule StoreWeb.OrderLive.Show do
      socket
      |> assign(:current_page, :orders)
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:order, Inventory.get_order!(id))}
+     |> assign(:order, Inventory.get_order!(id))
+     |> assign(:qrcode, qr_code(socket, id))}
   end
 
   defp page_title(:show), do: "Show Order"
   defp page_title(:edit), do: "Edit Order"
+
+  defp qr_code(socket, id) do
+    Routes.admin_order_edit_url(socket, :edit, id)
+    |> QRCodeEx.encode()
+    |> QRCodeEx.svg(color: "#1F2937", width: 295, background_color: :transparent)
+  end
 end
