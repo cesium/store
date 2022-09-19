@@ -3,7 +3,6 @@ defmodule StoreWeb.Inventory.Product do
   A product.
   """
   use Store.Schema
-
   alias Store.Inventory.Order
   alias Store.Uploaders
 
@@ -29,8 +28,8 @@ defmodule StoreWeb.Inventory.Product do
     field :price, :integer
     field :stock, :integer
     field :max_per_user, :integer
-
     field :image, Uploaders.ProductImage.Type
+    belongs_to :order, Order
     timestamps()
   end
 

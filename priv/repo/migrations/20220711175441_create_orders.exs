@@ -5,11 +5,7 @@ defmodule Store.Repo.Migrations.CreateOrders do
     create table(:orders, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :redeemed, :boolean, default: false
-      add :user_id, references(:users, on_delete: :delete_all, type: :binary_id)
-
       timestamps()
     end
-
-    create index(:orders, [:user_id])
   end
 end

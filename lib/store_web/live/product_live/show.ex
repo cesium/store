@@ -89,8 +89,5 @@ defmodule StoreWeb.ProductLive.Show do
     |> assign(:current_page, :store)
     |> assign(:redeem_quantity, redeem_quantity(socket.assigns.current_user.id, id))
     |> assign(:product, Inventory.get_product!(id))
-    |> assign(
-      current_user: Accounts.get_user!(socket.assigns.current_user.id)
-    )
   end
 end

@@ -1,11 +1,15 @@
 defmodule Store.Inventory.Order do
 
   use Store.Schema
+
+  import Ecto.Query, warn: false
+  alias Store.Repo
+
   alias Store.Accounts.QRCode
   alias Store.Accounts.User
   alias StoreWeb.Inventory.Product
 
-  @required_fields ~w(user_id product_id)a
+  @required_fields ~w(user_id)a
 
   @optional_fields [
     :redeemed
@@ -28,6 +32,8 @@ defmodule Store.Inventory.Order do
 
   @doc false
   def changeset(order, attrs) do
+    IO.inspect(attrs)
+    IO.inspect(order)
     order
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
