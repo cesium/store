@@ -32,6 +32,8 @@ defmodule StoreWeb.Inventory.Product do
 
     field :image, Uploaders.ProductImage.Type
 
+
+    has_many :orders, Order
     timestamps()
   end
 
