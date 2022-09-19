@@ -3,6 +3,7 @@ defmodule StoreWeb.ProductLive.Show do
 
   alias Store.Inventory
   alias Store.Uploaders
+  alias Store.Inventory.Order
   @impl true
   def mount(%{"id" => id}, _session, socket) do
     if connected?(socket) do
@@ -23,7 +24,6 @@ defmodule StoreWeb.ProductLive.Show do
   end
 
   def redeem_quantity(user_id, product_id) do
-    IO.inspect(user_id)
     order_quantity = Enum.count(Inventory.list_orders(where: [user_id: user_id]))
 
     quantity =

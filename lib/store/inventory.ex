@@ -3,10 +3,9 @@ defmodule Store.Inventory do
   The Inventory context.
   """
 
-  import Ecto.Query, warn: false
   use Store.Context
   alias Ecto.Multi
-
+  alias StoreWeb.Accounts.User
   alias StoreWeb.Inventory.Product
   alias Store.Inventory.Order
 
@@ -131,9 +130,14 @@ defmodule Store.Inventory do
       [%Order{}, ...]
 
   """
-  def list_orders do
-    Repo.all(Order)
+  def list_orders(params \\ %{})
+
+  def list_orders(opts) when is_list(opts) do
+    Order
+    |> apply_filters(opts)
+    |> Repo.all()
   end
+
 
   @doc """
   Gets a single order.
@@ -224,10 +228,7 @@ defmodule Store.Inventory do
     IO.inspect(user)
     IO.inspect(product)
     Multi.new()
-    |> Multi.update(
-      :update_stock,
-      Product.stock_changeset(product, %{stock: product.stock - 1})
-    )
+    |> Multi.update(:update_stock, Product.stock_changeset(product, %{stock: product.stock - 1}))
     |> Multi.insert(:insert, %Order{user_id: user.id})
     |> Repo.transaction()
     |> case do

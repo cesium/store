@@ -31,9 +31,6 @@ defmodule StoreWeb.Inventory.Product do
     field :max_per_user, :integer
 
     field :image, Uploaders.ProductImage.Type
-
-
-    has_many :orders, Order
     timestamps()
   end
 

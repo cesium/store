@@ -6,7 +6,7 @@ defmodule StoreWeb.OrderLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :orders, list_orders())}
+    {:ok, assign(socket, :orders, Inventory.list_orders())}
   end
 
   @impl true
