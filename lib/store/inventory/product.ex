@@ -29,7 +29,8 @@ defmodule StoreWeb.Inventory.Product do
     field :stock, :integer
     field :max_per_user, :integer
     field :image, Uploaders.ProductImage.Type
-    belongs_to :order, Order
+    many_to_many :order, Order,
+      join_through: "orders_products"
     timestamps()
   end
 

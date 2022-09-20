@@ -4,13 +4,11 @@ defmodule Store.Inventory.Order do
 
   import Ecto.Query, warn: false
   alias Store.Repo
-
   alias Store.Accounts.QRCode
   alias Store.Accounts.User
   alias StoreWeb.Inventory.Product
 
-  @required_fields ~w(user_id)a
-
+ @required_fields ~w(user_id)a
   @optional_fields [
     :redeemed
   ]
@@ -24,18 +22,16 @@ defmodule Store.Inventory.Order do
 
   schema "orders" do
     field :redeemed, :boolean, default: false
-
     belongs_to :user , Accounts.User
-    has_many :product, Product
+    many_to_many :products, Product,
+      join_through: "orders_products"
     timestamps()
   end
 
   @doc false
   def changeset(order, attrs) do
-    IO.inspect(attrs)
-    IO.inspect(order)
     order
-    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> cast(attrs, @optional_fields)
     |> validate_required(@required_fields)
   end
 end

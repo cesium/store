@@ -117,7 +117,7 @@ defmodule Store.Inventory do
     Product.changeset(product, attrs)
   end
 
-  alias Store.Inventory.Order
+  alias Store.Inventory.Orders_Products
 
   @doc """
   Returns the list of orders.
@@ -131,7 +131,7 @@ defmodule Store.Inventory do
   def list_orders(params \\ %{})
 
   def list_orders(_opts) do
-    Order
+    Orders_Products
     |> apply_filters(_opts)
     |> Repo.all()
   end
@@ -223,19 +223,15 @@ defmodule Store.Inventory do
   end
 
   def purchase(user, product) do
-    # if there is a user with an active order, use that order
-    # otherwise create a new order
     order =
-      Order
-      |> where(user_id: ^user.id)
-      |> where(redeemed: false)
-      |> Repo.one()
+      %Order{}
+      |> Order.changeset(%{user_id: user.id, product_id: product.id})
+      |> Repo.insert!()
 
-    IO.inspect(order |> Store.Repo.preload(:product))
     if order do
-      Multi.new()
+    Multi.new()
       |> Multi.update(:update_stock, Product.stock_changeset(product, %{stock: product.stock - 1}))
-      |> Multi.insert(:insert, update_order(order, %{product: product}))
+      |> Multi.insert_or_update(:order_update, fn %{update_stock: product} -> Order.changeset(order, %{products: [product]}) end)
       |> Repo.transaction()
       |> case do
         {:ok, transaction} ->
@@ -247,7 +243,7 @@ defmodule Store.Inventory do
     else
       Multi.new()
         |> Multi.update(:update_stock, Product.stock_changeset(product, %{stock: product.stock - 1}))
-        |> Multi.insert(:insert, %Order{product: product})
+        |> Multi.insert(:insert, %Order{})
         |> Repo.transaction()
         |> case do
           {:ok, transaction} ->
