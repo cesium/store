@@ -9,6 +9,7 @@ defmodule Store.Inventory do
   alias StoreWeb.Accounts.User
   alias StoreWeb.Inventory.Product
   alias Store.Inventory.Order
+  alias Store.Inventory.Orders_Products
 
   @doc """
   Returns the list of products.
@@ -117,7 +118,7 @@ defmodule Store.Inventory do
     Product.changeset(product, attrs)
   end
 
-  alias Store.Inventory.Orders_Products
+  alias Store.Inventory.Order
 
   @doc """
   Returns the list of orders.
@@ -131,7 +132,7 @@ defmodule Store.Inventory do
   def list_orders(params \\ %{})
 
   def list_orders(_opts) do
-    Orders_Products
+    Order
     |> apply_filters(_opts)
     |> Repo.all()
   end
@@ -166,8 +167,16 @@ defmodule Store.Inventory do
 
   """
   def create_order(attrs \\ %{}) do
+    IO.inspect(attrs)
     %Order{}
     |> Order.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc ""
+  def create_order_product(attrs) do
+    %Orders_Products{}
+    |> Orders_Products.changeset(attrs)
     |> Repo.insert()
   end
 
@@ -205,6 +214,8 @@ defmodule Store.Inventory do
     Repo.delete(order)
   end
 
+  @doc ""
+
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking order changes.
 
@@ -222,38 +233,23 @@ defmodule Store.Inventory do
     Phoenix.PubSub.subscribe(Store.PubSub, topic)
   end
 
+
   def purchase(user, product) do
     order =
-      %Order{}
-      |> Order.changeset(%{user_id: user.id, product_id: product.id})
-      |> Repo.insert!()
+     Order
+     |> where(user_id: ^user.id)
+     |> where(redeemed: false)
+     |> Repo.one()
+     |> Repo.preload([:user, :products])
 
     if order do
-    Multi.new()
-      |> Multi.update(:update_stock, Product.stock_changeset(product, %{stock: product.stock - 1}))
-      |> Multi.insert_or_update(:order_update, fn %{update_stock: product} -> Order.changeset(order, %{products: [product]}) end)
-      |> Repo.transaction()
-      |> case do
-        {:ok, transaction} ->
-          broadcast({:ok, transaction.update_stock}, :purchased)
-
-        {:error, _transaction, changeset, _} ->
-          {:error, changeset}
-      end
+      create_order_product(%{order_id: order.id, product_id: product.id})
     else
-      Multi.new()
-        |> Multi.update(:update_stock, Product.stock_changeset(product, %{stock: product.stock - 1}))
-        |> Multi.insert(:insert, %Order{})
-        |> Repo.transaction()
-        |> case do
-          {:ok, transaction} ->
-            broadcast({:ok, transaction.update_stock}, :purchased)
-
-          {:error, _transaction, changeset, _} ->
-            {:error, changeset}
-        end
+        {:ok , order} = create_order(%{user_id: user.id})
+        create_order_product(%{order_id: order.id, product_id: product.id})
     end
   end
+
 
 
   defp broadcast({:error, _reason} = error, _event), do: error
