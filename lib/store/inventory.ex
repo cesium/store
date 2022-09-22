@@ -167,7 +167,6 @@ defmodule Store.Inventory do
 
   """
   def create_order(attrs \\ %{}) do
-    IO.inspect(attrs)
     %Order{}
     |> Order.changeset(attrs)
     |> Repo.insert()
