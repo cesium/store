@@ -1,12 +1,13 @@
 defmodule StoreWeb.OrderLive.Index do
   use StoreWeb, :live_view
-
+  alias Store.Repo
   alias Store.Inventory
   alias Store.Inventory.Order
+  alias Store.Uploaders
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :orders, Inventory.list_orders())}
+    {:ok, assign(socket, :orders, Inventory.list_orders() |> Repo.preload(:products))}
   end
 
   @impl true
