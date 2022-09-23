@@ -13,6 +13,7 @@ defmodule Store.Repo.Migrations.CreateProducts do
       add :image, :string
       timestamps()
     end
+
     create constraint(:products, :stock_must_be_positive, check: "stock >= 0")
   end
 end

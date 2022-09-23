@@ -9,7 +9,7 @@
             <h3 class="sr-only">Order placed on <time datetime="2021-07-06">Jul 6, 2021</time></h3>
 
             <div class="flex items-center border-b border-gray-200 p-4 sm:grid sm:grid-cols-4 sm:gap-x-6 sm:p-6">
-              <dl class="grid flex-1 grid-cols-2 gap-x-6 text-sm sm:col-span-3 sm:grid-cols-3 lg:col-span-2">
+              <dl class="grid flex-1 grid-cols-2 gap-x-6 text-sm sm:col-span-3 sm:grid-cols-4 lg:col-span-2">
                 <div>
                   <%= if @current_user do %>
                     <dt class="font-semibold uppercase">Order User</dt>
@@ -19,19 +19,23 @@
                 <div class="hidden sm:block">
                   <dt class="font-semibold uppercase">Date placed</dt>
                   <dd class="mt-1">
-                    <time datetime="2021-07-06"><%= order.inserted_at %></time>
+                    <time datetime=""><%= order.inserted_at %> GMT+1</time>
                   </dd>
                 </div>
                 <div>
                   <dt class="font-semibold uppercase">Total amount</dt>
-                  <dd class="mt-1 font-medium">160.00 €</dd>
+                  <dd class="mt-1 font-medium"><%= total_price(order) %> €</dd>
+                </div>
+                <div>
+                  <dt class="font-semibold uppercase">Status</dt>
+                  <dd class="mt-1 font-medium"><%= capitalize_status(order.status) %></dd>
                 </div>
               </dl>
 
               <!-- Add a button at the final at the grid -->
               <div class="hidden lg:col-span-2 lg:flex lg:items-center lg:justify-end lg:space-x-4">
                 <a href="#" class="flex items-center justify-center w-32 bg-black py-2 px-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#f47c58]">
-                  <span>Order</span>
+                  <span>Checkout</span>
                 </a>
               </div>
             </div>
@@ -54,7 +58,7 @@
                           <h5 class="uppercase font-semibold">
                             <%= product.name %>
                           </h5>
-                          <p class="mt-2 sm:mt-0"><%= product.price %> $</p>
+                          <p class="mt-2 sm:mt-0"><%= product.price %> €</p>
                         </div>
                         <p class="hidden sm:mt-2 sm:block"><%= product.description %></p>
                       </div>

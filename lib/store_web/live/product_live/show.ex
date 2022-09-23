@@ -4,6 +4,7 @@ defmodule StoreWeb.ProductLive.Show do
   alias Store.Inventory
   alias Store.Uploaders
   alias Store.Inventory.Order
+
   @impl true
   def mount(%{"id" => id}, _session, socket) do
     if connected?(socket) do
@@ -21,22 +22,6 @@ defmodule StoreWeb.ProductLive.Show do
      socket
      |> assign(:current_page, :products)
      |> assign(:product, Inventory.get_product!(id))}
-  end
-
-  def redeem_quantity(user_id, product_id) do
-    order_quantity = Enum.count(Inventory.list_orders(where: [user_id: user_id]))
-
-    quantity =
-      case order_quantity do
-        0 -> Inventory.get_product!(product_id).max_per_user
-        _ -> Inventory.get_product!(product_id).max_per_user - order_quantity
-      end
-
-    if quantity < 0 do
-      0
-    else
-      quantity
-    end
   end
 
   @impl true
@@ -87,7 +72,6 @@ defmodule StoreWeb.ProductLive.Show do
 
     socket
     |> assign(:current_page, :store)
-    |> assign(:redeem_quantity, redeem_quantity(socket.assigns.current_user.id, id))
     |> assign(:product, Inventory.get_product!(id))
   end
 end

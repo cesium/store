@@ -48,4 +48,14 @@ defmodule StoreWeb.OrderLive.Index do
   defp list_orders do
     Inventory.list_orders()
   end
+
+  defp capitalize_status(status) do
+    status
+    |> Atom.to_string()
+    |> String.capitalize()
+  end
+
+  defp total_price(order) do
+    Enum.reduce(order.products, 0, fn product, acc -> acc + product.price end)
+  end
 end

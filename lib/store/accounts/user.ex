@@ -10,7 +10,7 @@ defmodule Store.Accounts.User do
     field :role, Ecto.Enum, values: @roles
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
-    has_one :orders, Store.Inventory.Order
+    has_many :orders, Store.Inventory.Order
     timestamps()
   end
 
