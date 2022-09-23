@@ -1,7 +1,6 @@
 defmodule Store.Inventory.Orders_Products do
 
   use Store.Schema
-  import Ecto.Changeset
   alias Store.Repo
   alias Store.Accounts.QRCode
   alias Store.Accounts.User
@@ -9,7 +8,7 @@ defmodule Store.Inventory.Orders_Products do
   alias Store.Inventory.Order
 
   schema "order_products" do
-    belongs_to :order, Order, type: :string
+    belongs_to :order, Order
     belongs_to :product, Product
     timestamps()
   end
@@ -23,10 +22,8 @@ defmodule Store.Inventory.Orders_Products do
 
   def products_changeset(order_products, attrs) do
     order_products
-    |> Store.Repo.preload(:products)
+    |> Repo.preload(:products)
     |> cast_assoc(:products)
     |> validate_required([:products])
   end
-
-
 end
