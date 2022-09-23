@@ -137,6 +137,12 @@ defmodule Store.Inventory do
     |> Repo.all()
   end
 
+  alias Store.Inventory.Orders_Products
+
+  def list_order_products(params \\ %{}) do
+    Orders_Products
+    |> Repo.all()
+  end
 
   @doc """
   Gets a single order.

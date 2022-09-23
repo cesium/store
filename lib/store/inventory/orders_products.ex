@@ -9,7 +9,7 @@ defmodule Store.Inventory.Orders_Products do
   alias Store.Inventory.Order
 
   schema "order_products" do
-    belongs_to :order, Order
+    belongs_to :order, Order, type: :string
     belongs_to :product, Product
     timestamps()
   end
