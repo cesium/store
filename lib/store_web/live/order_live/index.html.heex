@@ -11,8 +11,10 @@
             <div class="flex items-center border-b border-gray-200 p-4 sm:grid sm:grid-cols-4 sm:gap-x-6 sm:p-6">
               <dl class="grid flex-1 grid-cols-2 gap-x-6 text-sm sm:col-span-3 sm:grid-cols-3 lg:col-span-2">
                 <div>
-                  <dt class="font-semibold uppercase">Order number</dt>
-                  <dd class="mt-1"></dd>
+                  <%= if @current_user do %>
+                    <dt class="font-semibold uppercase">Order User</dt>
+                    <dd class="mt-1"><%= @current_user.email %></dd>
+                  <% end %>
                 </div>
                 <div class="hidden sm:block">
                   <dt class="font-semibold uppercase">Date placed</dt>

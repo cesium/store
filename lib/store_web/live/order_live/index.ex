@@ -4,6 +4,7 @@ defmodule StoreWeb.OrderLive.Index do
   alias Store.Inventory
   alias Store.Inventory.Order
   alias Store.Uploaders
+  alias Store.Accounts
 
   @impl true
   def mount(_params, _session, socket) do
