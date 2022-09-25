@@ -96,6 +96,7 @@ defmodule Store.Inventory do
     |> Repo.update()
   end
 
+
   @doc """
   Deletes a product.
 
@@ -148,6 +149,22 @@ defmodule Store.Inventory do
     |> Repo.all()
   end
 
+  def update_status(order, attrs) do
+    IO.inspect(attrs)
+    IO.inspect(order)
+    order
+    |> Order.changeset(attrs)
+    |> Repo.update()
+  end
+
+  alias Store.Inventory.QRCode
+
+  def create_qrcode(attrs \\ %{}) do
+    %QRCode{}
+    |> QRCode.changeset(attrs)
+    |> IO.inspect()
+    |> Repo.insert()
+  end
 
   alias Store.Inventory.Orders_Products
   @doc """
@@ -298,6 +315,18 @@ defmodule Store.Inventory do
     end
   end
 
+
+  @doc """
+
+
+  """
+
+  def checkout_order(order) do
+    order
+    |> Order.changeset(%{status: :ordered})
+    |> Repo.update()
+  end
+
   @doc """
     Function which verifies that the user has 1 or more of each product in his cart.
     ## Examples
@@ -310,7 +339,7 @@ defmodule Store.Inventory do
     """
 
   def redeem_quantity(order_id, product_id) do
-    order_quantity = Enum.count(Inventory.list_orders(where: [id: order_id]))
+    order_quantity = Enum.count(list_orders(where: [id: order_id]))
 
     quantity =
       case order_quantity do
@@ -343,5 +372,20 @@ defmodule Store.Inventory do
        when event in [:deleted] do
     Phoenix.PubSub.broadcast!(Store.PubSub, "deleted", {event, product})
     {:ok, product}
+  end
+
+  def qrcode() do
+    qr_code_content = "https://www.google.com"
+
+  qr_code_png =
+    qr_code_content
+    |> QRCodeEx.encode()
+    |> QRCodeEx.svg(color: "#03B6AD", shape: "circle", width: 300, background_color: "#FFF")
+
+
+  File.write("priv/uploads/qrcode/save.png", qr_code_png, [:binary])
+
+
+  IO.inspect(qr_code_content)
   end
 end

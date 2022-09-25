@@ -1,14 +1,17 @@
 defmodule StoreWeb.OrderLive.Index do
+  import Ecto.Query
   use StoreWeb, :live_view
   alias Store.Repo
   alias Store.Inventory
   alias Store.Inventory.Order
+  alias Store.Inventory.Orders_Products
   alias Store.Uploaders
   alias Store.Accounts
 
   @impl true
   def mount(_params, _session, socket) do
     {:ok, assign(socket, :orders, Inventory.list_orders() |> Repo.preload(:products))}
+
   end
 
   @impl true
@@ -38,16 +41,23 @@ defmodule StoreWeb.OrderLive.Index do
   end
 
   @impl true
-  def handle_event("delete", %{"id" => id}, socket) do
-    order = Inventory.get_order!(id)
-    {:ok, _} = Inventory.delete_order(order)
+  def handle_event("checkout", _payload, socket) do
+    current_user = socket.assigns.current_user
+    order =
+      Order
+        |> where(status: :draft)
+        |> where(user_id: ^current_user.id)
+        |> Repo.preload(:qrcode)
+        |> Repo.one()
 
-    {:noreply, assign(socket, :orders, list_orders())}
+
+    order
+     |> Order.changeset(%{status: :ordered})
+     |> Repo.update!()
+
+    {:noreply, socket}
   end
 
-  defp list_orders do
-    Inventory.list_orders()
-  end
 
   defp capitalize_status(status) do
     status
