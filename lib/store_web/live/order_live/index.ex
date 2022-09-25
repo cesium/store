@@ -52,7 +52,6 @@ defmodule StoreWeb.OrderLive.Index do
     order
      |> Order.changeset(%{status: :ordered})
      |> Repo.update!()
-     |> IO.inspect()
 
     redirect(socket, to: Routes.order_path(socket, :index))
     {:noreply, socket}
@@ -69,7 +68,6 @@ defmodule StoreWeb.OrderLive.Index do
   end
 
   defp draw_qr_code(order) do
-    IO.inspect(order)
     order.id
       |> QRCodeEx.encode()
       |> QRCodeEx.svg(color: "#1F2937", width: 295, background_color: :transparent)
