@@ -157,14 +157,6 @@ defmodule Store.Inventory do
     |> Repo.update()
   end
 
-  alias Store.Inventory.QRCode
-
-  def create_qrcode(attrs \\ %{}) do
-    %QRCode{}
-    |> QRCode.changeset(attrs)
-    |> IO.inspect()
-    |> Repo.insert()
-  end
 
   alias Store.Inventory.Orders_Products
   @doc """
@@ -327,6 +319,7 @@ defmodule Store.Inventory do
     |> Repo.update()
   end
 
+
   @doc """
     Function which verifies that the user has 1 or more of each product in his cart.
     ## Examples
@@ -374,18 +367,4 @@ defmodule Store.Inventory do
     {:ok, product}
   end
 
-  def qrcode() do
-    qr_code_content = "https://www.google.com"
-
-  qr_code_png =
-    qr_code_content
-    |> QRCodeEx.encode()
-    |> QRCodeEx.svg(color: "#03B6AD", shape: "circle", width: 300, background_color: "#FFF")
-
-
-  File.write("priv/uploads/qrcode/save.png", qr_code_png, [:binary])
-
-
-  IO.inspect(qr_code_content)
-  end
 end

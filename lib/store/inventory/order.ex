@@ -6,7 +6,6 @@ defmodule Store.Inventory.Order do
   alias Store.Accounts.QRCode
   alias Store.Accounts.User
   alias StoreWeb.Inventory.Product
-  alias Store.Inventory.QRCode
 
   @required_fields ~w(user_id)a
   @optional_fields ~w(status)a
@@ -23,7 +22,6 @@ defmodule Store.Inventory.Order do
     field :redeemed, :boolean, default: false
     belongs_to :user, User
     field :status, Ecto.Enum, values: @status, default: :draft
-    has_one :qrcode, QRCode, on_replace: :delete
     many_to_many :products, Product, join_through: Store.Inventory.Orders_Products
     timestamps()
   end

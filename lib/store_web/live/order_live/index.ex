@@ -1,4 +1,5 @@
 defmodule StoreWeb.OrderLive.Index do
+  import Ecto.UUID
   import Ecto.Query
   use StoreWeb, :live_view
   alias Store.Repo
@@ -47,17 +48,15 @@ defmodule StoreWeb.OrderLive.Index do
       Order
         |> where(status: :draft)
         |> where(user_id: ^current_user.id)
-        |> Repo.preload(:qrcode)
         |> Repo.one()
-
-
     order
      |> Order.changeset(%{status: :ordered})
      |> Repo.update!()
+     |> IO.inspect()
 
+    redirect(socket, to: Routes.order_path(socket, :index))
     {:noreply, socket}
   end
-
 
   defp capitalize_status(status) do
     status
@@ -68,4 +67,11 @@ defmodule StoreWeb.OrderLive.Index do
   defp total_price(order) do
     Enum.reduce(order.products, 0, fn product, acc -> acc + product.price end)
   end
+
+  defp draw_qr_code(order) do
+    IO.inspect(order)
+    order.id
+      |> QRCodeEx.encode()
+      |> QRCodeEx.svg(color: "#1F2937", width: 295, background_color: :transparent)
+    end
 end
