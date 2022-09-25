@@ -16,7 +16,6 @@ defmodule Store.Inventory.Order do
   }
 
   schema "orders" do
-    field :redeemed, :boolean, default: false
     belongs_to :user, User
     field :status, Ecto.Enum, values: @status, default: :draft
     many_to_many :products, Product, join_through: Store.Inventory.OrdersProducts
