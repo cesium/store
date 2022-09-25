@@ -1,4 +1,4 @@
-defmodule Store.Inventory.Orders_Products do
+defmodule Store.Inventory.OrdersProducts do
   use Store.Schema
   alias Store.Repo
   alias Store.Accounts.QRCode

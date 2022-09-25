@@ -8,7 +8,9 @@ defmodule Store.Repo.Seeds do
   def run do
     [
       "inventory.exs",
-      "accounts.exs"
+      "accounts.exs",
+      "orders.exs",
+      "orders_products.exs",
     ]
     |> Enum.each(fn file ->
       Code.require_file("#{@seeds_dir}/#{file}")

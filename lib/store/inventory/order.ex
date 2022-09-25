@@ -1,5 +1,4 @@
 defmodule Store.Inventory.Order do
-
   use Store.Schema
 
   alias Store.Repo
@@ -13,16 +12,14 @@ defmodule Store.Inventory.Order do
 
   @derive {
     Flop.Schema,
-    filterable: [],
-    sortable: [],
-    compound_fields: [search: []]
+    filterable: [], sortable: [], compound_fields: [search: []]
   }
 
   schema "orders" do
     field :redeemed, :boolean, default: false
     belongs_to :user, User
     field :status, Ecto.Enum, values: @status, default: :draft
-    many_to_many :products, Product, join_through: Store.Inventory.Orders_Products
+    many_to_many :products, Product, join_through: Store.Inventory.OrdersProducts
     timestamps()
   end
 

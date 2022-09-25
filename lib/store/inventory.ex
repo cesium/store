@@ -9,7 +9,7 @@ defmodule Store.Inventory do
   alias StoreWeb.Accounts.User
   alias StoreWeb.Inventory.Product
   alias Store.Inventory.Order
-  alias Store.Inventory.Orders_Products
+  alias Store.Inventory.OrdersProducts
 
   @doc """
   Returns the list of products.
@@ -78,7 +78,6 @@ defmodule Store.Inventory do
     |> after_save(after_save)
   end
 
-
   @doc """
   Updates a product image
 
@@ -95,7 +94,6 @@ defmodule Store.Inventory do
     |> Product.image_changeset(attrs)
     |> Repo.update()
   end
-
 
   @doc """
   Deletes a product.
@@ -146,26 +144,25 @@ defmodule Store.Inventory do
   """
   def list_orders(params \\ %{}) do
     Order
+    |> order_by(desc: :inserted_at)
     |> Repo.all()
   end
 
   def update_status(order, attrs) do
-    IO.inspect(attrs)
-    IO.inspect(order)
     order
     |> Order.changeset(attrs)
     |> Repo.update()
   end
 
+  alias Store.Inventory.OrdersProducts
 
-  alias Store.Inventory.Orders_Products
   @doc """
   Returns the list of orders_products.
     iex> list_orders_products()
-    [%Orders_Products{}, ...]
+    [%OrdersProducts{}, ...]
   """
   def list_orders_products(params \\ %{}) do
-    Orders_Products
+    OrdersProducts
     |> Repo.all()
   end
 
@@ -209,15 +206,15 @@ defmodule Store.Inventory do
   ## Examples
 
     iex> create_order_product(%{field: value})
-    {:ok, %Orders_Products{}}
+    {:ok, %OrdersProducts{}}
 
     iex> create_order_product(%{field: bad_value})
     {:error, %Ecto.Changeset{}}
 
   """
   def create_order_product(attrs) do
-    %Orders_Products{}
-    |> Orders_Products.changeset(attrs)
+    %OrdersProducts{}
+    |> OrdersProducts.changeset(attrs)
     |> Repo.insert()
   end
 
@@ -254,7 +251,6 @@ defmodule Store.Inventory do
   def delete_order(%Order{} = order) do
     Repo.delete(order)
   end
-
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking order changes.
@@ -307,7 +303,6 @@ defmodule Store.Inventory do
     end
   end
 
-
   @doc """
 
 
@@ -319,17 +314,16 @@ defmodule Store.Inventory do
     |> Repo.update()
   end
 
-
   @doc """
-    Function which verifies that the user has 1 or more of each product in his cart.
-    ## Examples
-     iex> redeem_quantity(user)
-     {:ok, %Order{}}
+  Function which verifies that the user has 1 or more of each product in his cart.
+  ## Examples
+   iex> redeem_quantity(user)
+   {:ok, %Order{}}
 
-     iex> redeem_quantity(user)
-     {:error, %Ecto.Changeset{}}
+   iex> redeem_quantity(user)
+   {:error, %Ecto.Changeset{}}
 
-    """
+  """
 
   def redeem_quantity(order_id, product_id) do
     order_quantity = Enum.count(list_orders(where: [id: order_id]))
@@ -366,5 +360,4 @@ defmodule Store.Inventory do
     Phoenix.PubSub.broadcast!(Store.PubSub, "deleted", {event, product})
     {:ok, product}
   end
-
 end

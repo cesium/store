@@ -1,6 +1,9 @@
 defmodule Store.Repo.Seeds.Orders do
   alias Store.Repo
   alias Store.Inventory.Order
+  alias StoreWeb.Inventory.Product
+  alias Store.Inventory
+  alias Store.Accounts
 
   def run do
     seed_orders()
@@ -8,112 +11,22 @@ defmodule Store.Repo.Seeds.Orders do
 
   def seed_orders do
     case Repo.all(Order) do
-      [] ->
-        [
-          %{
-            user_id: 1,
-            product_id: 1,
-            redeemed: false
-          },
-          %{
-            user_id: 1,
-            product_id: 2,
-            redeemed: false
-          },
-          %{
-            user_id: 1,
-            product_id: 3,
-            redeemed: false
-          },
-          %{
-            user_id: 1,
-            product_id: 4,
-            redeemed: false
-          },
-          %{
-            user_id: 2,
-            product_id: 1,
-            redeemed: false
-          },
-          %{
-            user_id: 2,
-            product_id: 2,
-            redeemed: false
-          },
-          %{
-            user_id: 2,
-            product_id: 3,
-            redeemed: false
-          },
-          %{
-            user_id: 2,
-            product_id: 4,
-            redeemed: false
-          },
-          %{
-            user_id: 3,
-            product_id: 1,
-            redeemed: false
-          },
-          %{
-            user_id: 3,
-            product_id: 2,
-            redeemed: false
-          },
-          %{
-            user_id: 3,
-            product_id: 3,
-            redeemed: false
-          },
-          %{
-            user_id: 3,
-            product_id: 4,
-            redeemed: false
-          },
-          %{
-            user_id: 4,
-            product_id: 1,
-            redeemed: false
-          },
-          %{
-            user_id: 4,
-            product_id: 2,
-            redeemed: false
-          },
-          %{
-            user_id: 4,
-            product_id: 3,
-            redeemed: false
-          },
-          %{
-            user_id: 4,
-            product_id: 4,
-            redeemed: false
-          },
-          %{
-            user_id: 5,
-            product_id: 1,
-            redeemed: false
-          },
-          %{
-            user_id: 5,
-            product_id: 2,
-            redeemed: false
-          },
-          %{
-            user_id: 5,
-            product_id: 3,
-            redeemed: false
-          },
-          %{
-            user_id: 5,
-            product_id: 4,
-            redeemed: false
-          }
-        ]
+      [] -> generate_orders(10)
         |> Enum.each(&insert_order/1)
       _ ->
         Mix.shell().error("Found orders, aborting seeding orders.")
+  end
+end
+
+defp generate_orders(count) do
+  users = Accounts.list_users()
+
+  for _ <- 1..count do
+    %{id: user_id} = Enum.random(users)
+    %{
+      user_id: user_id,
+      status: Enum.random([:draft, :ordered, :paid]),
+    }
   end
 end
 
