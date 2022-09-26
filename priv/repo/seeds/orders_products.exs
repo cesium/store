@@ -1,0 +1,41 @@
+defmodule Store.Repo.Seeds.OrdersProducts do
+
+  alias Store.Inventory.OrdersProducts
+  alias Store.Repo
+  alias Store.Inventory
+  alias StoreWeb.Inventory.Product
+  def run do
+    seed_order_product()
+  end
+
+  def seed_order_product do
+    case Repo.all(OrdersProducts) do
+      [] -> generate_order_product(10)
+        |> Enum.each(&insert_orders_products/1)
+      _ ->
+        Mix.shell().error("Found order_product, aborting seeding order_product.")
+    end
+  end
+
+  defp generate_order_product(count) do
+    orders = Inventory.list_orders()
+    products = Inventory.list_products()
+
+    for _ <- 1..count do
+      %{id: order_id} = Enum.random(orders)
+      %{id: product_id} = Enum.random(products)
+      %{
+        order_id: order_id,
+        product_id: product_id,
+      }
+    end
+  end
+
+
+  def insert_orders_products(data) do
+    %OrdersProducts{}
+    |> OrdersProducts.changeset(data)
+    |> Repo.insert!()
+  end
+end
+Store.Repo.Seeds.OrdersProducts.run()

@@ -3,7 +3,6 @@ defmodule StoreWeb.Inventory.Product do
   A product.
   """
   use Store.Schema
-
   alias Store.Inventory.Order
   alias Store.Uploaders
 
@@ -29,10 +28,8 @@ defmodule StoreWeb.Inventory.Product do
     field :price, :integer
     field :stock, :integer
     field :max_per_user, :integer
-
     field :image, Uploaders.ProductImage.Type
-
-    has_many :orders, Order
+    many_to_many :order, Order, join_through: Store.Inventory.OrdersProducts
     timestamps()
   end
 
@@ -42,13 +39,7 @@ defmodule StoreWeb.Inventory.Product do
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> cast_attachments(attrs, [:image])
     |> validate_required(@required_fields)
-  end
-
-  def stock_changeset(product, attrs) do
-    product
-    |> cast(attrs, [:stock])
-    |> validate_required([:stock])
-    |> validate_number(:stock, greater_than_or_equal_to: 0)
+    |> unique_constraint(:name)
   end
 
   def image_changeset(product, attrs) do

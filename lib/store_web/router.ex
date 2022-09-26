@@ -11,6 +11,7 @@ defmodule StoreWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_user
+
     plug Plug.Static,
       at: "/store",
       from: :store,
@@ -25,7 +26,6 @@ defmodule StoreWeb.Router do
   pipeline :admin do
     plug StoreWeb.Auth.AllowedRoles, [:admin]
   end
-
 
   scope "/", StoreWeb do
     pipe_through :browser
@@ -83,7 +83,6 @@ defmodule StoreWeb.Router do
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end
-
 
   ## Authentication routes
 
