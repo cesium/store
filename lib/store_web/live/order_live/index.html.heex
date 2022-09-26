@@ -36,10 +36,10 @@
               <div class="hidden lg:col-span-2 lg:flex lg:items-center lg:justify-end lg:space-x-4">
                 <%= if order.status == :draft do %>
                 <button phx-click="checkout" class="flex items-center justify-center w-32 bg-black py-2 px-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#f47c58]">
-                  <span> Checkout </span>
+                  <span><%= live_redirect "Checkout", to: Routes.order_index_path(@socket, :index) %></span>
                 </button>
                 <% else %>
-                    <%= draw_qr_code(order) |> raw %>
+                    <%= draw_qr_code(@socket, order) |> raw %>
                 <% end %>
               </div>
             </div>

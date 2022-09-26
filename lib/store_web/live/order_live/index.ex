@@ -1,13 +1,10 @@
 defmodule StoreWeb.OrderLive.Index do
-  import Ecto.UUID
   import Ecto.Query
   use StoreWeb, :live_view
   alias Store.Repo
   alias Store.Inventory
   alias Store.Inventory.Order
-  alias Store.Inventory.OrdersProducts
   alias Store.Uploaders
-  alias Store.Accounts
 
   @impl true
   def mount(_params, _session, socket) do
@@ -54,7 +51,7 @@ defmodule StoreWeb.OrderLive.Index do
     |> Order.changeset(%{status: :ordered})
     |> Repo.update!()
 
-    redirect(socket, to: Routes.order_path(socket, :index))
+    redirect(socket, to: Routes.home_index_path(socket, :index))
     {:noreply, socket}
   end
 
@@ -68,8 +65,8 @@ defmodule StoreWeb.OrderLive.Index do
     Enum.reduce(order.products, 0, fn product, acc -> acc + product.price end)
   end
 
-  defp draw_qr_code(order) do
-    order.id
+  defp draw_qr_code(socket ,order) do
+    Routes.admin_order_show_url(socket, :show, order.id)
     |> QRCodeEx.encode()
     |> QRCodeEx.svg(color: "#1F2937", width: 295, background_color: :transparent)
   end

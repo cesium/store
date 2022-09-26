@@ -3,7 +3,6 @@ defmodule StoreWeb.ProductLive.Show do
 
   alias Store.Inventory
   alias Store.Uploaders
-  alias Store.Inventory.Order
 
   @impl true
   def mount(%{"id" => id}, _session, socket) do

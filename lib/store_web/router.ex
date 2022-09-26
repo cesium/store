@@ -36,7 +36,6 @@ defmodule StoreWeb.Router do
       live "/cart", CartLive.Index, :index
 
       live "/products", ProductLive.Index, :index
-      live "/dashboard", DashboardLive.Index, :index
       live "/products/:id", ProductLive.Show, :show
 
       live "/orders", OrderLive.Index, :index

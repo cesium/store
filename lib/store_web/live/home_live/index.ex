@@ -4,13 +4,12 @@ defmodule StoreWeb.HomeLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
+    {:ok, assign(socket, :current_page, :home)}
     {:ok, socket}
   end
 
   @impl true
   def handle_params(_params, _url, socket) do
-    {:noreply,
-     socket
-     |> assign(:current_page, :home)}
+    {:noreply, socket |> assign(:current_page, :home)}
   end
 end
