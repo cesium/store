@@ -40,7 +40,21 @@ defmodule StoreWeb.OrderLive.Index do
     order = Inventory.get_order!(id)
     {:ok, _} = Inventory.delete_order(order)
 
+<<<<<<< HEAD
     {:noreply, assign(socket, :orders, list_orders())}
+=======
+    order =
+      Order
+      |> where(status: :draft)
+      |> where(user_id: ^current_user.id)
+      |> Repo.one()
+
+    order
+    |> Order.changeset(%{status: :ordered})
+    |> Repo.update!()
+
+    {:noreply, socket}
+>>>>>>> eed1c33 (add cart)
   end
 
   defp list_orders do

@@ -3,64 +3,72 @@
     <form class="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
       <section aria-labelledby="cart-heading" class="lg:col-span-7">
         <ul role="list" class="divide-y divide-gray-200 border-t-2 border-b border-gray-200">
-            <%= for _ <- 1..3 do %> 
-          <li class="flex py-6 sm:py-10">
-            <div class="flex-shrink-0">
-              <img src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-01.jpg" alt="Front of men&#039;s Basic Tee in sienna." class="h-24 w-24 rounded-md object-cover object-center sm:h-48 sm:w-48">
-            </div>
-
-            <div class="ml-4 flex flex-1 flex-col justify-between sm:ml-6">
-              <div class="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
-                <div>
-                  <div class="flex justify-between">
-                    <h3 class="text-sm">
-                      <a href="#" class="font-semibold uppercase text-black hover:text-[#f47c58]">
-                        Basic Tee
-                      </a>
-                    </h3>
+          <%= for order <- @orders do %> 
+            <%= if @current_user && @current_user.id == order.user_id do %>
+              <%= if order.status == :draft do %>
+                <%= for product <- order.products do %>
+                <li class="flex py-6 sm:py-10">
+                  <div class="flex-shrink-0">
+                    <%= if product.image  != nil do %>
+                      <img src={Uploaders.ProductImage.url({product.image,product}, :original)} class="h-24 w-24 rounded-md object-cover object-center sm:h-48 sm:w-48"/>
+                    <% else %>
+                      <img src="https://tailwindui.com/img/ecommerce-images/order-history-page-03-product-01.jpg" alt="Moss green canvas compact backpack with double top zipper, zipper front pouch, and matching carry handle and backpack straps." class="h-24 w-24 rounded-md object-cover object-center sm:h-48 sm:w-48">
+                    <% end %>
                   </div>
-                  <div class="mt-1 flex text-sm">
-                    <p class="text-black">L</p>
-                  </div>
-                  <p class="mt-1 text-sm font-medium text-black">
-                    32.00 €
-                  </p>
-                </div>
 
-                <div class="mt-4 sm:mt-0 sm:pr-9">
-                  <label for="quantity-0" class="sr-only">Quantity, Basic Tee</label>
-                  <select id="quantity-0" name="quantity-0" class="max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                  </select>
+                  <div class="ml-4 flex flex-1 flex-col justify-between sm:ml-6">
+                    <div class="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
+                      <div>
+                        <div class="flex justify-between">
+                          <h3 class="text-sm">
+                            <a href="#" class="font-semibold uppercase text-black hover:text-[#f47c58]">
+                              <%= product.name %>
+                            </a>
+                          </h3>
+                        </div>
+                        <p class="mt-1 text-sm font-medium text-black">
+                          <%= product.price %> €
+                        </p>
+                      </div>
 
-                  <div class="absolute top-0 right-0">
-                    <button type="button" class="-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500">
-                      <span class="sr-only">Remove</span>
-                      <!-- Heroicon name: mini/x-mark -->
-                      <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+                      <div class="mt-4 sm:mt-0 sm:pr-9">
+                        <label for="quantity-0" class="sr-only">Quantity, Basic Tee</label>
+                        <select id="quantity-0" name="quantity-0" class="max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
+                          <option value="1">No Size</option>
+                          <option value="2">S</option>
+                          <option value="3">M</option>
+                          <option value="4">L</option>
+                          <option value="5">XL</option>
+                        </select>
+                        <select id="quantity" name="quantity-0" class="max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm" >
+                          <%= for n <- 1..product.max_per_user do %>
+                            <option value={n}><%= n %></option>
+                          <% end %>
+                        </select>
+                        <div class="absolute top-0 right-0">
+                          <button type="button" class="-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500">
+                            <span class="sr-only">Remove</span>
+                            <!-- Heroicon name: mini/x-mark -->
+                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                              <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <p class="mt-4 flex space-x-2 text-sm text-gray-700">
+                      <!-- Heroicon name: mini/check -->
+                      <svg class="h-5 w-5 flex-shrink-0 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
                       </svg>
-                    </button>
+                      <span>In stock</span>
+                    </p>
                   </div>
-                </div>
-              </div>
-
-              <p class="mt-4 flex space-x-2 text-sm text-gray-700">
-                <!-- Heroicon name: mini/check -->
-                <svg class="h-5 w-5 flex-shrink-0 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
-                </svg>
-                <span>In stock</span>
-              </p>
-            </div>
-          </li>
+                </li>
+              <% end %>
+            <% end %>
+          <% end %>
         <% end %>
         </ul>
       </section>
@@ -72,42 +80,52 @@
         <dl class="mt-6 space-y-4">
           <div class="flex items-center justify-between">
             <dt class="text-sm text-gray-600">Subtotal</dt>
-            <dd class="text-sm font-medium text-gray-900">$99.00</dd>
+            <%= if @current_user do %>
+            <dd class="text-sm font-medium text-gray-900"><%= total_price(@orders, @current_user.id) %> €</dd>
+            <% else %>
+            0
+            <% end %>
           </div>
           <div class="flex items-center justify-between border-t border-gray-200 pt-4">
-            <dt class="flex items-center text-sm text-gray-600">
-              <span>Shipping estimate</span>
-              <a href="#" class="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
-                <span class="sr-only">Learn more about how shipping is calculated</span>
-                <!-- Heroicon name: mini/question-mark-circle -->
-                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM8.94 6.94a.75.75 0 11-1.061-1.061 3 3 0 112.871 5.026v.345a.75.75 0 01-1.5 0v-.5c0-.72.57-1.172 1.081-1.287A1.5 1.5 0 108.94 6.94zM10 15a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
-                </svg>
-              </a>
+            <dt class="text-sm text-gray-600">
+              <span class="text-sm text-gray-600">Desconto Sócio</span>
+              <%= if @current_user do %>
+                <dd class="text-sm font-medium text-gray-900">- <%= discount_price(@orders, @current_user.id) %> €</dd>
+              <% else %>
+              0
+              <% end %>
             </dt>
-            <dd class="text-sm font-medium text-gray-900">$5.00</dd>
           </div>
           <div class="flex items-center justify-between border-t border-gray-200 pt-4">
-            <dt class="flex text-sm text-gray-600">
-              <span>Tax estimate</span>
-              <a href="#" class="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
-                <span class="sr-only">Learn more about how tax is calculated</span>
-                <!-- Heroicon name: mini/question-mark-circle -->
-                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM8.94 6.94a.75.75 0 11-1.061-1.061 3 3 0 112.871 5.026v.345a.75.75 0 01-1.5 0v-.5c0-.72.57-1.172 1.081-1.287A1.5 1.5 0 108.94 6.94zM10 15a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
-                </svg>
-              </a>
+            <dt class="text-sm text-gray-600">
+              <span class="text-sm text-gray-600">Sócio</span>
+              <dd class="text-base font-medium text-gray-900">
+                <%= if @current_user.partnership == true do %>
+                  <input type="checkbox" name="socio" value="true" disabled checked>
+                <% else %>
+                  <input type="checkbox" name="socio" value="false" disabled>
+                <% end %>
+              </dd>
             </dt>
-            <dd class="text-sm font-medium text-gray-900">$8.32</dd>
           </div>
           <div class="flex items-center justify-between border-t border-gray-200 pt-4">
-            <dt class="text-base font-medium text-gray-900">Order total</dt>
-            <dd class="text-base font-medium text-gray-900">$112.32</dd>
+            <dt class="text-base font-medium text-gray-900">Total</dt>
+            <%= for order <- @orders do %>
+              <%= if @current_user && @current_user.id == order.user_id do %>
+                <%= if order.status == :draft do %>
+                  <%= if @current_user.partnership do %>
+                    <dd class="text-base font-medium text-gray-900"><%= total_price2(@orders, @current_user.id) %> €</dd>
+                  <% else %>
+                    <dd class="text-base font-medium text-gray-900"><%= total_price(@orders, @current_user.id) %> €</dd>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
           </div>
         </dl>
 
         <div class="mt-6">
-          <button type="submit" class="w-full bg-black py-3 px-4 text-base font-semibold text-white shadow-sm hover:bg-[#f47c58]">Checkout</button>
+            <button type="submit" phx-click="checkout" class="w-full bg-black py-3 px-4 text-base font-semibold text-white shadow-sm hover:bg-[#f47c58]">Checkout</button>
         </div>
       </section>
     </form>

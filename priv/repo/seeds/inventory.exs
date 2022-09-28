@@ -15,6 +15,7 @@ defmodule Store.Repo.Seeds.Inventory do
             name: "Saco",
             description: "É um saco",
             price: 200,
+            price_partnership: 100,
             stock: 3,
             max_per_user: 1,
           },
@@ -22,6 +23,7 @@ defmodule Store.Repo.Seeds.Inventory do
             name: "Caderno",
             description: "É um caderno",
             price: 200,
+            price_partnership: 100,
             stock: 3,
             max_per_user: 1
           },
@@ -29,6 +31,7 @@ defmodule Store.Repo.Seeds.Inventory do
             name: "Caneta",
             description: "É uma caneta",
             price: 200,
+            price_partnership: 100,
             stock: 3,
             max_per_user: 1
           },
@@ -36,6 +39,7 @@ defmodule Store.Repo.Seeds.Inventory do
             name: "Lápis",
             description: "É um lápis",
             price: 200,
+            price_partnership: 100,
             stock: 3,
             max_per_user: 1
           },

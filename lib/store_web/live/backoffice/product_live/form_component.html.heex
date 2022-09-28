@@ -28,6 +28,10 @@
               <label for="street-address" class="block text-sm font-medium text-gray-700">Price</label>
               <%= number_input(f, :price, phx_debounce: "blur", class: "mt-1 focus:ring-red-500 focus:border-red-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md") %>
             </div>
+            <div class="mt-4">
+              <label for="street-address" class="block text-sm font-medium text-gray-700">Price Partnership</label>
+              <%= number_input(f, :price_partnership, phx_debounce: "blur", class: "mt-1 focus:ring-red-500 focus:border-red-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md") %>
+            </div>
             <p class="text-xs text-red-500"><%= error_tag(f, :price) %></p>
             <div class="mt-4">
               <label for="street-address" class="block text-sm font-medium text-gray-700">Description</label>

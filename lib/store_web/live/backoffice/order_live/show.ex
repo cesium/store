@@ -24,6 +24,30 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
      |> assign(:order, Inventory.get_order!(id) |> Repo.preload(:products))}
   end
 
+  @impl true
+  def handle_event("paid", _payload, socket) do
+    order = socket.assigns.order
+
+    order
+    |> Order.changeset(%{status: :paid})
+    |> Repo.update!()
+
+    {:noreply, socket}
+
+  end
+
+
+  @impl true
+  def handle_event("delivered", _payload, socket) do
+    order = socket.assigns.order
+
+    order
+    |> Order.changeset(%{status: :delivered})
+    |> Repo.update!()
+
+    {:noreply, socket}
+
+  end
 
 
   defp capitalize_status(status) do
@@ -34,12 +58,6 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
 
   defp total_price(order) do
     Enum.reduce(order.products, 0, fn product, acc -> acc + product.price end)
-  end
-
-  defp draw_qr_code(order) do
-    order.id
-    |> QRCodeEx.encode()
-    |> QRCodeEx.svg(color: "#1F2937", width: 295, background_color: :transparent)
   end
 
   defp user_email(id) do

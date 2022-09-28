@@ -5,7 +5,7 @@ defmodule StoreWeb.Inventory.Product do
   use Store.Schema
 
   @required_fields ~w(name description
-                      price stock)a
+                      price price_partnership stock max_per_user)a
 
   @optional_fields []
 
@@ -24,6 +24,7 @@ defmodule StoreWeb.Inventory.Product do
     field :name, :string
     field :description, :string
     field :price, :integer
+    field :price_partnership, :integer
     field :stock, :integer
 
     timestamps()

@@ -23,6 +23,7 @@ defmodule Store.Repo.Seeds.Accounts do
             email: email <> "@mail.pt",
             password: "Password1234",
             role: :user,
+            partnership: Enum.random([false, true])
           }
           |> insert_user()
         end

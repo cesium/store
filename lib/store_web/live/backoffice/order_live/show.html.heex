@@ -1,6 +1,9 @@
 <main>
     <section aria-labelledby="recent-heading" class="mt-16">
       <div>
+        <%= live_redirect to: Routes.admin_order_index_path(@socket, :index), class:
+        "flex flex-row space-x-4 uppercase font-semibold pt-4
+        hover:text-[#f47c58]" do %> <%= "< Return" %> <% end %>
         <div class="space-y-8">
             <div class="border-t border-b border-gray-200 bg-white shadow-sm sm:border">
               <h3 class="sr-only">Order placed on <time datetime="2021-07-06">Jul 6, 2021</time></h3>

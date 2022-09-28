@@ -36,7 +36,6 @@ defmodule StoreWeb.Router do
       live "/orders", OrderLive.Index, :index
       live "/orders/new", OrderLive.Index, :new
       live "/orders/:id/edit", OrderLive.Index, :edit
-
       live "/orders/:id", OrderLive.Show, :show
       live "/orders/:id/show/edit", OrderLive.Show, :edit
 
@@ -45,6 +44,8 @@ defmodule StoreWeb.Router do
 
       get "/users/log_in", UserSessionController, :new
       post "/users/log_in", UserSessionController, :create
+
+      live "/users/profile", ProfileLive.Index, :index
     end
   end
 
@@ -119,6 +120,8 @@ defmodule StoreWeb.Router do
       live "/orders/:id/edit", OrderLive.Edit, :edit
       live "/orders/:id", OrderLive.Show, :show
       live "/orders/:id/show/edit", OrderLive.Edit, :edit
+
+      live "/users", UserLive.Index, :index
     end
   end
 end
