@@ -12,7 +12,6 @@ defmodule Store.Repo.Migrations.CreateProducts do
       add :stock, :integer
       add :max_per_user, :integer
       add :image, :string
-
       timestamps()
     end
 

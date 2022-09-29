@@ -3,10 +3,13 @@ defmodule Store.Inventory do
   The Inventory context.
   """
 
-  import Ecto.Query, warn: false
-  alias Store.Repo
-  alias StoreWeb.Inventory.Product
   use Store.Context
+  import Ecto.Changeset
+  alias Ecto.Multi
+  alias StoreWeb.Accounts.User
+  alias StoreWeb.Inventory.Product
+  alias Store.Inventory.Order
+  alias Store.Inventory.OrdersProducts
 
   @doc """
   Returns the list of products.
@@ -68,17 +71,24 @@ defmodule Store.Inventory do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_product(
-        %Product{} = product,
-        attrs,
-        after_save \\ &{:ok, &1}
-      ) do
+  def update_product(%Product{} = product, attrs, after_save \\ &{:ok, &1}) do
     product
     |> Product.changeset(attrs)
     |> Repo.update()
     |> after_save(after_save)
   end
 
+  @doc """
+  Updates a product image
+
+  ## Examples
+        iex> update_product_image(product, %{field: new_value})
+        {:ok, %Product{}}
+
+        iex> update_product_image(product, %{field: bad_value})
+        {:error, %Ecto.Changeset{}}
+
+  """
   def update_product_image(%Product{} = product, attrs) do
     product
     |> Product.image_changeset(attrs)
@@ -98,7 +108,14 @@ defmodule Store.Inventory do
 
   """
   def delete_product(%Product{} = product) do
-    Repo.delete(product)
+    product
+    |> Ecto.Changeset.change()
+    |> Ecto.Changeset.foreign_key_constraint(:orders,
+      name: :orders_product_id_fkey,
+      message: "cannot delete product because it has orders"
+    )
+    |> Repo.delete()
+    |> broadcast(:deleted)
   end
 
   @doc """
@@ -125,8 +142,28 @@ defmodule Store.Inventory do
       [%Order{}, ...]
 
   """
-  def list_orders do
-    Repo.all(Order)
+  def list_orders(params \\ %{}) do
+    Order
+    |> order_by(desc: :inserted_at)
+    |> Repo.all()
+  end
+
+  def update_status(order, attrs) do
+    order
+    |> Order.changeset(attrs)
+    |> Repo.update()
+  end
+
+  alias Store.Inventory.OrdersProducts
+
+  @doc """
+  Returns the list of orders_products.
+    iex> list_orders_products()
+    [%OrdersProducts{}, ...]
+  """
+  def list_orders_products(params \\ %{}) do
+    OrdersProducts
+    |> Repo.all()
   end
 
   @doc """
@@ -160,6 +197,24 @@ defmodule Store.Inventory do
   def create_order(attrs \\ %{}) do
     %Order{}
     |> Order.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Creates an order_product relationship.
+
+  ## Examples
+
+    iex> create_order_product(%{field: value})
+    {:ok, %OrdersProducts{}}
+
+    iex> create_order_product(%{field: bad_value})
+    {:error, %Ecto.Changeset{}}
+
+  """
+  def create_order_product(attrs) do
+    %OrdersProducts{}
+    |> OrdersProducts.changeset(attrs)
     |> Repo.insert()
   end
 
@@ -208,5 +263,101 @@ defmodule Store.Inventory do
   """
   def change_order(%Order{} = order, attrs \\ %{}) do
     Order.changeset(order, attrs)
+  end
+
+  @doc """
+    Returns a function that can be used to broadcast the given event.
+
+    iex> subscribe(topic)
+    {:ok, #PID<0.0.0>}
+
+  """
+  def subscribe(topic) when topic in ["purchased", "updated", "deleted"] do
+    Phoenix.PubSub.subscribe(Store.PubSub, topic)
+  end
+
+  @doc """
+    Function that is used to purchase a product.
+
+  ## Examples
+    iex> purchase(user, product)
+    {:ok, %Order{}}
+
+    iex> purchase(user, product)
+    {:error, %Ecto.Changeset{}}
+  """
+
+  def purchase(user, product) do
+    order =
+      Order
+      |> where(user_id: ^user.id)
+      |> where(status: :draft)
+      |> Repo.one()
+      |> Repo.preload([:user, :products])
+
+    if order do
+      create_order_product(%{order_id: order.id, product_id: product.id})
+    else
+      {:ok, order} = create_order(%{user_id: user.id})
+      create_order_product(%{order_id: order.id, product_id: product.id})
+    end
+  end
+
+  @doc """
+
+
+  """
+
+  def checkout_order(order) do
+    order
+    |> Order.changeset(%{status: :ordered})
+    |> Repo.update()
+  end
+
+  @doc """
+  Function which verifies that the user has 1 or more of each product in his cart.
+  ## Examples
+   iex> redeem_quantity(user)
+   {:ok, %Order{}}
+
+   iex> redeem_quantity(user)
+   {:error, %Ecto.Changeset{}}
+
+  """
+
+  def redeem_quantity(order_id, product_id) do
+    order_quantity = Enum.count(list_orders(where: [id: order_id]))
+
+    quantity =
+      case order_quantity do
+        0 -> Inventory.get_product!(product_id).max_per_user
+        _ -> Inventory.get_product!(product_id).max_per_user - order_quantity
+      end
+
+    if quantity < 0 do
+      {:error, "You must buy at least one product"}
+    else
+      quantity
+    end
+  end
+
+  defp broadcast({:error, _reason} = error, _event), do: error
+
+  defp broadcast({:ok, %Product{} = product}, event)
+       when event in [:purchased] do
+    Phoenix.PubSub.broadcast!(Store.PubSub, "purchased", {event, product.stock})
+    {:ok, product}
+  end
+
+  defp broadcast({:ok, %Product{} = product}, event)
+       when event in [:updated] do
+    Phoenix.PubSub.broadcast!(Store.PubSub, "updated", {event, product})
+    {:ok, product}
+  end
+
+  defp broadcast({:ok, %Product{} = product}, event)
+       when event in [:deleted] do
+    Phoenix.PubSub.broadcast!(Store.PubSub, "deleted", {event, product})
+    {:ok, product}
   end
 end

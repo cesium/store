@@ -1,30 +1,29 @@
 <main>
-<<<<<<< HEAD
     <section aria-labelledby="recent-heading" class="mt-16">
       <div>
         <div class="space-y-8">
 
-=======
   <section aria-labelledby="recent-heading" class="mt-16">
     <div>
       <div class="space-y-8">
             <%= for order <- @orders do %>
               <%= if @current_user && @current_user.id == order.user_id do %>
                 <%= if order.status != :draft do %>
->>>>>>> eed1c33 (add cart)
           <div class="border-t border-b border-gray-200 bg-white shadow-sm sm:border">
             <h3 class="sr-only">Order placed on <time datetime="2021-07-06">Jul 6, 2021</time></h3>
 
             <div class="flex items-center border-b border-gray-200 p-4 sm:grid sm:grid-cols-4 sm:gap-x-6 sm:p-6">
-              <dl class="grid flex-1 grid-cols-2 gap-x-6 text-sm sm:col-span-3 sm:grid-cols-3 lg:col-span-2">
+              <dl class="grid flex-1 grid-cols-2 gap-x-6 text-sm sm:col-span-3 sm:grid-cols-4 lg:col-span-2">
                 <div>
-                  <dt class="font-semibold uppercase">Order number</dt>
-                  <dd class="mt-1">WU88191111</dd>
+                  <%= if @current_user do %>
+                    <dt class="font-semibold uppercase">Order User</dt>
+                    <dd class="mt-1"><%= @current_user.email %></dd>
+                  <% end %>
                 </div>
                 <div class="hidden sm:block">
                   <dt class="font-semibold uppercase">Date placed</dt>
                   <dd class="mt-1">
-                    <time datetime="2021-07-06">Jul 6, 2021</time>
+                    <time datetime=""><%= NaiveDateTime.to_string(order.inserted_at) %></time>
                   </dd>
                 </div>
                 <div>
@@ -128,5 +127,6 @@
         <% end %>
       <% end %>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
+</main>
