@@ -69,4 +69,42 @@ defmodule StoreWeb.OrderLive.Index do
     |> QRCodeEx.encode()
     |> QRCodeEx.svg(color: "#1F2937", width: 295, background_color: :transparent)
   end
+
+  defp total_price(order,id) do
+    order =
+        Order
+        |> where(id: ^id)
+        |> Repo.one()
+
+    order =
+      order
+      |> Repo.preload(:products)
+
+    if order do
+      Enum.reduce(order.products, 0, fn product, acc ->
+        acc + product.price
+      end)
+    else
+      0
+    end
+  end
+
+  defp total_price2(order,id) do
+    order =
+        Order
+        |> where(id: ^id)
+        |> Repo.one()
+
+    order =
+      order
+      |> Repo.preload(:products)
+
+    if order do
+      Enum.reduce(order.products, 0, fn product, acc ->
+        acc + product.price_partnership
+      end)
+    else
+      0
+    end
+  end
 end

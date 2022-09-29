@@ -24,7 +24,11 @@
                 </div>
                 <div>
                   <dt class="font-semibold uppercase">Total amount</dt>
-                  <dd class="mt-1 font-medium">160.00 €</dd>
+                  <%= if @current_user.partnership do %>
+                    <dd class="mt-1"><%= total_price2(order, order.id) %> €</dd>
+                  <% else %>
+                    <dd class="mt-1"><%= total_price(order, order.id) %> €</dd>
+                  <% end %>
                 </div>
               </dl>
 

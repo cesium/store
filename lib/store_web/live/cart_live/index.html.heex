@@ -32,28 +32,22 @@
                       </div>
 
                       <div class="mt-4 sm:mt-0 sm:pr-9">
-                        <label for="quantity-0" class="sr-only">Quantity, Basic Tee</label>
-                        <select id="quantity-0" name="quantity-0" class="max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
-                          <option value="1">No Size</option>
-                          <option value="2">S</option>
-                          <option value="3">M</option>
-                          <option value="4">L</option>
-                          <option value="5">XL</option>
-                        </select>
-                        <select id="quantity" name="quantity-0" class="max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm" >
-                          <%= for n <- 1..product.max_per_user do %>
-                            <option value={n}><%= n %></option>
-                          <% end %>
-                        </select>
-                        <div class="absolute top-0 right-0">
-                          <button type="button" class="-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500">
-                            <span class="sr-only">Remove</span>
-                            <!-- Heroicon name: mini/x-mark -->
-                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                              <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-                            </svg>
-                          </button>
-                        </div>
+                          <label for="quantity-0" class="sr-only">Quantity, Basic Tee</label>
+                          <select id="quantity" name="quantity-0" class="max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm" >
+                              <%= options_for_select(["Quantity": 1..product.max_per_user], nil) %>
+                            </select>
+                          <select id="quantity" name="quantity-0" class="max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm" >
+                          <%= options_for_select(["Size": ["XS", "S", "M", "L", "XL"]], nil) %>
+                          </select>
+                          <div class="absolute top-0 right-0">
+                            <button type="button" class="-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500">
+                              <span class="sr-only">Remove</span>
+                              <!-- Heroicon name: mini/x-mark -->
+                              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+                              </svg>
+                            </button>
+                          </div>
                       </div>
                     </div>
 
@@ -111,14 +105,12 @@
           <div class="flex items-center justify-between border-t border-gray-200 pt-4">
             <dt class="text-base font-medium text-gray-900">Total</dt>
             <%= for order <- @orders do %>
-              <%= if @current_user && @current_user.id == order.user_id do %>
-                <%= if order.status == :draft do %>
+              <%= if @current_user && @current_user.id == order.user_id && order.status == :draft do %>
                   <%= if @current_user.partnership do %>
                     <dd class="text-base font-medium text-gray-900"><%= total_price2(@orders, @current_user.id) %> €</dd>
                   <% else %>
                     <dd class="text-base font-medium text-gray-900"><%= total_price(@orders, @current_user.id) %> €</dd>
                   <% end %>
-                <% end %>
               <% end %>
             <% end %>
           </div>
