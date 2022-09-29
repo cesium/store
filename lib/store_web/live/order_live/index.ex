@@ -64,22 +64,6 @@ defmodule StoreWeb.OrderLive.Index do
     |> String.capitalize()
   end
 
-
-    {:noreply, assign(socket, :orders, list_orders())}
-    order =
-      Order
-      |> where(status: :draft)
-      |> where(user_id: ^current_user.id)
-      |> Repo.one()
-
-    order
-    |> Order.changeset(%{status: :ordered})
-    |> Repo.update!()
-
-    {:noreply, socket}
-
-  end
-
   defp draw_qr_code(order) do
     order.id
     |> QRCodeEx.encode()
