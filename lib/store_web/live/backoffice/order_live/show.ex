@@ -3,6 +3,7 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
 
   import Ecto.UUID
   import Ecto.Query
+  import Store.Inventory
   alias Store.Repo
   alias Store.Inventory
   alias Store.Inventory.Order
@@ -47,17 +48,6 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
 
     {:noreply, socket}
 
-  end
-
-
-  defp capitalize_status(status) do
-    status
-    |> Atom.to_string()
-    |> String.capitalize()
-  end
-
-  defp total_price(order) do
-    Enum.reduce(order.products, 0, fn product, acc -> acc + product.price end)
   end
 
   defp user_email(id) do

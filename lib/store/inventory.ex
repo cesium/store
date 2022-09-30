@@ -306,12 +306,7 @@ def purchase(user, product) do
       if order_product != nil do
         {:error, "Product already in cart"}
       else
-        if order do
-          create_order_product(%{order_id: order.id, product_id: product.id})
-        else
-          {:ok, order} = create_order(%{user_id: user.id})
-          create_order_product(%{order_id: order.id, product_id: product.id})
-        end
+        create_order_product(%{order_id: order.id, product_id: product.id})
       end
     else
       {:ok, order} = create_order(%{user_id: user.id})
@@ -353,6 +348,69 @@ def purchase(user, product) do
     else
       quantity
     end
+  end
+
+  def capitalize_status(status) do
+    status
+    |> Atom.to_string()
+    |> String.capitalize()
+  end
+
+  def total_price(order) do
+    Enum.reduce(order.products, 0, fn product, acc -> acc + product.price end)
+  end
+
+  def total_price2(order) do
+    Enum.reduce(order.products, 0 , fn product , acc -> acc + product.price_partnership end)
+  end
+
+  def discount(order) do
+    total_price(order) - total_price2(order)
+  end
+
+
+  def total_price_cart(order, id) do
+    order =
+        Order
+        |> where(user_id: ^id)
+        |> where(status: :draft)
+        |> Repo.one()
+
+    order =
+      order
+      |> Repo.preload(:products)
+
+    if order do
+      Enum.reduce(order.products, 0, fn product, acc ->
+        acc + product.price
+      end)
+    else
+      0
+    end
+  end
+
+  def total_price_partnership_cart(order, id) do
+    order =
+        Order
+        |> where(user_id: ^id)
+        |> where(status: :draft)
+        |> Repo.one()
+
+    order =
+      order
+      |> Repo.preload(:products)
+
+    if order do
+      Enum.reduce(order.products, 0, fn product, acc ->
+        acc + product.price_partnership
+      end)
+    else
+      0
+    end
+  end
+
+  def discount_cart(order,id) do
+    total_price_cart(order,id) - total_price_partnership_cart(order,id)
   end
 
   defp broadcast({:error, _reason} = error, _event), do: error

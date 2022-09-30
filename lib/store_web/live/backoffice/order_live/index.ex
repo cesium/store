@@ -1,6 +1,7 @@
 defmodule StoreWeb.Backoffice.OrderLive.Index do
   import Ecto.Query
   use StoreWeb, :live_view
+  import Store.Inventory
   alias Store.Repo
   alias Store.Inventory
   alias Store.Inventory.Order
@@ -9,7 +10,7 @@ defmodule StoreWeb.Backoffice.OrderLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :orders, Inventory.list_orders() |> Repo.preload(:products) |> Repo.preload(:user))}
+    {:ok, assign(socket, :orders, Inventory.list_orders() |> Repo.preload([:products, :user]))}
   end
 
   @impl true
@@ -36,25 +37,6 @@ defmodule StoreWeb.Backoffice.OrderLive.Index do
     socket
     |> assign(:page_title, "Listing Orders")
     |> assign(:order, nil)
-  end
-
-
-  defp capitalize_status(status) do
-    status
-    |> Atom.to_string()
-    |> String.capitalize()
-  end
-
-  defp total_price(order) do
-    Enum.reduce(order.products, 0, fn product, acc -> acc + product.price end)
-  end
-
-  defp total_price2(order) do
-    Enum.reduce(order.products, 0 , fn product , acc -> acc + product.price_partnership end)
-  end
-
-  defp discount(order) do
-    total_price(order) - total_price2(order)
   end
 
   defp user_email(id) do

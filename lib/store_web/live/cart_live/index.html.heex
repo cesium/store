@@ -75,7 +75,7 @@
           <div class="flex items-center justify-between">
             <dt class="text-sm text-gray-600">Subtotal</dt>
             <%= if @current_user do %>
-            <dd class="text-sm font-medium text-gray-900"><%= total_price(@orders, @current_user.id) %> €</dd>
+            <dd class="text-sm font-medium text-gray-900"><%= total_price_cart(@orders, @current_user.id) %> €</dd>
             <% else %>
             0
             <% end %>
@@ -84,7 +84,7 @@
             <dt class="text-sm text-gray-600">
               <span class="text-sm text-gray-600">Desconto Sócio</span>
               <%= if @current_user do %>
-                <dd class="text-sm font-medium text-gray-900">- <%= discount_price(@orders, @current_user.id) %> €</dd>
+                <dd class="text-sm font-medium text-gray-900">- <%= discount_cart(@orders, @current_user.id) %> €</dd>
               <% else %>
               0
               <% end %>
@@ -107,9 +107,9 @@
             <%= for order <- @orders do %>
               <%= if @current_user && @current_user.id == order.user_id && order.status == :draft do %>
                   <%= if @current_user && @current_user.partnership do %>
-                    <dd class="text-base font-medium text-gray-900"><%= total_price2(@orders, @current_user.id) %> €</dd>
+                    <dd class="text-base font-medium text-gray-900"><%= total_price_partnership_cart(@orders, @current_user.id) %> €</dd>
                   <% else %>
-                    <dd class="text-base font-medium text-gray-900"><%= total_price(@orders, @current_user.id) %> €</dd>
+                    <dd class="text-base font-medium text-gray-900"><%= total_price_cart(@orders, @current_user.id) %> €</dd>
                   <% end %>
               <% end %>
             <% end %>

@@ -2,13 +2,10 @@ defmodule StoreWeb.CartLive.Index do
   @moduledoc false
   use StoreWeb, :live_view
   import Ecto.Query
+  import Store.Inventory
   alias Store.Repo
   alias Store.Inventory
   alias Store.Inventory.Order
-  alias Store.Inventory.OrdersProducts
-  alias Store.Uploaders
-  alias Store.Accounts
-
 
   @impl true
   def mount(_params, _session, socket) do
@@ -60,53 +57,5 @@ defmodule StoreWeb.CartLive.Index do
     Repo.delete!(order_product)
 
     {:noreply, socket}
-  end
-
-  defp test(n) do
-    IO.inspect(n)
-  end
-
-  defp total_price(order, id) do
-    order =
-        Order
-        |> where(user_id: ^id)
-        |> where(status: :draft)
-        |> Repo.one()
-
-    order =
-      order
-      |> Repo.preload(:products)
-
-    if order do
-      Enum.reduce(order.products, 0, fn product, acc ->
-        acc + product.price
-      end)
-    else
-      0
-    end
-  end
-
-  defp total_price2(order, id) do
-    order =
-        Order
-        |> where(user_id: ^id)
-        |> where(status: :draft)
-        |> Repo.one()
-
-    order =
-      order
-      |> Repo.preload(:products)
-
-    if order do
-      Enum.reduce(order.products, 0, fn product, acc ->
-        acc + product.price_partnership
-      end)
-    else
-      0
-    end
-  end
-
-  defp discount_price(order, id) do
-    total_price(order, id) - total_price2(order, id)
   end
 end
