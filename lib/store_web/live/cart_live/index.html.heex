@@ -40,7 +40,7 @@
                           <%= options_for_select(["Size": ["XS", "S", "M", "L", "XL"]], nil) %>
                           </select>
                           <div class="absolute top-0 right-0">
-                            <button type="button" class="-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500">
+                            <button phx-click="delete" phx-value-id={product.id} type="button" class="-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500">
                               <span class="sr-only">Remove</span>
                               <!-- Heroicon name: mini/x-mark -->
                               <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -94,7 +94,7 @@
             <dt class="text-sm text-gray-600">
               <span class="text-sm text-gray-600">Sócio</span>
               <dd class="text-base font-medium text-gray-900">
-                <%= if @current_user.partnership == true do %>
+                <%= if @current_user && @current_user.partnership == true do %>
                   <input type="checkbox" name="socio" value="true" disabled checked>
                 <% else %>
                   <input type="checkbox" name="socio" value="false" disabled>
@@ -106,7 +106,7 @@
             <dt class="text-base font-medium text-gray-900">Total</dt>
             <%= for order <- @orders do %>
               <%= if @current_user && @current_user.id == order.user_id && order.status == :draft do %>
-                  <%= if @current_user.partnership do %>
+                  <%= if @current_user && @current_user.partnership do %>
                     <dd class="text-base font-medium text-gray-900"><%= total_price2(@orders, @current_user.id) %> €</dd>
                   <% else %>
                     <dd class="text-base font-medium text-gray-900"><%= total_price(@orders, @current_user.id) %> €</dd>

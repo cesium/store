@@ -287,7 +287,7 @@ defmodule Store.Inventory do
     {:error, %Ecto.Changeset{}}
   """
 
-  def purchase(user, product) do
+def purchase(user, product) do
     order =
       Order
       |> where(user_id: ^user.id)
@@ -295,14 +295,28 @@ defmodule Store.Inventory do
       |> Repo.one()
       |> Repo.preload([:user, :products])
 
+
     if order do
-      create_order_product(%{order_id: order.id, product_id: product.id})
+      order_product =
+        OrdersProducts
+        |> where(order_id: ^order.id)
+        |> where(product_id: ^product.id)
+        |> Repo.one()
+
+      if order_product != nil do
+        {:error, "Product already in cart"}
+      else
+        if order do
+          create_order_product(%{order_id: order.id, product_id: product.id})
+        else
+          {:ok, order} = create_order(%{user_id: user.id})
+          create_order_product(%{order_id: order.id, product_id: product.id})
+        end
+      end
     else
       {:ok, order} = create_order(%{user_id: user.id})
-      create_order_product(%{order_id: order.id, product_id: product.id})
-    end
+      create_order_product(%{order_id: order.id, product_id: product.id})    end
   end
-
   @doc """
 
 

@@ -40,8 +40,30 @@ defmodule StoreWeb.CartLive.Index do
     {:noreply, socket}
   end
 
-  defp test() do
-    IO.puts("test")
+  def handle_event("delete", %{"id" => id}, socket) do
+    current_user = socket.assigns.current_user
+
+    order =
+      Order
+      |> where(status: :draft)
+      |> where(user_id: ^current_user.id)
+      |> Repo.one()
+      |> Repo.preload(:products)
+
+    order_product =
+      OrdersProducts
+      |> where(order_id: ^order.id)
+      |> where(product_id: ^id)
+      |> Repo.one()
+
+
+    Repo.delete!(order_product)
+
+    {:noreply, socket}
+  end
+
+  defp test(n) do
+    IO.inspect(n)
   end
 
   defp total_price(order, id) do
