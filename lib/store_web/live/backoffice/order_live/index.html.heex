@@ -23,7 +23,7 @@
                     <%= if order.user.partnership == false do %>
                       <dd class="mt-1 font-medium"><%= total_price(order) %> €</dd>
                     <% else %>
-                      <dd class="mt-1 font-medium"><%= total_price2(order) %> €</dd>
+                      <dd class="mt-1 font-medium"><%= total_price_with_partnership(order) %> €</dd>
                     <% end %>
                   </div>
                   <div>

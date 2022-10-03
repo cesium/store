@@ -360,12 +360,12 @@ def purchase(user, product) do
     Enum.reduce(order.products, 0, fn product, acc -> acc + product.price end)
   end
 
-  def total_price2(order) do
+  def total_price_with_partnership(order) do
     Enum.reduce(order.products, 0 , fn product , acc -> acc + product.price_partnership end)
   end
 
   def discount(order) do
-    total_price(order) - total_price2(order)
+    total_price(order) - total_price_with_partnership(order)
   end
 
 
@@ -407,6 +407,14 @@ def purchase(user, product) do
     else
       0
     end
+  end
+
+
+  def change_status(order, status) do
+    IO.inspect(status)
+    order
+    |> Order.changeset(status)
+    |> Repo.update()
   end
 
   def discount_cart(order,id) do

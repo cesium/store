@@ -28,26 +28,16 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
   @impl true
   def handle_event("paid", _payload, socket) do
     order = socket.assigns.order
-
-    order
-    |> Order.changeset(%{status: :paid})
-    |> Repo.update!()
-
+    order = Inventory.update_status(order, %{status: :paid})
     {:noreply, socket}
-
   end
 
 
   @impl true
   def handle_event("delivered", _payload, socket) do
     order = socket.assigns.order
-
-    order
-    |> Order.changeset(%{status: :delivered})
-    |> Repo.update!()
-
+    Inventory.change_status(order, %{status: :delivered})
     {:noreply, socket}
-
   end
 
   defp user_email(id) do

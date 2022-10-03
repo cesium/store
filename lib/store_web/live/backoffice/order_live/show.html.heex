@@ -32,10 +32,12 @@
   
                 <!-- Add a button at the final at the grid -->
                 <div class="hidden lg:col-span-2 lg:flex lg:items-center lg:justify-end lg:space-x-4">
-                  <%= if @order.status != :draft do %>
+                  <%= if @order.status != :draft && @order.status != :delivered do %>
+                    <%= if @order.status != :paid do %>
                     <button phx-click="paid" class="flex items-center justify-center w-32 bg-black py-2 px-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#f47c58]">
                         <span> Paid </span>
                     </button>
+                    <% end %>
                     <button phx-click="delivered" class="flex items-center justify-center w-32 bg-black py-2 px-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#f47c58]">
                         <span> Delivered </span>
                     </button>
