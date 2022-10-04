@@ -37,7 +37,7 @@
                               <%= options_for_select(["Quantity": 1..product.max_per_user], nil) %>
                             </select>
                           <select id="quantity" name="quantity-0" class="max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm" >
-                          <%= options_for_select(["Size": ["XS", "S", "M", "L", "XL"]], nil) %>
+                          <%= options_for_select(["Size": ["No Size", "XS", "S", "M", "L", "XL"]], nil) %>
                           </select>
                           <div class="absolute top-0 right-0">
                             <button phx-click="delete" phx-value-id={product.id} type="button" class="-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500">

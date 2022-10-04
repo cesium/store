@@ -1,5 +1,5 @@
 defmodule StoreWeb.OrderLive.Index do
-  import Ecto.UUID
+  @moduledoc false
   import Ecto.Query
   use StoreWeb, :live_view
   alias Store.Repo
@@ -10,17 +10,22 @@ defmodule StoreWeb.OrderLive.Index do
   alias Store.Uploaders
   alias Store.Accounts
 
+
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(_params, _socket, socket) do
+    {:ok, socket}
     {:ok, assign(socket, :orders, Inventory.list_orders() |> Repo.preload(:products))}
+
   end
 
   @impl true
   def handle_params(params, _url, socket) do
+    IO.inspect(socket.assigns)
     {:noreply,
      socket
      |> assign(:current_page, :orders)
      |> apply_action(socket.assigns.live_action, params)}
+
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
@@ -59,14 +64,9 @@ defmodule StoreWeb.OrderLive.Index do
     {:noreply, socket}
   end
 
-  defp capitalize_status(status) do
-    status
-    |> Atom.to_string()
-    |> String.capitalize()
-  end
 
   defp draw_qr_code(order) do
-    order.id
+    Routes.admin_order_show_path(StoreWeb.Endpoint, :show, order.id)
     |> QRCodeEx.encode()
     |> QRCodeEx.svg(color: "#1F2937", width: 295, background_color: :transparent)
   end

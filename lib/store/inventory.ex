@@ -411,7 +411,6 @@ def purchase(user, product) do
 
 
   def change_status(order, status) do
-    IO.inspect(status)
     order
     |> Order.changeset(status)
     |> Repo.update()

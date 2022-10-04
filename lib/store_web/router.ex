@@ -28,31 +28,29 @@ defmodule StoreWeb.Router do
   end
 
   scope "/", StoreWeb do
-    pipe_through :browser
-
+    pipe_through [:browser, :require_authenticated_user]
+    get "/users/settings", UserSettingsController, :edit
+    put "/users/settings", UserSettingsController, :update
+    get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
     live_session :user, on_mount: [{StoreWeb.Hooks, :current_user}] do
+      live "/orders", OrderLive.Index, :index
+      live "/users/profile", ProfileLive.Index, :index
+      live "/cart", CartLive.Index, :index
+      live "/products/:id", ProductLive.Show, :show
+    end
+  end
+
+  scope "/", StoreWeb do
+    pipe_through :browser
       live "/", HomeLive.Index, :index
 
-      live "/cart", CartLive.Index, :index
-
       live "/products", ProductLive.Index, :index
-      live "/dashboard", DashboardLive.Index, :index
-      live "/products/:id", ProductLive.Show, :show
-
-      live "/orders", OrderLive.Index, :index
-      live "/orders/new", OrderLive.Index, :new
-      live "/orders/:id/edit", OrderLive.Index, :edit
-      live "/orders/:id", OrderLive.Show, :show
-      live "/orders/:id/show/edit", OrderLive.Show, :edit
 
       get "/users/register", UserRegistrationController, :new
       post "/users/register", UserRegistrationController, :create
 
       get "/users/log_in", UserSessionController, :new
       post "/users/log_in", UserSessionController, :create
-
-      live "/users/profile", ProfileLive.Index, :index
-    end
   end
 
   # Other scopes may use custom stacks.
@@ -96,15 +94,7 @@ defmodule StoreWeb.Router do
   end
 
   scope "/", StoreWeb do
-    pipe_through [:browser, :require_authenticated_user]
-    get "/users/settings", UserSettingsController, :edit
-    put "/users/settings", UserSettingsController, :update
-    get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
-  end
-
-  scope "/", StoreWeb do
     pipe_through [:browser]
-
     delete "/users/log_out", UserSessionController, :delete
     get "/users/confirm", UserConfirmationController, :new
     post "/users/confirm", UserConfirmationController, :create

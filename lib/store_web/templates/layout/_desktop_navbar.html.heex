@@ -48,11 +48,6 @@
               <% end %>
 
               <div class="flex flex-1 items-center justify-end">
-                  <div class="mr-8">
-                    <%= live_redirect to: Routes.profile_index_path(@socket, :index),class: "hidden text-sm font-semibold text-black hover:text-[#f47c58] lg:block" do %>
-                      Profile
-                    <% end %>
-                  </div>
                   <%= link to: Routes.user_session_path(@socket, :new),class: "hidden text-sm font-semibold text-black hover:text-[#f47c58] lg:block" do %>
                     Sign Up
                   <% end %>
