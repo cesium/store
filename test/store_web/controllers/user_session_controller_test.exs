@@ -30,7 +30,7 @@ defmodule StoreWeb.UserSessionControllerTest do
         })
 
       assert get_session(conn, :user_token)
-      assert redirected_to(conn) == "/users/log_in"
+      assert redirected_to(conn) == "/"
 
       # Now do a logged in request and assert on the menu
       conn = get(conn, "/")
@@ -83,7 +83,7 @@ defmodule StoreWeb.UserSessionControllerTest do
   describe "DELETE /users/log_out" do
     test "logs the user out", %{conn: conn, user: user} do
       conn = conn |> log_in_user(user) |> delete(Routes.user_session_path(conn, :delete))
-      assert redirected_to(conn) == "/"
+      assert redirected_to(conn) == "/users/log_in"
       refute get_session(conn, :user_token)
       assert get_flash(conn, :info) =~ "Logged out successfully"
     end

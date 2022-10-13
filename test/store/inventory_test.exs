@@ -7,6 +7,7 @@ defmodule Store.InventoryTest do
     alias StoreWeb.Inventory.Product
     import Ecto
     import Store.InventoryFixtures
+    import Store.AccountsFixtures
 
     @invalid_attrs %{
       description: nil,
@@ -30,7 +31,7 @@ defmodule Store.InventoryTest do
         price: 42,
         stock: 100,
         max_per_user: 1,
-        user_id: Ecto.UUID.generate()
+        user_id: user_fixture().id
       }
 
       assert {:ok, %Product{} = product} = Inventory.create_product(valid_attrs)
@@ -83,6 +84,7 @@ defmodule Store.InventoryTest do
     alias Store.Inventory.Order
 
     import Store.InventoryFixtures
+    import Store.AccountsFixtures
 
     @invalid_attrs %{redeemed: nil, user_id: nil}
 
@@ -97,10 +99,11 @@ defmodule Store.InventoryTest do
     end
 
     test "create_order/1 with valid data creates a order" do
-      valid_attrs = %{redeemed: true}
+      user = user_fixture()
+      valid_attrs = %{status: :draft, user_id: user.id}
 
       assert {:ok, %Order{} = order} = Inventory.create_order(valid_attrs)
-      assert order.redeemed == true
+      assert order.status == :draft
     end
 
     test "create_order/1 with invalid data returns error changeset" do
@@ -109,10 +112,10 @@ defmodule Store.InventoryTest do
 
     test "update_order/2 with valid data updates the order" do
       order = order_fixture()
-      update_attrs = %{redeemed: false}
+      update_attrs = %{status: :ordered}
 
       assert {:ok, %Order{} = order} = Inventory.update_order(order, update_attrs)
-      assert order.redeemed == false
+      assert order.status == :ordered
     end
 
     test "update_order/2 with invalid data returns error changeset" do
