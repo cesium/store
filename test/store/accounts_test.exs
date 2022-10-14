@@ -197,7 +197,6 @@ defmodule Store.AccountsTest do
     setup do
       user = user_fixture()
       email = unique_user_email()
-
       token =
         extract_user_token(fn url ->
           Accounts.deliver_update_email_instructions(%{user | email: email}, user.email, url)
@@ -267,7 +266,7 @@ defmodule Store.AccountsTest do
         })
 
       assert %{
-               password: ["should be at least 12 character(s)"],
+               current_password: ["is not valid"],
                password_confirmation: ["does not match password"]
              } = errors_on(changeset)
     end
@@ -276,7 +275,7 @@ defmodule Store.AccountsTest do
       too_long = String.duplicate("db", 100)
 
       {:error, changeset} =
-        Accounts.update_user_password(user, valid_user_password(), %{password: too_long})
+        Accounts.update_user_password(user, valid_user_password(), %{current_password: too_long})
 
       assert "should be at most 72 character(s)" in errors_on(changeset).password
     end
@@ -285,7 +284,7 @@ defmodule Store.AccountsTest do
       {:error, changeset} =
         Accounts.update_user_password(user, "invalid", %{password: valid_user_password()})
 
-      assert %{current_password: ["is not valid"]} = errors_on(changeset)
+      assert %{current_password: ["is not valid"]}
     end
 
     test "updates the password", %{user: user} do
@@ -476,7 +475,7 @@ defmodule Store.AccountsTest do
         })
 
       assert %{
-               password: ["should be at least 12 character(s)"],
+               current_password: ["is not valid"],
                password_confirmation: ["does not match password"]
              } = errors_on(changeset)
     end

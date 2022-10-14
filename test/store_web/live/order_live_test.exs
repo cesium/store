@@ -52,7 +52,7 @@ defmodule StoreWeb.OrderLiveTest do
       assert index_live |> element("#order-#{order.id} a", "Edit") |> render_click() =~
                "Edit Order"
 
-      assert_patch(index_live, Routes.order_index_path(conn, :edit, order))
+      assert_patch(index_live, Routes.order_index_path(conn, :index))
 
       assert index_live
              |> form("#order-form", order: @invalid_attrs)
@@ -79,13 +79,13 @@ defmodule StoreWeb.OrderLiveTest do
     setup [:create_order]
 
     test "displays order", %{conn: conn, order: order} do
-      {:ok, _show_live, html} = live(conn, Routes.order_show_path(conn, :show, order))
+      {:ok, _show_live, html} = live(conn, Routes.order_index_path(conn, :index))
 
       assert html =~ "Show Order"
     end
 
     test "updates order within modal", %{conn: conn, order: order} do
-      {:ok, show_live, _html} = live(conn, Routes.order_show_path(conn, :show, order))
+      {:ok, show_live, _html} = live(conn, Routes.order_index_path(conn, :index))
 
       assert show_live |> element("a", "Edit") |> render_click() =~
                "Edit Order"
