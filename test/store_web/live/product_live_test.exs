@@ -1,6 +1,6 @@
 defmodule StoreWeb.ProductLiveTest do
   use StoreWeb.ConnCase
-
+  import Ecto
   import Phoenix.LiveViewTest
   import Store.InventoryFixtures
 
@@ -8,7 +8,8 @@ defmodule StoreWeb.ProductLiveTest do
     description: "some description",
     name: "some name",
     price: 42,
-    type: "some type"
+    stock: 100,
+    max_per_user: 2
   }
   @update_attrs %{
     description: "some updated description",

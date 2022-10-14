@@ -40,8 +40,8 @@ defmodule StoreWeb.Router do
       live "/orders/:id", OrderLive.Show, :show
       live "/orders/:id/show/edit", OrderLive.Show, :edit
 
-      get "/users/register", UserRegistrationController, :new
-      post "/users/register", UserRegistrationController, :create
+    get "/users/register", UserRegistrationController, :new
+    post "/users/register", UserRegistrationController, :create
 
       get "/users/log_in", UserSessionController, :new
       post "/users/log_in", UserSessionController, :create

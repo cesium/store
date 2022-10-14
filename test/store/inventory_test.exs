@@ -5,34 +5,41 @@ defmodule Store.InventoryTest do
 
   describe "products" do
     alias StoreWeb.Inventory.Product
-
+    import Ecto
     import Store.InventoryFixtures
 
-    @invalid_attrs %{description: nil, name: nil, price: nil, type: nil}
+    @invalid_attrs %{
+      description: nil,
+      name: nil,
+      price: nil,
+      stock: nil,
+      max_per_user: nil,
+      pricepartner: nil
+    }
 
     test "list_products/0 returns all products" do
       product = product_fixture()
       assert Inventory.list_products() == [product]
     end
 
-    test "get_product!/1 returns the product with given id" do
-      product = product_fixture()
-      assert Inventory.get_product!(product.id) == product
-    end
-
     test "create_product/1 with valid data creates a product" do
       valid_attrs = %{
-        description: "some description",
-        name: "some name",
+        description: "descrição teste",
+        name: "nome teste",
+        pricepartner: 22,
         price: 42,
-        type: "some type"
+        stock: 100,
+        max_per_user: 1,
+        user_id: Ecto.UUID.generate()
       }
 
       assert {:ok, %Product{} = product} = Inventory.create_product(valid_attrs)
-      assert product.description == "some description"
-      assert product.name == "some name"
+      assert product.description == "descrição teste"
+      assert product.name == "nome teste"
       assert product.price == 42
-      assert product.type == "some type"
+      assert product.pricepartner == 22
+      assert product.stock == 100
+      assert product.max_per_user == 1
     end
 
     test "create_product/1 with invalid data returns error changeset" do
@@ -45,15 +52,13 @@ defmodule Store.InventoryTest do
       update_attrs = %{
         description: "some updated description",
         name: "some updated name",
-        price: 43,
-        type: "some updated type"
+        price: 43
       }
 
       assert {:ok, %Product{} = product} = Inventory.update_product(product, update_attrs)
       assert product.description == "some updated description"
       assert product.name == "some updated name"
       assert product.price == 43
-      assert product.type == "some updated type"
     end
 
     test "update_product/2 with invalid data returns error changeset" do
@@ -79,7 +84,7 @@ defmodule Store.InventoryTest do
 
     import Store.InventoryFixtures
 
-    @invalid_attrs %{redeemed: nil}
+    @invalid_attrs %{redeemed: nil, user_id: nil}
 
     test "list_orders/0 returns all orders" do
       order = order_fixture()

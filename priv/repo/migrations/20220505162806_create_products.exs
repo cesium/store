@@ -6,7 +6,6 @@ defmodule Store.Repo.Migrations.CreateProducts do
       add :id, :binary_id, primary_key: true
       add :name, :string
       add :description, :text
-      add :type, :string
       add :price, :integer
       add :stock, :integer
       add :max_per_user, :integer
@@ -16,5 +15,9 @@ defmodule Store.Repo.Migrations.CreateProducts do
     end
 
     create constraint(:products, :stock_must_be_positive, check: "stock >= 0")
+
+    create constraint(:products, :partners_price_highlow_then_price,
+             check: "price >= pricepartner"
+           )
   end
 end

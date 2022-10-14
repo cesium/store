@@ -49,11 +49,10 @@ defmodule Store.Inventory do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_product(attrs \\ %{}, after_save \\ &{:ok, &1}) do
+  def create_product(attrs \\ %{}) do
     %Product{}
     |> Product.changeset(attrs)
     |> Repo.insert()
-    |> after_save(after_save)
   end
 
   @doc """
@@ -76,7 +75,6 @@ defmodule Store.Inventory do
     product
     |> Product.changeset(attrs)
     |> Repo.update()
-    |> after_save(after_save)
   end
 
   def update_product_image(%Product{} = product, attrs) do

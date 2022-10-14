@@ -23,6 +23,7 @@ defmodule StoreWeb.Inventory.Product do
   schema "products" do
     field :name, :string
     field :description, :string
+    field :pricepartner, :integer
     field :price, :integer
     field :stock, :integer
 

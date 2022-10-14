@@ -13,7 +13,10 @@ defmodule Store.InventoryFixtures do
       |> Enum.into(%{
         description: "some description",
         name: "some name",
-        type: "some type"
+        pricepartner: 22,
+        price: 42,
+        stock: 100,
+        max_per_user: 2
       })
       |> Store.Inventory.create_product()
 
@@ -27,7 +30,7 @@ defmodule Store.InventoryFixtures do
     {:ok, order} =
       attrs
       |> Enum.into(%{
-        redeemed: true
+        user_id: Ecto.UUID.generate(),
       })
       |> Store.Inventory.create_order()
 

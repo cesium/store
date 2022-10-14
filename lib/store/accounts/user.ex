@@ -10,7 +10,6 @@ defmodule Store.Accounts.User do
     field :role, Ecto.Enum, values: @roles
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
-
     timestamps()
   end
 
