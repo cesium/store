@@ -81,7 +81,7 @@ defmodule StoreWeb.UserAuth do
     conn
     |> renew_session()
     |> delete_resp_cookie(@remember_me_cookie)
-    |> redirect(to: "/users/log_in")
+    |> redirect(to: Routes.user_session_path(@conn, :new))
   end
 
   @doc """
@@ -118,7 +118,7 @@ defmodule StoreWeb.UserAuth do
       |> halt()
     else
       conn
-      |> redirect(to: "/users/log_in")
+      |> redirect(to: Routes.user_session_path(conn, :new))
     end
   end
 
@@ -135,7 +135,7 @@ defmodule StoreWeb.UserAuth do
       conn
       |> put_flash(:error, "You must log in to access this page.")
       |> maybe_store_return_to()
-      |> redirect(to: "/users/log_in")
+      |> redirect(to: Routes.user_session_path(conn, :new))
       |> halt()
     end
   end
@@ -147,5 +147,5 @@ defmodule StoreWeb.UserAuth do
   defp maybe_store_return_to(conn), do: conn
 
   defp signed_in_path(_conn), do: "/"
-  defp signed_out_path(_conn), do: "/users/log_in"
+  defp signed_out_path(conn), do: conn.redirect(to: Routes.user_session_path(@conn, :new))
 end

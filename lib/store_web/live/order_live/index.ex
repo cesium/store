@@ -20,7 +20,7 @@ defmodule StoreWeb.OrderLive.Index do
 
   @impl true
   def handle_params(params, _url, socket) do
-    IO.inspect(socket.assigns)
+
     {:noreply,
      socket
      |> assign(:current_page, :orders)
@@ -60,8 +60,7 @@ defmodule StoreWeb.OrderLive.Index do
     |> Order.changeset(%{status: :ordered})
     |> Repo.update!()
 
-    redirect(socket, to: Routes.order_path(socket, :index))
-    {:noreply, socket}
+      {:noreply, socket}
   end
 
 
