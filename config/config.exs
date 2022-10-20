@@ -66,6 +66,32 @@ config :tailwind,
     cd: Path.expand("../assets", __DIR__)
   ]
 
+  config :boruta, Boruta.Oauth,
+  repo: Store.Repo,
+  cache_backend: Boruta.Cache,
+  contexts: [
+    access_tokens: Boruta.Ecto.AccessTokens,
+    clients: Boruta.Ecto.Clients,
+    codes: Boruta.Ecto.Codes,
+    # mandatory for user flows
+    resource_owners: Store.Oauth.ResourceOwners,
+    scopes: Boruta.Ecto.Scopes
+  ],
+  max_ttl: [
+    authorization_code: 60,
+    access_token: 60 * 60 * 24,
+    refresh_token: 60 * 60 * 24 * 30
+  ],
+  token_generator: Boruta.TokenGenerator
+
+config :boruta, Boruta.Cache,
+  primary: [
+    # => 1 day
+    gc_interval: :timer.hours(6),
+    backend: :shards,
+    partitions: 2
+  ]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

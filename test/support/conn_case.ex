@@ -62,4 +62,33 @@ defmodule StoreWeb.ConnCase do
     |> Phoenix.ConnTest.init_test_session(%{})
     |> Plug.Conn.put_session(:user_token, token)
   end
+
+  def register_admin_and_set_user_token(%{conn: conn}) do
+    user = Store.AccountsFixtures.admin_fixture()
+
+    create_token_and_return_context(conn, user)
+  end
+
+  def register_and_set_user_token(%{conn: conn}) do
+    user = Store.AccountsFixtures.user_fixture()
+
+    create_token_and_return_context(conn, user)
+  end
+
+  def create_token_and_return_context(conn, user, scopes \\ "public email password") do
+    {:ok, app} = Store.ApiFixtures.app_fixture(user)
+
+    {:ok, %{token: %Boruta.Oauth.Token{value: token}}} =
+      Boruta.Oauth.Authorization.token(%Boruta.Oauth.ClientCredentialsRequest{
+        client_id: app.client.id,
+        client_secret: app.client.secret,
+        scope: scopes
+      })
+
+    %{
+      conn: conn |> Plug.Conn.put_req_header("authorization", "Bearer #{token}"),
+      user: user,
+      token: token
+    }
+  end
 end
