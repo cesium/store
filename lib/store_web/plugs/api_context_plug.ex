@@ -53,7 +53,6 @@ defmodule StoreWeb.Plugs.ApiContextPlug do
     case Boruta.Ecto.Clients.get_client(client_id) do
       %Boruta.Oauth.Client{} = client ->
         Store.Oauth.get_unprivileged_api_access_from_client(client)
-        Glimesh
       {:error, msg} ->
         {:error, msg}
     end
