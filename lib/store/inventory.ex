@@ -286,8 +286,9 @@ defmodule Store.Inventory do
     iex> purchase(user, product)
     {:error, %Ecto.Changeset{}}
   """
+  alias Store.Accounts.User
 
-  def purchase(user, product) do
+  def purchase(%User{} = user, %Product{} = product) do
     order =
       Order
       |> where(user_id: ^user.id)
@@ -295,14 +296,24 @@ defmodule Store.Inventory do
       |> Repo.one()
       |> Repo.preload([:user, :products])
 
+
     if order do
-      create_order_product(%{order_id: order.id, product_id: product.id})
+      order_product =
+        OrdersProducts
+        |> where(order_id: ^order.id)
+        |> where(product_id: ^product.id)
+        |> Repo.one()
+
+      if order_product != nil do
+        {:error, "Product already in cart"}
+      else
+        create_order_product(%{order_id: order.id, product_id: product.id})
+      end
     else
       {:ok, order} = create_order(%{user_id: user.id})
       create_order_product(%{order_id: order.id, product_id: product.id})
     end
   end
-
   @doc """
 
 
@@ -339,6 +350,76 @@ defmodule Store.Inventory do
     else
       quantity
     end
+  end
+
+  def capitalize_status(status) do
+    status
+    |> Atom.to_string()
+    |> String.capitalize()
+  end
+
+  def total_price(order) do
+    Enum.reduce(order.products, 0, fn product, acc -> acc + product.price end)
+  end
+
+  def total_price_with_partnership(order) do
+    Enum.reduce(order.products, 0 , fn product , acc -> acc + product.price_partnership end)
+  end
+
+  def discount(order) do
+    total_price(order) - total_price_with_partnership(order)
+  end
+
+
+  def total_price_cart(order, id) do
+    order =
+        Order
+        |> where(user_id: ^id)
+        |> where(status: :draft)
+        |> Repo.one()
+
+    order =
+      order
+      |> Repo.preload(:products)
+
+    if order do
+      Enum.reduce(order.products, 0, fn product, acc ->
+        acc + product.price
+      end)
+    else
+      0
+    end
+  end
+
+  def total_price_partnership_cart(order, id) do
+    order =
+        Order
+        |> where(user_id: ^id)
+        |> where(status: :draft)
+        |> Repo.one()
+
+    order =
+      order
+      |> Repo.preload(:products)
+
+    if order do
+      Enum.reduce(order.products, 0, fn product, acc ->
+        acc + product.price_partnership
+      end)
+    else
+      0
+    end
+  end
+
+
+  def change_status(order, status) do
+    order
+    |> Order.changeset(status)
+    |> Repo.update()
+  end
+
+  def discount_cart(order,id) do
+    total_price_cart(order,id) - total_price_partnership_cart(order,id)
   end
 
   defp broadcast({:error, _reason} = error, _event), do: error

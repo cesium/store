@@ -1,13 +1,4 @@
-<%= if  @current_user && @current_user.role in [:admin]  do %>
-  <%= live_patch to: Routes.admin_product_new_path(@socket, :new), class: "button" do%>
-    <div type="button" class="w-full inline-flex items-center bg-black py-4 text-white shadow-sm font-bold" id="sort-menu-button mb-1.5" aria-expanded="false" aria-haspopup="true">
-      <span class="w-full text-center">
-          New
-      </span>
-    </div>
-  <% end %>
-<% end %>
-  <div class="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+<div class="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
     <%= for product <- @products do %>
       <%= live_redirect to: Routes.product_show_path(@socket, :show, product), class: "group" do %>
         <div class="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">

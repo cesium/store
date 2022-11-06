@@ -8,6 +8,7 @@ defmodule Store.Repo.Migrations.CreateProducts do
       add :description, :text
       add :type, :string
       add :price, :integer
+      add :price_partnership, :integer
       add :stock, :integer
       add :max_per_user, :integer
       add :image, :string

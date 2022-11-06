@@ -1,8 +1,6 @@
 defmodule Store.Repo.Seeds.Orders do
   alias Store.Repo
   alias Store.Inventory.Order
-  alias StoreWeb.Inventory.Product
-  alias Store.Inventory
   alias Store.Accounts
 
   def run do

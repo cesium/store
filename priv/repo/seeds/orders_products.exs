@@ -3,7 +3,7 @@ defmodule Store.Repo.Seeds.OrdersProducts do
   alias Store.Inventory.OrdersProducts
   alias Store.Repo
   alias Store.Inventory
-  alias StoreWeb.Inventory.Product
+
   def run do
     seed_order_product()
   end

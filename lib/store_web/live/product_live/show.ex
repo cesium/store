@@ -51,7 +51,8 @@ defmodule StoreWeb.ProductLive.Show do
         {:noreply,
          socket
          |> put_flash(:success, "Product purchased successfully!")
-         |> reload()}
+         |> push_redirect(to: Routes.cart_index_path(socket, :index))
+        }
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}

@@ -7,7 +7,8 @@ defmodule StoreWeb.Inventory.Product do
   alias Store.Uploaders
 
   @required_fields ~w(name description
-                      price stock max_per_user)a
+                      price price_partnership stock max_per_user)a
+
 
   @optional_fields []
 
@@ -26,6 +27,7 @@ defmodule StoreWeb.Inventory.Product do
     field :name, :string
     field :description, :string
     field :price, :integer
+    field :price_partnership, :integer
     field :stock, :integer
     field :max_per_user, :integer
     field :image, Uploaders.ProductImage.Type

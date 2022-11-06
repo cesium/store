@@ -9,6 +9,7 @@ defmodule Store.Inventory.OrdersProducts do
   schema "orders_products" do
     belongs_to :order, Order
     belongs_to :product, Product
+    field :quantity, :integer, default: 1
     timestamps()
   end
 

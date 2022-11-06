@@ -6,6 +6,7 @@ defmodule Store.Repo.Migrations.OrdersAndProducts do
       add :id, :binary_id, primary_key: true
       add :order_id, references(:orders, on_delete: :nothing, type: :binary_id)
       add :product_id, references(:products, on_delete: :nothing, type: :binary_id)
+      add :quantity, :integer, default: 1
       timestamps()
     end
 
