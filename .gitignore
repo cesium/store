@@ -32,3 +32,4 @@ store-*.tar
 npm-debug.log
 /assets/node_modules/
 
+.tool-versions

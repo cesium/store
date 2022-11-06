@@ -17,6 +17,7 @@ module.exports = {
           success: "#008F05",
           failure: "#FF4444",
           warning: "#E09200",
+          grey: "#f5f5f5",
         },
         fontFamily: {
           montserrat: ["Montserrat"],
