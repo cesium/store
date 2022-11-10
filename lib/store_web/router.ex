@@ -34,6 +34,7 @@ defmodule StoreWeb.Router do
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
     live_session :user, on_mount: [{StoreWeb.Hooks, :current_user}] do
       live "/orders", OrderLive.Index, :index
+      live "/orders/:id" , OrderLive.Show, :show
       live "/users/profile", ProfileLive.Index, :index
       live "/cart", CartLive.Index, :index
       live "/products/:id", ProductLive.Show, :show

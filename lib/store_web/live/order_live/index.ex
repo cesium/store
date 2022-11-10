@@ -69,4 +69,19 @@ defmodule StoreWeb.OrderLive.Index do
     |> QRCodeEx.encode()
     |> QRCodeEx.svg(color: "#1F2937", width: 295, background_color: :transparent)
   end
+
+  @impl true
+  def handle_event("draft", _payload, socket) do
+    order = socket.assigns.order
+    Inventory.update_status(order, %{status: :draft})
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("cancel", _payload, socket) do
+    order = socket.assigns.order
+    Inventory.delete_order(order)
+    {:noreply, socket}
+  end
+
 end
