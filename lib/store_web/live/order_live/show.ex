@@ -32,8 +32,7 @@ defmodule StoreWeb.OrderLive.Show do
   @impl true
   def handle_event("draft", _payload, socket) do
     order = socket.assigns.order
-    current_user = socket.assgins.current_user
-
+    current_user = socket.assigns.current_user
     for product <- order.products do
       case Inventory.purchase(current_user, product) do
         {:ok, _product} ->
@@ -45,6 +44,8 @@ defmodule StoreWeb.OrderLive.Show do
           {:noreply, assign(socket, :changeset, changeset)}
       end
     end
+
+    Repo.delete!(order)
   end
 
   defp user_email(id) do
