@@ -29,25 +29,6 @@ defmodule StoreWeb.OrderLive.Show do
     {:noreply, socket}
   end
 
-  @impl true
-  def handle_event("draft", _payload, socket) do
-    order = socket.assigns.order
-    current_user = socket.assigns.current_user
-    for product <- order.products do
-      case Inventory.purchase(current_user, product) do
-        {:ok, _product} ->
-          {:noreply,
-           socket
-           |> put_flash(:success, "Product purchased successfully!")
-          }
-        {:error, %Ecto.Changeset{} = changeset} ->
-          {:noreply, assign(socket, :changeset, changeset)}
-      end
-    end
-
-    Repo.delete!(order)
-  end
-
   defp user_email(id) do
     Accounts.get_user!(id).email
   end
