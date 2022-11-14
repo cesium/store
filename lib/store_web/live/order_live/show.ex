@@ -26,7 +26,10 @@ defmodule StoreWeb.OrderLive.Show do
   def handle_event("canceled", _payload, socket) do
     order = socket.assigns.order
     Inventory.update_status(order, %{status: :canceled})
-    {:noreply, socket}
+    {:noreply, socket
+    |> put_flash(:success, "Order canceled successfly")
+    |> redirect(to: Routes.order_index_path(socket, :index))
+    }
   end
 
   defp user_email(id) do
