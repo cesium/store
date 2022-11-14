@@ -1,21 +1,16 @@
 <div class="bg-white">
   <div>
-    <form class="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+    <div class="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
       <section aria-labelledby="cart-heading" class="lg:col-span-7">
         <ul role="list" class="divide-y divide-gray-200 border-t-2 border-b border-gray-200">
-          <%= for order <- @orders do %> 
+          <%= for order <- @orders do %>
             <%= if @current_user && @current_user.id == order.user_id do %>
               <%= if order.status == :draft do %>
                 <%= for product <- order.products do %>
                 <li class="flex py-6 sm:py-10">
                   <div class="flex-shrink-0">
-                    <%= if product.image  != nil do %>
-                      <img src={Uploaders.ProductImage.url({product.image,product}, :original)} class="h-24 w-24 rounded-md object-cover object-center sm:h-48 sm:w-48"/>
-                    <% else %>
                       <img src="https://tailwindui.com/img/ecommerce-images/order-history-page-03-product-01.jpg" alt="Moss green canvas compact backpack with double top zipper, zipper front pouch, and matching carry handle and backpack straps." class="h-24 w-24 rounded-md object-cover object-center sm:h-48 sm:w-48">
-                    <% end %>
                   </div>
-
                   <div class="ml-4 flex flex-1 flex-col justify-between sm:ml-6">
                     <div class="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
                       <div>
@@ -120,6 +115,6 @@
             <button type="submit" phx-click="checkout" class="w-full bg-black py-3 px-4 text-base font-semibold text-white shadow-sm hover:bg-[#f47c58]">Checkout</button>
         </div>
       </section>
-    </form>
+    </div>
   </div>
 </div>

@@ -1,13 +1,9 @@
 defmodule StoreWeb.Backoffice.OrderLive.Show do
   use StoreWeb, :live_view
 
-  import Ecto.UUID
-  import Ecto.Query
   import Store.Inventory
   alias Store.Repo
   alias Store.Inventory
-  alias Store.Inventory.Order
-  alias Store.Inventory.OrdersProducts
   alias Store.Uploaders
   alias Store.Accounts
 
@@ -28,7 +24,7 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
   @impl true
   def handle_event("paid", _payload, socket) do
     order = socket.assigns.order
-    order = Inventory.update_status(order, %{status: :paid})
+    Inventory.update_status(order, %{status: :paid})
     {:noreply, socket}
   end
 

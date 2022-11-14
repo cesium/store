@@ -286,8 +286,9 @@ defmodule Store.Inventory do
     iex> purchase(user, product)
     {:error, %Ecto.Changeset{}}
   """
+  alias Store.Accounts.User
 
-def purchase(user, product) do
+  def purchase(%User{} = user, %Product{} = product) do
     order =
       Order
       |> where(user_id: ^user.id)
