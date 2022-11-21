@@ -7,6 +7,13 @@ defmodule StoreWeb.ErrorView do
   #   "Internal Server Error"
   # end
 
+  def render("404.html", assigns) do
+    render(StoreWeb.ErrorView, "404_page.html",
+      layout: {StoreWeb.LayoutView, "root.html"},
+      conn: assigns.conn
+    )
+  end
+
   # By default, Phoenix returns the status message from
   # the template name. For example, "404.html" becomes
   # "Not Found".

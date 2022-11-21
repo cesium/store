@@ -1,13 +1,12 @@
-defmodule StoreWeb.Backoffice.OrderLive.Show do
+defmodule StoreWeb.OrderLive.Show do
   use StoreWeb, :live_view
 
   import Store.Inventory
+  alias Flop.Schema.Store.Inventory.Order
   alias Store.Repo
   alias Store.Inventory
   alias Store.Uploaders
   alias Store.Accounts
-  alias StoreWeb.Emails.OrdersEmail
-  alias Store.Mailer
 
   @impl true
   def mount(%{"id" => id}, _session, socket) do
@@ -24,26 +23,13 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
   end
 
   @impl true
-  def handle_event("paid", _payload, socket) do
+  def handle_event("canceled", _payload, socket) do
     order = socket.assigns.order
-    Inventory.update_status(order, %{status: :paid})
-
-    user = Accounts.get_user!(order.user_id)
-    OrdersEmail.paid(order.id, to: user.email) |> Mailer.deliver()
-
-
-    {:noreply, socket}
-  end
-
-
-  @impl true
-  def handle_event("delivered", _payload, socket) do
-    order = socket.assigns.order
-    Inventory.change_status(order, %{status: :delivered})
-
-    user = Accounts.get_user!(order.user_id)
-    OrdersEmail.delivered(order.id, to: user.email) |> Mailer.deliver()
-    {:noreply, socket}
+    Inventory.update_status(order, %{status: :canceled})
+    {:noreply, socket
+    |> put_flash(:success, "Order canceled successfly")
+    |> redirect(to: Routes.order_index_path(socket, :index))
+    }
   end
 
   defp user_email(id) do

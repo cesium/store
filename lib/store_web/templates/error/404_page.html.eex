@@ -1,0 +1,20 @@
+<div class="grid h-screen place-items-center">
+    <div class="px-4">
+        <div class="font-bold pb-2 text-center text-xl">
+            <div class="text-3xl">
+                <p>404</p>
+            </div>
+            <p>Page Not Found</p>
+        </div>
+        <div class="text-center pt-4">
+            <p>We can't seem to find the page you're looking for.<br> The link you followed may be broken, or the page may have been removed.</p>
+            <div class="pt-8">
+                <a href="/">
+                    <button type="button" class="w-full inline-flex items-center bg-white py-4 text-black hover:text-white border-2 border-gray-200 hover:border-[#f47c58] hover:border-2 shadow-sm hover:bg-[#f47c58] font-bold">
+                        <span class="w-full text-center"> Return home </span>
+                    </button>
+                </a>
+            </div>
+        </div>
+    <div>
+</div>

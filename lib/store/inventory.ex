@@ -420,6 +420,7 @@ defmodule Store.Inventory do
     total_price_cart(order,id) - total_price_partnership_cart(order,id)
   end
 
+
   defp broadcast({:error, _reason} = error, _event), do: error
 
   defp broadcast({:ok, %Product{} = product}, event)
