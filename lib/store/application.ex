@@ -26,6 +26,8 @@ defmodule Store.Application do
     Supervisor.start_link(children, opts)
   end
 
+  StoreWeb.ApiLogger.start_logger()
+
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   @impl true

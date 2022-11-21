@@ -12,6 +12,15 @@ defmodule StoreWeb.Endpoint do
 
   socket("/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]])
 
+
+
+  socket "/api/graph", StoreWeb.GraphApiSocket,
+    # We can check_origin: false here because the only method of using this connection
+    # is by having an existing API key you are authorized to use. This allows for devs
+    # to run third party apps on their own client websites.
+    websocket: [check_origin: false],
+    longpoll: false
+
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phx.digest

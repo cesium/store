@@ -56,8 +56,13 @@ defmodule Store.MixProject do
       {:qrcode_ex, "~> 0.1.1"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
+      {:boruta, "~> 2.1.5"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
-      {:icons, "~> 0.9"}
+      {:icons, "~> 0.9"},
+      {:absinthe, "~> 1.5"},
+      {:absinthe_plug, "~> 1.5"},
+      {:absinthe_phoenix, "~> 2.0"},
+      {:absinthe_relay, "~> 1.5"},
     ]
   end
 
