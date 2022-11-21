@@ -8,7 +8,7 @@ defmodule StoreWeb.Emails.AuthEmails do
     frontend_url = Application.fetch_env!(:bokken, StoreWeb.Endpoint)[:frontend_url]
 
     new()
-    |> from({"CeSIUM", "noreply@store.cesium.di.uminho.pt"})
+    |> from({"CeSIUM - Store", "noreply@store.cesium.di.uminho.pt"})
     |> to(email)
     |> subject("[CeSIUM - Store] Instruções para repor a password")
     |> reply_to("noreply@store.cesium.di.uminho.pt")
