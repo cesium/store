@@ -8,10 +8,10 @@ defmodule StoreWeb.Emails.AuthEmails do
     frontend_url = Application.fetch_env!(:bokken, StoreWeb.Endpoint)[:frontend_url]
 
     new()
-    |> from({"CeSIUM", "noreply@cesium.di.uminho.pt"})
+    |> from({"CeSIUM", "noreply@store.cesium.di.uminho.pt"})
     |> to(email)
-    |> subject("[CeSIUM] Instruções para repor a password")
-    |> reply_to("noreply@coderdojobraga.org")
+    |> subject("[CeSIUM - Store] Instruções para repor a password")
+    |> reply_to("noreply@store.cesium.di.uminho.pt")
     |> assign(:link, frontend_url <> "/users/reset_password/" <> id)
   end
 end
