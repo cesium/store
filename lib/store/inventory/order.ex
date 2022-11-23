@@ -8,7 +8,7 @@ defmodule Store.Inventory.Order do
 
   @required_fields ~w(user_id)a
   @optional_fields ~w(status)a
-  @status ~w(draft ordered paid canceled delivered)a
+  @status ~w(draft ordered ready paid canceled delivered)a
 
   @derive {
     Flop.Schema,
