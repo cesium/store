@@ -70,6 +70,14 @@
         <p>Choose a size</p>
         <p>M</p>
       </div>
+      <div class="flex justify-between items-center uppercase font-bold border-b-2 border-gray-200 py-8">
+        <p>Pre Order:</p>
+        <%= if @product.pre_order do %>
+          <input class="h-10 w-10 rounded" type="checkbox" name="socio" value="true" disabled checked>
+        <% else %>
+          <input class="h-10 w-10 rounded"  type="checkbox" name="socio" value="true" disabled>
+        <% end %>
+      </div>
       <div class="py-8"><%= @product.description %></div>
     </div>
     <div class="flex flex-col justify-between space-y-4">
