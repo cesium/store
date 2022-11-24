@@ -13,7 +13,7 @@ defmodule Store.InventoryFixtures do
       |> Enum.into(%{
         description: "some description",
         name: "some name",
-        pricepartner: 22,
+        price_partnership: 22,
         price: 42,
         stock: 100,
         max_per_user: 2

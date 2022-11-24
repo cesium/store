@@ -17,7 +17,7 @@ defmodule Store.Repo.Migrations.CreateProducts do
     create constraint(:products, :stock_must_be_positive, check: "stock >= 0")
 
     create constraint(:products, :partners_price_highlow_then_price,
-             check: "price >= pricepartner"
+             check: "price >= price_partnership"
            )
   end
 end

@@ -15,7 +15,7 @@ defmodule Store.InventoryTest do
       price: nil,
       stock: nil,
       max_per_user: nil,
-      pricepartner: nil
+      price_partnership: nil
     }
 
     test "list_products/0 returns all products" do
@@ -38,7 +38,7 @@ defmodule Store.InventoryTest do
       assert product.description == "descrição teste"
       assert product.name == "nome teste"
       assert product.price == 42
-      assert product.pricepartner == 22
+      assert product.price_partnership == 22
       assert product.stock == 100
       assert product.max_per_user == 1
     end

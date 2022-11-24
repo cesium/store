@@ -70,13 +70,13 @@ CREATE TABLE public.products (
     name character varying(255),
     description text,
     price integer,
-    pricepartner integer,
+    price_partnership integer,
     stock integer,
     max_per_user integer,
     image character varying(255),
     inserted_at timestamp(0) without time zone NOT NULL,
     updated_at timestamp(0) without time zone NOT NULL,
-    CONSTRAINT partners_price_highlow_then_price CHECK ((price >= pricepartner)),
+    CONSTRAINT partners_price_highlow_then_price CHECK ((price >= price_partnership)),
     CONSTRAINT stock_must_be_positive CHECK ((stock >= 0))
 );
 
