@@ -24,6 +24,7 @@ defp generate_orders(count) do
     %{
       user_id: user_id,
       status: Enum.random([:draft, :ordered, :paid]),
+      pre_order: Enum.random([true, false])
     }
   end
 end
