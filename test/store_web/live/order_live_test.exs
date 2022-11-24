@@ -10,14 +10,13 @@ defmodule StoreWeb.OrderLiveTest do
   @update_attrs %{status: :ordered}
   @invalid_attrs %{status: :abc}
 
-
   defp create_order(_) do
     order = order_fixture()
     %{order: order}
   end
 
   describe "Index" do
-    setup [:create_order]
+    setup [:register_and_log_in_user, :create_order]
 
     test "lists all orders", %{conn: conn} do
       {:ok, _index_live, html} = live(conn, Routes.order_index_path(conn, :index))
@@ -76,7 +75,7 @@ defmodule StoreWeb.OrderLiveTest do
   end
 
   describe "Show" do
-    setup [:create_order]
+    setup [:register_and_log_in_user, :create_order]
 
     test "displays order", %{conn: conn, order: order} do
       {:ok, _show_live, html} = live(conn, Routes.order_index_path(conn, :index))

@@ -27,7 +27,7 @@ defmodule Store.InventoryTest do
       valid_attrs = %{
         description: "descrição teste",
         name: "nome teste",
-        pricepartner: 22,
+        price_partnership: 22,
         price: 42,
         stock: 100,
         max_per_user: 1,

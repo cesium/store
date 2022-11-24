@@ -11,12 +11,14 @@ defmodule StoreWeb.ProductLiveTest do
     stock: 100,
     max_per_user: 2
   }
+
   @update_attrs %{
     description: "some updated description",
     name: "some updated name",
     price: 43,
     type: "some updated type"
   }
+
   @invalid_attrs %{description: nil, name: nil, price: nil, type: nil}
 
   defp create_product(_) do
@@ -25,7 +27,7 @@ defmodule StoreWeb.ProductLiveTest do
   end
 
   describe "Index" do
-    setup [:create_product]
+    setup [:register_and_log_in_user, :create_product]
 
     test "lists all products", %{conn: conn, product: product} do
       {:ok, _index_live, html} = live(conn, Routes.product_index_path(conn, :index))
@@ -87,7 +89,7 @@ defmodule StoreWeb.ProductLiveTest do
   end
 
   describe "Show" do
-    setup [:create_product]
+    setup [:register_and_log_in_user, :create_product]
 
     test "displays product", %{conn: conn, product: product} do
       {:ok, _show_live, html} = live(conn, Routes.product_show_path(conn, :show, product))
