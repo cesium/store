@@ -4,6 +4,8 @@ defmodule StoreWeb.ProductLive.Show do
   alias Store.Inventory
   alias Store.Uploaders
   alias Store.Inventory.Order
+  alias Store.Repo
+  alias Store.Accounts
 
   @impl true
   def mount(%{"id" => id}, _session, socket) do
@@ -21,7 +23,7 @@ defmodule StoreWeb.ProductLive.Show do
     {:noreply,
      socket
      |> assign(:current_page, :products)
-     |> assign(:product, Inventory.get_product!(id))}
+     |> assign(:product, Inventory.get_product!(id) |> Repo.preload(:order))}
   end
 
   @impl true
@@ -74,5 +76,14 @@ defmodule StoreWeb.ProductLive.Show do
     socket
     |> assign(:current_page, :store)
     |> assign(:product, Inventory.get_product!(id))
+  end
+
+  def user_email(order) do
+    user = Accounts.get_user!(order.user_id)
+    user.email
+  end
+
+  def total_quantity(product) do
+    quantity = Enum.count(product.order, fn order -> order.status != :draft end)
   end
 end
