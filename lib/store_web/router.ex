@@ -45,14 +45,17 @@ defmodule StoreWeb.Router do
     pipe_through :browser
     live "/", HomeLive.Index, :index
 
-    live "/products", ProductLive.Index, :index
-    live "/products/:id", ProductLive.Show, :show
-
     get "/users/register", UserRegistrationController, :new
     post "/users/register", UserRegistrationController, :create
 
     get "/users/log_in", UserSessionController, :new
     post "/users/log_in", UserSessionController, :create
+
+    live_session :user_product, on_mount: [{StoreWeb.Hooks, :current_user}] do
+      live "/products", ProductLive.Index, :index
+      live "/products/:id", ProductLive.Show, :show
+    end
+
   end
 
   # Other scopes may use custom stacks.
