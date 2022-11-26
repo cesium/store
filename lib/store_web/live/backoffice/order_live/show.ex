@@ -31,12 +31,10 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
     user = Accounts.get_user!(order.user_id)
     OrdersEmail.paid(order.id, to: user.email) |> Mailer.deliver()
 
-
-    {:noreply, socket
-    |> redirect(to: Routes.admin_order_index_path(socket, :index))
-  }
+    {:noreply,
+     socket
+     |> redirect(to: Routes.admin_order_index_path(socket, :index))}
   end
-
 
   @impl true
   def handle_event("delivered", _payload, socket) do
@@ -45,9 +43,10 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
 
     user = Accounts.get_user!(order.user_id)
     OrdersEmail.delivered(order.id, to: user.email) |> Mailer.deliver()
-    {:noreply, socket
-    |> redirect(to: Routes.admin_order_index_path(socket, :index))
-  }
+
+    {:noreply,
+     socket
+     |> redirect(to: Routes.admin_order_index_path(socket, :index))}
   end
 
   def handle_event("ready", _payload, socket) do
@@ -56,10 +55,10 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
 
     user = Accounts.get_user!(order.user_id)
     OrdersEmail.ready(order.id, to: user.email) |> Mailer.deliver()
+
     {:noreply,
-    socket
-    |> redirect(to: Routes.admin_order_index_path(socket, :index))
-  }
+     socket
+     |> redirect(to: Routes.admin_order_index_path(socket, :index))}
   end
 
   defp user_email(id) do
