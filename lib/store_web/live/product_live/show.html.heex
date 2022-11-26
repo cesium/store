@@ -109,7 +109,7 @@
           <tr>
             <th>Order ID</th>
             <th>Time</th>
-            <th>Costumer Email</th>
+            <th>Customer Email</th>
             <th>Status</th>
             <th>Quantity</th>
           </tr>
@@ -129,10 +129,10 @@
         </tbody>
         <tfoot>
           <tr>
-            <td>Total Price: <%= total_quantity(@product) * @product.price %> €</td>
+            <td><b>Total Price:</b><%= total_quantity(@product) * @product.price %> €</td>
           </tr>
           <tr>
-            <td>Total Quantity: <%= total_quantity(@product) %></td>
+            <td><b>Total Quantity:</b><%= total_quantity(@product) %></td>
           </tr>
         </tfoot>
       </table>
