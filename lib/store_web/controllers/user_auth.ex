@@ -9,7 +9,7 @@ defmodule StoreWeb.UserAuth do
   # If you want bump or reduce this value, also change
   # the token expiry itself in UserToken.
   @max_age 60 * 60 * 24 * 60
-  @remember_me_cookie "_store_web_user_remember_me"
+  @remember_me_cookie "cesium_session"
   @remember_me_options [sign: true, max_age: @max_age, same_site: "Lax"]
 
   @doc """
@@ -89,23 +89,25 @@ defmodule StoreWeb.UserAuth do
   and remember me token.
   """
   def fetch_current_user(conn, _opts) do
-    {user_token, conn} = ensure_user_token(conn)
-    user = user_token && Accounts.get_user_by_session_token(user_token)
+    require Logger
+    Logger.warn("Here")
+    Logger.warn(conn.cookies[@remember_me_cookie])
+    #{user_token, conn} = ensure_user_token(conn)
+    user = Accounts.get_user_by_session_token(conn.cookies[@remember_me_cookie])
     assign(conn, :current_user, user)
   end
 
   defp ensure_user_token(conn) do
-    if user_token = get_session(conn, :user_token) do
-      {user_token, conn}
-    else
+    #if user_token = get_session(conn, :user_token) do
+    #  {user_token, conn}
+    #else
       conn = fetch_cookies(conn, signed: [@remember_me_cookie])
-
       if user_token = conn.cookies[@remember_me_cookie] do
         {user_token, put_session(conn, :user_token, user_token)}
       else
         {nil, conn}
       end
-    end
+    #end
   end
 
   @doc """

@@ -230,8 +230,26 @@ defmodule Store.Accounts do
   Gets the user with the given signed token.
   """
   def get_user_by_session_token(token) do
-    {:ok, query} = UserToken.verify_session_token_query(token)
-    Repo.one(query)
+    #{:ok, query} = UserToken.verify_session_token_query(token)
+    #Repo.one(query)
+    require Logger
+    HTTPoison.start()
+    response = HTTPoison.get!(
+      "http://localhost:4001/api/auth/me",
+      [],
+      hackney: [cookie: ["cesium_session=" <> token]]
+    )
+
+    if response.status_code == 200 do
+      Logger.warn("Sucesium")
+      user = Jason.decode!(response.body)[0]
+      Logger.warn(response.body)
+      Logger.warn(user)
+      user
+    else
+      Logger.warn("F")
+      nil
+    end
   end
 
   @doc """
