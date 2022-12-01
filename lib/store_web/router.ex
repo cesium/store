@@ -32,26 +32,30 @@ defmodule StoreWeb.Router do
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
+
     live_session :user, on_mount: [{StoreWeb.Hooks, :current_user}] do
       live "/orders", OrderLive.Index, :index
-      live "/orders/:id" , OrderLive.Show, :show
+      live "/orders/:id", OrderLive.Show, :show
       live "/users/profile", ProfileLive.Index, :index
       live "/cart", CartLive.Index, :index
-      live "/products/:id", ProductLive.Show, :show
     end
   end
 
   scope "/", StoreWeb do
     pipe_through :browser
-      live "/", HomeLive.Index, :index
+    live "/", HomeLive.Index, :index
 
+    get "/users/register", UserRegistrationController, :new
+    post "/users/register", UserRegistrationController, :create
+
+    get "/users/log_in", UserSessionController, :new
+    post "/users/log_in", UserSessionController, :create
+
+    live_session :user_product, on_mount: [{StoreWeb.Hooks, :current_user}] do
       live "/products", ProductLive.Index, :index
+      live "/products/:id", ProductLive.Show, :show
+    end
 
-      get "/users/register", UserRegistrationController, :new
-      post "/users/register", UserRegistrationController, :create
-
-      get "/users/log_in", UserSessionController, :new
-      post "/users/log_in", UserSessionController, :create
   end
 
   # Other scopes may use custom stacks.
@@ -76,7 +80,7 @@ defmodule StoreWeb.Router do
   #
   # Note that preview only shows emails that were sent by the same
   # node running the Phoenix server.
-  if Mix.env() in [:dev,:stg,:test] do
+  if Mix.env() in [:dev, :stg, :test] do
     import Phoenix.LiveDashboard.Router
 
     scope "/dev" do

@@ -38,7 +38,11 @@ defmodule Store.Inventory do
       ** (Ecto.NoResultsError)
 
   """
-  def get_product!(id), do: Repo.get!(Product, id)
+  def get_product!(id, opts) when is_list(opts) do
+    Product
+    |> apply_filters(opts)
+    |> Repo.get!(id)
+  end
 
   @doc """
   Creates a product.
@@ -296,7 +300,6 @@ defmodule Store.Inventory do
       |> Repo.one()
       |> Repo.preload([:user, :products])
 
-
     if order do
       order_product =
         OrdersProducts
@@ -314,6 +317,7 @@ defmodule Store.Inventory do
       create_order_product(%{order_id: order.id, product_id: product.id})
     end
   end
+
   @doc """
 
 
@@ -363,20 +367,19 @@ defmodule Store.Inventory do
   end
 
   def total_price_with_partnership(order) do
-    Enum.reduce(order.products, 0 , fn product , acc -> acc + product.price_partnership end)
+    Enum.reduce(order.products, 0, fn product, acc -> acc + product.price_partnership end)
   end
 
   def discount(order) do
     total_price(order) - total_price_with_partnership(order)
   end
 
-
   def total_price_cart(order, id) do
     order =
-        Order
-        |> where(user_id: ^id)
-        |> where(status: :draft)
-        |> Repo.one()
+      Order
+      |> where(user_id: ^id)
+      |> where(status: :draft)
+      |> Repo.one()
 
     order =
       order
@@ -393,10 +396,10 @@ defmodule Store.Inventory do
 
   def total_price_partnership_cart(order, id) do
     order =
-        Order
-        |> where(user_id: ^id)
-        |> where(status: :draft)
-        |> Repo.one()
+      Order
+      |> where(user_id: ^id)
+      |> where(status: :draft)
+      |> Repo.one()
 
     order =
       order
@@ -411,17 +414,15 @@ defmodule Store.Inventory do
     end
   end
 
-
   def change_status(order, status) do
     order
     |> Order.changeset(status)
     |> Repo.update()
   end
 
-  def discount_cart(order,id) do
-    total_price_cart(order,id) - total_price_partnership_cart(order,id)
+  def discount_cart(order, id) do
+    total_price_cart(order, id) - total_price_partnership_cart(order, id)
   end
-
 
   defp broadcast({:error, _reason} = error, _event), do: error
 

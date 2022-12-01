@@ -54,7 +54,6 @@ config :store, StoreWeb.Endpoint,
 # configured to run both http and https servers on
 # different ports.
 
-
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
 
