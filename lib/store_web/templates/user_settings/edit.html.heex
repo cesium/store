@@ -1,88 +1,100 @@
-<div class="w-full max-w-md h-screen flex flex-col justify-center mx-auto">
-  <div>
-    <h2 class="mt-2 text-3xl font-extrabold text-center text-gray-900">
-      <%= gettext("Account Settings") %>
-    </h2>
-  </div>
-  <div class="mx-4 md:mx-0">
-    <div class="mt-10">
-      <.form let={f} for={@email_changeset} action={Routes.user_settings_path(@conn, :update)} id="update_email">
-        <div class="uppercase font-semibold border-b-2 border-gray-200">
-          <h3 class="pb-2">Change Email</h3>
-        </div>
-        <div class="min-h-full bg-white">
-          <%= if @email_changeset.action do %>
-            <div class="alert alert-danger text-sm text-center pt-4">
+<div class="w-full max-w-md grid h-screen place-items-center mx-auto">
+  <div class="w-full">
+    <div>
+      <h2 class="mt-6 text-3xl font-extrabold text-center text-gray-900">
+        <%= gettext("Account Settings") %>
+      </h2>
+    </div>
+    <div class="mx-4 md:mx-0">
+      <div class="mt-10">
+        <.form let={f} for={@email_changeset} action={Routes.user_settings_path(@conn, :update)} id="update_email">
+          <div class="uppercase font-semibold border-b-2 border-gray-200">
+            <h3 class="pb-2">Change Email</h3>
+          </div>
+          <div class="min-h-full bg-white">
+            <%= if @email_changeset.action do %>
+              <div class="mt-4 alert alert-danger text-sm text-center bg-red-100 border-l-4 border-red-400 text-red-700 px-4 py-4">
+                <p>Oops, something went wrong! Please check the errors below.</p>
+              </div>
+            <% end %>
+
+            <%= hidden_input f, :action, name: "action", value: "update_email" %>
+
+            <div class="mt-4">
+              <label for="street-address" class="block text-sm font-medium text-gray-700">Email</label>
+              <%= email_input f, :email, required: true, class: "mt-1 focus:ring-red-500 focus:border-red-500 block w-full shadow-sm sm:text-sm border-gray-300" %>
+            </div>
+            <div class="mt-2 text-red-700 text-sm font-medium">
+              <%= error_tag f, :email %>
+            </div>
+
+            <div class="mt-4">
+              <label for="street-address" class="block text-sm font-medium text-gray-700">Current password</label>
+              <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_email", class: "mt-1 focus:ring-red-500 focus:border-red-500 block w-full shadow-sm sm:text-sm border-gray-300" %>
+            </div>
+            <div class="mt-2 text-red-700 text-sm font-medium">
+              <%= error_tag f, :current_password %>
+            </div>
+
+            <div class="mt-8">
+              <%= submit class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-bold text-white bg-black hover:bg-[#f47c58] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#f47c58]" do %>
+                <span class="flex absolute inset-y-0 left-0 items-center pl-3">
+                  <Heroicons.Solid.save class="w-5 h-5 text-white opacity-10 group-hover:text-black" />
+                </span>
+                <%= gettext("Update Email") %>
+              <% end %>
+            </div>
+          </div>
+        </.form>
+      </div>
+      <div class="mt-8">
+        <.form let={f} for={@password_changeset} action={Routes.user_settings_path(@conn, :update)} id="update_password">
+          <div class="uppercase font-semibold border-b-2 border-gray-200">
+            <h3 class="pb-2">Change Password</h3>
+          </div>
+
+          <%= if @password_changeset.action do %>
+            <div class="mt-4 alert alert-danger text-sm text-center bg-red-100 border-l-4 border-red-400 text-red-700 px-4 py-4">
               <p>Oops, something went wrong! Please check the errors below.</p>
             </div>
           <% end %>
 
-          <%= hidden_input f, :action, name: "action", value: "update_email" %>
+          <%= hidden_input f, :action, name: "action", value: "update_password" %>
 
           <div class="mt-4">
-            <label for="street-address" class="block text-sm font-medium text-gray-700">Email</label>
-            <%= email_input f, :email, required: true, class: "mt-1 focus:ring-red-500 focus:border-red-500 block w-full shadow-sm sm:text-sm border-gray-300" %>
+            <label for="street-address" class="block text-sm font-medium text-gray-700">New password</label>
+            <%= password_input f, :password, required: true, class: "mt-1 focus:ring-red-500 focus:border-red-500 block w-full shadow-sm sm:text-sm border-gray-300" %>
           </div>
-          <%= error_tag f, :email %>
+          <div class="mt-2 text-red-700 text-sm font-medium">
+            <%= error_tag f, :password %>
+          </div>
+
+          <div class="mt-4">
+            <label for="street-address" class="block text-sm font-medium text-gray-700">Confirm new password</label>
+            <%= password_input f, :password_confirmation, required: true, class: "mt-1 focus:ring-red-500 focus:border-red-500 block w-full shadow-sm sm:text-sm border-gray-300" %>
+          </div>
+          <div class="mt-2 text-red-700 text-sm font-medium">
+            <%= error_tag f, :password_confirmation %>
+          </div>
 
           <div class="mt-4">
             <label for="street-address" class="block text-sm font-medium text-gray-700">Current password</label>
-            <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_email", class: "mt-1 focus:ring-red-500 focus:border-red-500 block w-full shadow-sm sm:text-sm border-gray-300" %>
+            <%= password_input f, :current_password, required: true, class: "mt-1 focus:ring-red-500 focus:border-red-500 block w-full shadow-sm sm:text-sm border-gray-300" %>
           </div>
-          <%= error_tag f, :current_password %>
+          <div class="mt-2 text-red-700 text-sm font-medium">
+            <%= error_tag f, :current_password %>
+          </div>
 
-          <div class="mt-8">
+          <div class="mt-8 mb-8">
             <%= submit class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-bold text-white bg-black hover:bg-[#f47c58] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#f47c58]" do %>
               <span class="flex absolute inset-y-0 left-0 items-center pl-3">
                 <Heroicons.Solid.save class="w-5 h-5 text-white opacity-10 group-hover:text-black" />
               </span>
-              <%= gettext("Update Email") %>
+              <%= gettext("Update Password") %>
             <% end %>
           </div>
-        </div>
-      </.form>
-    </div>
-    <div class="mt-8">
-      <.form let={f} for={@password_changeset} action={Routes.user_settings_path(@conn, :update)} id="update_password">
-        <div class="uppercase font-semibold border-b-2 border-gray-200">
-          <h3 class="pb-2">Change Password</h3>
-        </div>
-
-        <%= if @password_changeset.action do %>
-          <div class="alert alert-danger">
-            <p>Oops, something went wrong! Please check the errors below.</p>
-          </div>
-        <% end %>
-
-        <%= hidden_input f, :action, name: "action", value: "update_password" %>
-
-        <div class="mt-4">
-          <label for="street-address" class="block text-sm font-medium text-gray-700">New password</label>
-          <%= password_input f, :password, required: true, class: "mt-1 focus:ring-red-500 focus:border-red-500 block w-full shadow-sm sm:text-sm border-gray-300" %>
-        </div>
-        <%= error_tag f, :password %>
-
-        <div class="mt-4">
-          <label for="street-address" class="block text-sm font-medium text-gray-700">Confirm new password</label>
-          <%= password_input f, :password_confirmation, required: true, class: "mt-1 focus:ring-red-500 focus:border-red-500 block w-full shadow-sm sm:text-sm border-gray-300" %>
-        </div>
-        <%= error_tag f, :password_confirmation %>
-
-        <div class="mt-4">
-          <label for="street-address" class="block text-sm font-medium text-gray-700">Current password</label>
-          <%= password_input f, :current_password, required: true, class: "mt-1 focus:ring-red-500 focus:border-red-500 block w-full shadow-sm sm:text-sm border-gray-300" %>
-        </div>
-        <%= error_tag f, :current_password %>
-
-        <div class="mt-8">
-          <%= submit class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-bold text-white bg-black hover:bg-[#f47c58] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#f47c58]" do %>
-            <span class="flex absolute inset-y-0 left-0 items-center pl-3">
-              <Heroicons.Solid.save class="w-5 h-5 text-white opacity-10 group-hover:text-black" />
-            </span>
-            <%= gettext("Update Password") %>
-          <% end %>
-        </div>
-      </.form>
+        </.form>
+      </div>
     </div>
   </div>
 </div>
