@@ -8,7 +8,7 @@ defmodule StoreWeb.ErrorView do
   # end
 
   def render("404.html", assigns) do
-    render(StoreWeb.ErrorView, "404_page.html",
+    render(StoreWeb.ErrorView, "404.html",
       layout: {StoreWeb.LayoutView, "root.html"},
       conn: assigns.conn
     )
