@@ -9,7 +9,6 @@ defmodule StoreWeb.Inventory.Product do
   @required_fields ~w(name description
                       price price_partnership stock max_per_user pre_order)a
 
-
   @optional_fields []
 
   @derive {

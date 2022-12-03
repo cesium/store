@@ -38,10 +38,10 @@ defmodule StoreWeb.CartLive.Index do
 
     OrdersEmail.ordered(order.id, to: current_user.email) |> Mailer.deliver()
 
-    {:noreply, socket
-    |> put_flash(:success, "Order update successfly")
-    |> redirect(to: Routes.order_index_path(socket, :index))
-    }
+    {:noreply,
+     socket
+     |> put_flash(:success, "Order update successfly")
+     |> redirect(to: Routes.order_index_path(socket, :index))}
   end
 
   def handle_event("delete", %{"id" => id}, socket) do
@@ -59,7 +59,6 @@ defmodule StoreWeb.CartLive.Index do
       |> where(order_id: ^order.id)
       |> where(product_id: ^id)
       |> Repo.one()
-
 
     Repo.delete!(order_product)
 

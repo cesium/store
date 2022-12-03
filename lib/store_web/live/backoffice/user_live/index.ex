@@ -9,7 +9,6 @@ defmodule StoreWeb.Backoffice.UserLive.Index do
   alias Store.Uploaders
   alias Store.Accounts
 
-
   @impl true
   def mount(_params, _session, socket) do
     {:ok, assign(socket, :orders, Inventory.list_orders() |> Repo.preload(:user))}
