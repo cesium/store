@@ -94,11 +94,11 @@ defmodule StoreWeb.Router do
     pipe_through :browser
 
     scope "/users" do
-      delete "/users/log_out", UserSessionController, :delete
-      get "/users/confirm", UserConfirmationController, :new
-      post "/users/confirm", UserConfirmationController, :create
-      get "/users/confirm/:token", UserConfirmationController, :edit
-      post "/users/confirm/:token", UserConfirmationController, :update
+      delete "/log_out", UserSessionController, :delete
+      get "/confirm", UserConfirmationController, :new
+      post "/confirm", UserConfirmationController, :create
+      get "/confirm/:token", UserConfirmationController, :edit
+      post "/confirm/:token", UserConfirmationController, :update
       get "/reset_password", UserResetPasswordController, :new
       post "/reset_password", UserResetPasswordController, :create
       get "/reset_password/:token", UserResetPasswordController, :edit
