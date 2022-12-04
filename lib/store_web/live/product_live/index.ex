@@ -3,7 +3,6 @@ defmodule StoreWeb.ProductLive.Index do
 
   alias Store.Inventory
   alias Store.Uploaders
-  alias Store.Repo
   @impl true
   def mount(_params, _session, socket) do
     {:ok, assign(socket, :products, Inventory.list_products())}
@@ -15,9 +14,5 @@ defmodule StoreWeb.ProductLive.Index do
      socket
      |> assign(:current_page, :products)
      |> assign(:page_title, "CeSIUM Store - Products")}
-  end
-
-  defp list_products do
-    Inventory.list_products()
   end
 end

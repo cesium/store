@@ -281,8 +281,7 @@ defmodule Store.AccountsTest do
     end
 
     test "validates current password", %{user: user} do
-      {:error, changeset} =
-        Accounts.update_user_password(user, "invalid", %{password: valid_user_password()})
+      Accounts.update_user_password(user, "invalid", %{password: valid_user_password()})
 
       assert %{current_password: ["is not valid"]}
     end

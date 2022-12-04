@@ -2,7 +2,6 @@ defmodule StoreWeb.OrderLive.Show do
   use StoreWeb, :live_view
 
   import Store.Inventory
-  alias Flop.Schema.Store.Inventory.Order
   alias Store.Repo
   alias Store.Inventory
   alias Store.Uploaders

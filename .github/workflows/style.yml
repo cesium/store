@@ -28,6 +28,3 @@ jobs:
 
       - name: Check code formating
         run: mix format --check-formatted
-
-      - name: Lint the code
-        run: mix credo --strict --all
