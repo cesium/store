@@ -81,7 +81,7 @@ defmodule StoreWeb.UserAuth do
     conn
     |> renew_session()
     |> delete_resp_cookie(@remember_me_cookie)
-    |> redirect(to: Routes.user_session_path(@conn, :new))
+    |> redirect(to: "/")
   end
 
   @doc """
@@ -118,7 +118,6 @@ defmodule StoreWeb.UserAuth do
       |> halt()
     else
       conn
-      |> redirect(to: Routes.user_session_path(conn, :new))
     end
   end
 
@@ -139,6 +138,17 @@ defmodule StoreWeb.UserAuth do
       |> halt()
     end
   end
+
+  def redirect_if_authenticated(conn, _opts) do
+    if conn.assigns[:current_user] do
+      conn
+      |> redirect(to: signed_in_path(conn))
+      |> halt()
+    else
+      conn
+    end
+  end
+
 
   defp maybe_store_return_to(%{method: "GET"} = conn) do
     put_session(conn, :user_return_to, current_path(conn))

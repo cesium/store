@@ -4,12 +4,11 @@ defmodule Store.Inventory do
   """
 
   use Store.Context
-  import Ecto.Changeset
-  alias Ecto.Multi
   alias StoreWeb.Accounts.User
   alias StoreWeb.Inventory.Product
   alias Store.Inventory.Order
   alias Store.Inventory.OrdersProducts
+  alias Store.Inventory
 
   @doc """
   Returns the list of products.
@@ -56,11 +55,10 @@ defmodule Store.Inventory do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_product(attrs \\ %{}, after_save \\ &{:ok, &1}) do
+  def create_product(attrs \\ %{}) do
     %Product{}
     |> Product.changeset(attrs)
     |> Repo.insert()
-    |> after_save(after_save)
   end
 
   @doc """
@@ -79,7 +77,6 @@ defmodule Store.Inventory do
     product
     |> Product.changeset(attrs)
     |> Repo.update()
-    |> after_save(after_save)
   end
 
   @doc """
@@ -345,8 +342,8 @@ defmodule Store.Inventory do
 
     quantity =
       case order_quantity do
-        0 -> Inventory.get_product!(product_id).max_per_user
-        _ -> Inventory.get_product!(product_id).max_per_user - order_quantity
+        0 -> Inventory.get_product!(product_id, []).max_per_user
+        _ -> Inventory.get_product!(product_id, []).max_per_user - order_quantity
       end
 
     if quantity < 0 do
