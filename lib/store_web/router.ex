@@ -99,6 +99,12 @@ defmodule StoreWeb.Router do
       post "/confirm", UserConfirmationController, :create
       get "/confirm/:token", UserConfirmationController, :edit
       post "/confirm/:token", UserConfirmationController, :update
+    end
+  end
+
+  scope "/", StoreWeb do
+    pipe_through [:browser, :redirect_if_authenticated]
+    scope "/users" do
       get "/reset_password", UserResetPasswordController, :new
       post "/reset_password", UserResetPasswordController, :create
       get "/reset_password/:token", UserResetPasswordController, :edit
