@@ -22,6 +22,9 @@ module.exports = {
         fontFamily: {
           montserrat: ["Montserrat"],
         },
+        gridAutoColumns: {
+          '8fr': 'minmax(0, 8fr)',
+        }
       },
     },
     plugins: [
