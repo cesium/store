@@ -1,14 +1,17 @@
 defmodule Store.Accounts.User do
   use Store.Schema
 
-  @required_fields ~w(email password)a
+  @required_fields ~w(email password role)a
+  @roles ~w(user admin)a
 
   schema "users" do
     field :email, :string
     field :password, :string, virtual: true, redact: true
+    field :role, Ecto.Enum, values: @roles
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
-
+    field :partnership, :boolean, default: false
+    has_many :orders, Store.Inventory.Order
     timestamps()
   end
 
@@ -33,7 +36,7 @@ defmodule Store.Accounts.User do
     user
     |> cast(attrs, @required_fields)
     |> validate_email()
-    |> validate_current_password(opts)
+    |> validate_password(opts)
   end
 
   defp validate_email(changeset) do
@@ -76,7 +79,7 @@ defmodule Store.Accounts.User do
     user
     |> cast(attrs, [:password])
     |> validate_confirmation(:password, message: "does not match password")
-    |> validate_current_password(opts)
+    |> validate_password(opts)
   end
 
   @doc """
@@ -91,15 +94,15 @@ defmodule Store.Accounts.User do
   Verifies the password.
 
   If there is no user or the user doesn't have a password, we call
-  `Bcrypt.no_user_verify/0` to avoid timing attacks.
+  `Argon2.no_user_verify/0` to avoid timing attacks.
   """
   def valid_password?(%Store.Accounts.User{hashed_password: hashed_password}, password)
       when is_binary(hashed_password) and byte_size(password) > 0 do
-    Bcrypt.verify_pass(password, hashed_password)
+    Argon2.verify_pass(password, hashed_password)
   end
 
   def valid_password?(_, _) do
-    Bcrypt.no_user_verify()
+    Argon2.no_user_verify()
     false
   end
 
@@ -111,6 +114,29 @@ defmodule Store.Accounts.User do
       changeset
     else
       add_error(changeset, :current_password, "is not valid")
+    end
+  end
+
+  defp validate_password(changeset, opts) do
+    changeset
+    |> validate_required([:password])
+    |> validate_length(:password, min: 12, max: 72)
+    # |> validate_format(:password, ~r/[a-z]/, message: "at least one lower case character")
+    # |> validate_format(:password, ~r/[A-Z]/, message: "at least one upper case character")
+    # |> validate_format(:password, ~r/[!?@#$%^&*_0-9]/, message: "at least one digit or punctuation character")
+    |> maybe_hash_password(opts)
+  end
+
+  defp maybe_hash_password(changeset, opts) do
+    hash_password? = Keyword.get(opts, :hash_password, true)
+    password = get_change(changeset, :password)
+
+    if hash_password? && password && changeset.valid? do
+      changeset
+      |> put_change(:hashed_password, Argon2.hash_pwd_salt(password))
+      |> delete_change(:password)
+    else
+      changeset
     end
   end
 end

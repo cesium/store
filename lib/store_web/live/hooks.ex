@@ -4,8 +4,16 @@ defmodule StoreWeb.Hooks do
   """
   import Phoenix.LiveView
 
+  alias Store.Accounts
+
   def on_mount(:default, _params, _session, socket) do
-    {:cont, assign(socket, :page_title, "Cesium Store")}
+    {:cont, assign(socket, :page_title, "CeSIUM Store")}
+  end
+
+  def on_mount(:current_user, _params, %{"user_token" => user_token}, socket) do
+    current_user = Accounts.get_user_by_session_token(user_token)
+
+    {:cont, assign(socket, current_user: current_user)}
   end
 
   def on_mount(:current_user, _params, _session, socket) do

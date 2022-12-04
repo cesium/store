@@ -11,36 +11,50 @@ defmodule StoreWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_user
+
+    plug Plug.Static,
+      at: "/store",
+      from: :store,
+      gzip: false,
+      only: ~w(css fonts images store js favicon.ico robots.txt)
   end
 
   pipeline :api do
     plug :accepts, ["json"]
   end
 
+  pipeline :admin do
+    plug StoreWeb.Auth.AllowedRoles, [:admin]
+  end
+
+  scope "/", StoreWeb do
+    pipe_through [:browser, :require_authenticated_user]
+    get "/users/settings", UserSettingsController, :edit
+    put "/users/settings", UserSettingsController, :update
+    get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
+
+    live_session :user, on_mount: [{StoreWeb.Hooks, :current_user}] do
+      live "/orders", OrderLive.Index, :index
+      live "/orders/:id", OrderLive.Show, :show
+      live "/users/profile", ProfileLive.Index, :index
+      live "/cart", CartLive.Index, :index
+    end
+  end
+
   scope "/", StoreWeb do
     pipe_through :browser
-
     live "/", HomeLive.Index, :index
-
-    live "/products", ProductLive.Index, :index
-    live "/products/new", ProductLive.Index, :new
-    live "/products/:id/edit", ProductLive.Index, :edit
-    live "/dashboard", DashboardLive.Index, :index
-    live "/products/:id", ProductLive.Show, :show
-    live "/products/:id/show/edit", ProductLive.Show, :edit
-
-    live "/orders", OrderLive.Index, :index
-    live "/orders/new", OrderLive.Index, :new
-    live "/orders/:id/edit", OrderLive.Index, :edit
-
-    live "/orders/:id", OrderLive.Show, :show
-    live "/orders/:id/show/edit", OrderLive.Show, :edit
 
     get "/users/register", UserRegistrationController, :new
     post "/users/register", UserRegistrationController, :create
 
     get "/users/log_in", UserSessionController, :new
     post "/users/log_in", UserSessionController, :create
+
+    live_session :user_product, on_mount: [{StoreWeb.Hooks, :current_user}] do
+      live "/products", ProductLive.Index, :index
+      live "/products/:id", ProductLive.Show, :show
+    end
   end
 
   # Other scopes may use custom stacks.
@@ -65,10 +79,11 @@ defmodule StoreWeb.Router do
   #
   # Note that preview only shows emails that were sent by the same
   # node running the Phoenix server.
-  if Mix.env() == :dev do
+  if Mix.env() in [:dev, :stg, :test] do
+    import Phoenix.LiveDashboard.Router
+
     scope "/dev" do
       pipe_through :browser
-
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end
@@ -76,28 +91,42 @@ defmodule StoreWeb.Router do
   ## Authentication routes
 
   scope "/", StoreWeb do
-    pipe_through [:browser, :redirect_if_user_is_authenticated]
+    pipe_through :browser
 
-    get "/users/reset_password", UserResetPasswordController, :new
-    post "/users/reset_password", UserResetPasswordController, :create
-    get "/users/reset_password/:token", UserResetPasswordController, :edit
-    put "/users/reset_password/:token", UserResetPasswordController, :update
+    scope "/users" do
+      delete "/log_out", UserSessionController, :delete
+      get "/confirm", UserConfirmationController, :new
+      post "/confirm", UserConfirmationController, :create
+      get "/confirm/:token", UserConfirmationController, :edit
+      post "/confirm/:token", UserConfirmationController, :update
+    end
   end
 
   scope "/", StoreWeb do
-    pipe_through [:browser, :require_authenticated_user]
-    get "/users/settings", UserSettingsController, :edit
-    put "/users/settings", UserSettingsController, :update
-    get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
+    pipe_through [:browser, :redirect_if_authenticated]
+    scope "/users" do
+      get "/reset_password", UserResetPasswordController, :new
+      post "/reset_password", UserResetPasswordController, :create
+      get "/reset_password/:token", UserResetPasswordController, :edit
+      put "/reset_password/:token", UserResetPasswordController, :update
+    end
   end
 
   scope "/", StoreWeb do
-    pipe_through [:browser]
+    pipe_through [:browser, :require_authenticated_user, :admin]
 
-    delete "/users/log_out", UserSessionController, :delete
-    get "/users/confirm", UserConfirmationController, :new
-    post "/users/confirm", UserConfirmationController, :create
-    get "/users/confirm/:token", UserConfirmationController, :edit
-    post "/users/confirm/:token", UserConfirmationController, :update
+    scope "/admin", Backoffice, as: :admin do
+      live "/dashboard", DashboardLive.Index, :index
+
+      live "/product/new", ProductLive.New, :new
+      live "/product/:id/edit", ProductLive.Edit, :edit
+
+      live "/orders", OrderLive.Index, :index
+      live "/orders/:id/edit", OrderLive.Edit, :edit
+      live "/orders/:id", OrderLive.Show, :show
+      live "/orders/:id/show/edit", OrderLive.Edit, :edit
+
+      live "/users", UserLive.Index, :index
+    end
   end
 end

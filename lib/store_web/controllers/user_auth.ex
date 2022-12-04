@@ -139,6 +139,17 @@ defmodule StoreWeb.UserAuth do
     end
   end
 
+  def redirect_if_authenticated(conn, _opts) do
+    if conn.assigns[:current_user] do
+      conn
+      |> redirect(to: signed_in_path(conn))
+      |> halt()
+    else
+      conn
+    end
+  end
+
+
   defp maybe_store_return_to(%{method: "GET"} = conn) do
     put_session(conn, :user_return_to, current_path(conn))
   end
@@ -146,4 +157,5 @@ defmodule StoreWeb.UserAuth do
   defp maybe_store_return_to(conn), do: conn
 
   defp signed_in_path(_conn), do: "/"
+  defp signed_out_path(conn), do: conn.redirect(to: Routes.user_session_path(@conn, :new))
 end

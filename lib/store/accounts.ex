@@ -350,4 +350,11 @@ defmodule Store.Accounts do
       {:error, :user, changeset, _} -> {:error, changeset}
     end
   end
+
+  def list_users(params \\ %{})
+
+  def list_users(_opts) do
+    User
+    |> Repo.all()
+  end
 end

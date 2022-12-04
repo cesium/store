@@ -33,7 +33,7 @@ defmodule Store.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:bcrypt_elixir, "~> 2.0"},
+      {:argon2_elixir, "~> 3.0"},
       {:phoenix, "~> 1.6.6"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.6"},
@@ -45,16 +45,19 @@ defmodule Store.MixProject do
       {:flop, "~> 0.17.0"},
       {:phoenix_live_dashboard, "~> 0.6"},
       {:esbuild, "~> 0.3", runtime: Mix.env() == :dev},
-      {:swoosh, "~> 1.3"},
+      {:swoosh, "~> 1.5"},
+      {:phoenix_swoosh, "~> 1.0"},
+      {:hackney, "~> 1.18"},
       {:waffle, "~> 1.1"},
       {:waffle_ecto, "~> 0.0"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.18"},
+      {:qrcode_ex, "~> 0.1.1"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
-      {:ex_heroicons, "~> 0.6.0"}
+      {:icons, "~> 0.9"}
     ]
   end
 
@@ -69,7 +72,7 @@ defmodule Store.MixProject do
       setup: ["deps.get", "ecto.setup"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      test: ["ecto.create --quiet", "ecto.load --quiet --skip-if-loaded", "test"],
       "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
     ]
   end

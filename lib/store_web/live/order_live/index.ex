@@ -1,12 +1,19 @@
 defmodule StoreWeb.OrderLive.Index do
+  @moduledoc false
+  import Ecto.Query
   use StoreWeb, :live_view
-
+  alias Store.Repo
+  import Store.Inventory
   alias Store.Inventory
   alias Store.Inventory.Order
+  alias Store.Inventory.OrdersProducts
+  alias Store.Uploaders
+  alias Store.Accounts
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, :orders, list_orders())}
+  def mount(_params, _socket, socket) do
+    {:ok, socket}
+    {:ok, assign(socket, :orders, Inventory.list_orders() |> Repo.preload(:products))}
   end
 
   @impl true
@@ -36,14 +43,39 @@ defmodule StoreWeb.OrderLive.Index do
   end
 
   @impl true
-  def handle_event("delete", %{"id" => id}, socket) do
-    order = Inventory.get_order!(id)
-    {:ok, _} = Inventory.delete_order(order)
+  def handle_event("checkout", _payload, socket) do
+    current_user = socket.assigns.current_user
 
-    {:noreply, assign(socket, :orders, list_orders())}
+    order =
+      Order
+      |> where(status: :draft)
+      |> where(user_id: ^current_user.id)
+      |> Repo.one()
+
+    order
+    |> Order.changeset(%{status: :ordered})
+    |> Repo.update!()
+
+    {:noreply, socket}
   end
 
-  defp list_orders do
-    Inventory.list_orders()
+  defp draw_qr_code(order) do
+    Routes.admin_order_show_path(StoreWeb.Endpoint, :show, order.id)
+    |> QRCodeEx.encode()
+    |> QRCodeEx.svg(color: "#1F2937", width: 295, background_color: :transparent)
+  end
+
+  @impl true
+  def handle_event("draft", _payload, socket) do
+    order = socket.assigns.order
+    Inventory.update_status(order, %{status: :draft})
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("cancel", _payload, socket) do
+    order = socket.assigns.order
+    Inventory.delete_order(order)
+    {:noreply, socket}
   end
 end

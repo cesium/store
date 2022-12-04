@@ -1,0 +1,6 @@
+Olá 
+
+A sua encomenda foi paga com sucesso.
+(Texto)
+
+<%= @link %>

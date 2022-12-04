@@ -1,4 +1,4 @@
-defmodule StoreWeb.Administration.ProductLive.New do
+defmodule StoreWeb.Backoffice.ProductLive.New do
   @moduledoc false
   use StoreWeb, :live_view
   alias StoreWeb.Inventory.Product

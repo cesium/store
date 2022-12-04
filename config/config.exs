@@ -17,6 +17,14 @@ config :store, StoreWeb.Endpoint,
   pubsub_server: Store.PubSub,
   live_view: [signing_salt: "5kFWBsBn"]
 
+config :icons,
+  collection: [Heroicons, Ionicons]
+
+config :waffle,
+  storage: Waffle.Storage.Local,
+  storage_dir_prefix: "priv",
+  asset_host: {:system, "ASSET_HOST"}
+
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails
@@ -27,7 +35,9 @@ config :store, StoreWeb.Endpoint,
 config :store, Store.Mailer, adapter: Swoosh.Adapters.Local
 
 # Swoosh API client is needed for adapters other than SMTP.
-config :swoosh, :api_client, false
+config :swoosh, :api_client, Swoosh.ApiClient.Hackney
+
+config :store, StoreWeb.Gettext, default_locale: "pt", locales: ~w(en pt)
 
 # Configure esbuild (the version is required)
 config :esbuild,

@@ -1,129 +1,124 @@
+<main class="flex items-center justify-center">
+  <section aria-labelledby="recent-heading" class="mt-16 w-max h-max">
+    <div class="flex justify-center items-center">
+      <div class="space-y-8">
+            <%= for order <- @orders do %>
+              <%= if @current_user && @current_user.id == order.user_id do %>
+                <%= if order.status != :draft && order.status != :canceled do %>
+          <div class="border-t border-b border-gray-200 bg-white shadow-sm sm:border mr-4 w-max">
+            <h3 class="sr-only">Order placed on <time datetime="2021-07-06">Jul 6, 2021</time></h3>
 
-
-<main>
-  <div class="bg-white">
-    <div class="max-w-3xl mx-auto px-4 py-16 sm:px-6 sm:py-24">
-      <div class="max-w-xl">
-        <h1 id="your-orders-heading" class="text-3xl font-extrabold tracking-tight text-gray-900">Your Orders</h1>
-        <p class="mt-2 text-sm text-gray-500">Check the status of recent orders, manage returns, and discover similar products.</p>
-      </div>
-      
-      <div class="">
-        <%= for _ <- 1..4 do %> 
-          <div x-data="{ open: false}" class="mt-12 space-y-16 sm:mt-16">
-            <section aria-labelledby="4376-heading">
-              <div class="space-y-1 md:flex md:items-baseline md:space-y-0 md:space-x-4">
-                <h2 id="4376-heading" class="text-lg font-medium text-gray-900 md:flex-shrink-0">Order #4376</h2>
-                <div class="space-y-5 md:flex-1 md:min-w-0 sm:flex sm:items-baseline sm:justify-between sm:space-y-0">
-                  <p class="text-sm font-medium text-gray-500">Delivered on January 22, 2021</p>
-                  <div class="flex text-sm font-medium">
-                    <a href="#" class="text-orange-600 hover:text-orange-500">Manage order</a>
-                    <div class="border-l border-gray-200 ml-4 pl-4 sm:ml-6 sm:pl-6">
-                      <a href="#" class="text-orange-600 hover:text-orange-500">View Invoice</a>
-                    </div>
-                  </div>
+            <div class="flex items-center border-b border-gray-200 p-4 sm:grid sm:grid-cols-4 sm:gap-x-6 sm:p-6">
+              <dl class="grid flex-1 grid-cols-2 gap-x-6 text-sm sm:col-span-3 sm:grid-cols-4 lg:col-span-2">
+                <div>
+                  <%= if @current_user do %>
+                    <dt class="font-semibold uppercase">Order User</dt>
+                    <dd class="mt-1"><%= @current_user.email %></dd>
+                  <% end %>
                 </div>
-              </div>
+                <div class="hidden sm:block">
+                  <dt class="font-semibold uppercase">Date placed</dt>
+                  <dd class="mt-1">
+                    <time datetime=""><%= NaiveDateTime.to_string(order.inserted_at) %></time>
+                  </dd>
+                </div>
+                <div>
+                  <dt class="font-semibold uppercase">Total amount</dt>
+                  <%= if @current_user.partnership do %>
+                    <dd class="mt-1"><%= total_price_with_partnership(order) %> €</dd>
+                  <% else %>
+                    <dd class="mt-1"><%= total_price(order) %> €</dd>
+                  <% end %>
+                </div>
+              </dl>
 
-              <div class="mt-6 -mb-6 flow-root border-t border-gray-200 divide-y divide-gray-200">
-                <div class="py-6 sm:flex">
-                  <div class="flex space-x-4 sm:min-w-0 sm:flex-1 sm:space-x-6 lg:space-x-8">
-                    <img src="https://tailwindui.com/img/ecommerce-images/order-history-page-07-product-01.jpg" alt="Brass puzzle in the shape of a jack with overlapping rounded posts." class="flex-none w-20 h-20 rounded-md object-center object-cover sm:w-48 sm:h-48">
-                    <div class="pt-1.5 min-w-0 flex-1 sm:pt-0">
-                      <h3 class="text-sm font-medium text-gray-900">
-                        <a href="#">Machined Brass Puzzle</a>
-                      </h3>
-                      <p class="text-sm text-gray-500 truncate">
-                        <span>Brass</span>
-                        <span class="mx-1 text-gray-400" aria-hidden="true">&middot;</span>
-                        <span>3&quot; x 3&quot; x 3&quot;</span>
-                      </p>
-                      <p class="mt-1 font-medium text-gray-900">$95.00</p>
-                    </div>
-                  </div>
-                  <div class="mt-6 space-y-4 sm:mt-0 sm:ml-6 sm:flex-none sm:w-40">
-                    <button type="button" class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-300  w-full flex items-center justify-center bg-orange-600 py-2 px-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-orange-700 sm:w-full sm:flex-grow-0">Buy again</button>
-                    <button type="button" class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-300  w-full flex items-center justify-center bg-white py-2 px-2.5 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 sm:w-full sm:flex-grow-0">Shop similar</button>
-                  </div>
-                </div>  
+              <div class="hidden lg:col-span-2 lg:flex lg:items-center lg:justify-end lg:space-x-4">
+                    <%= draw_qr_code(order) |> raw %>
               </div>
-              <div x-show="open">
-                <%= for _ <- 1..2 do %> 
-                <div class="mt-6 -mb-6 flow-root border-t border-gray-200 divide-y divide-gray-200">
-                  <div class="py-6 sm:flex">
-                    <div class="flex space-x-4 sm:min-w-0 sm:flex-1 sm:space-x-6 lg:space-x-8">
-                      <img src="https://tailwindui.com/img/ecommerce-images/order-history-page-07-product-01.jpg" alt="Brass puzzle in the shape of a jack with overlapping rounded posts." class="flex-none w-20 h-20 rounded-md object-center object-cover sm:w-48 sm:h-48">
-                      <div class="pt-1.5 min-w-0 flex-1 sm:pt-0">
-                        <h3 class="text-sm font-medium text-gray-900">
-                          <a href="#">Machined Brass Puzzle</a>
-                        </h3>
-                        <p class="text-sm text-gray-500 truncate">
-                          <span>Brass</span>
-                          <span class="mx-1 text-gray-400" aria-hidden="true">&middot;</span>
-                          <span>3&quot; x 3&quot; x 3&quot;</span>
-                        </p>
-                        <p class="mt-1 font-medium text-gray-900">$95.00</p>
+            </div>
+
+            <!-- Products -->
+            <h4 class="sr-only">Items</h4>
+            <ul role="list" class="">
+                <%= for product <- order.products do %>
+                  <li class="p-4 sm:p-6">
+                    <div class="flex items-center sm:items-start">
+                      <div class="h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-gray-200 sm:h-40 sm:w-40">
+                        <%= if product.image  != nil do %>
+                          <img src={Uploaders.ProductImage.url({product.image,product}, :original)} class="h-full w-full object-cover object-center"/>
+                        <% else %>
+                          <img src="https://tailwindui.com/img/ecommerce-images/order-history-page-03-product-01.jpg" alt="Moss green canvas compact backpack with double top zipper, zipper front pouch, and matching carry handle and backpack straps." class="h-full w-full object-cover object-center">
+                        <% end %>
+                      </div>
+                      <div class="ml-6 flex-1 text-sm">
+                        <div class="font-medium text-gray-900 sm:flex sm:justify-between">
+                          <h5 class="uppercase font-semibold">
+                            <%= product.name %>
+                          </h5>
+                          <p class="mt-2 sm:mt-0"><%= product.price %> €</p>
+                        </div>
+                        <p class="hidden sm:mt-2 sm:block"><%= product.description %></p>
                       </div>
                     </div>
-                    <div class="mt-6 space-y-4 sm:mt-0 sm:ml-6 sm:flex-none sm:w-40">
-                      <button type="button" class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-300  w-full flex items-center justify-center bg-orange-600 py-2 px-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-orange-700 sm:w-full sm:flex-grow-0">Buy again</button>
-                      <button type="button" class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-300  w-full flex items-center justify-center bg-white py-2 px-2.5 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 sm:w-full sm:flex-grow-0">Shop similar</button>
+                    <p class="hidden sm:mt-2 sm:block">Are you a minimalist looking for a compact carry option? The Micro Backpack is the perfect size for your essential everyday carry items. Wear it like a backpack or carry it like a satchel for all-day use.</p>
+                    <div class="mt-6 sm:flex sm:justify-between">
+                      <div class="flex items-center">
+                        <!-- Heroicon name: mini/check-circle -->
+                        <svg class="h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                        </svg>
+                        <p class="ml-2 text-sm font-medium">Inserted on <time datetime="2021-07-12"><%= NaiveDateTime.to_string(product.updated_at) %></time></p>
+                      </div>
                     </div>
-                  </div>  
-                </div>
+                </li>
                 <% end %>
-              </div>
-            
-              <button x-show="open === false" @click=" open = true " class="w-full mx-auto mt-2 -mb-6 font-light text-xs text-orange-600">Show More</button>
-              <button x-show="open" @click=" open = false " class="w-full mx-auto mt-2 -mb-6 font-light text-xs text-orange-600">Show Less</button>
-            </section>
+                <%= if order.status == :delivered do %>
+                <div class="w-full flex flex-col justify-center mb-2 mx-auto">
+                  <div class="mt-8 w-12/12 bg-[#f47c58] rounded-lg py-2 flex"></div>
+                  <div class="flex flex-row space-x-96">
+                    <p class="justify-start">Ordered</p>
+                    <p class="">Paid</p>
+                    <p class="">Delivered</p>
+                  </div>
+                </div>
+              <% else %>
+                <%= if order.status == :paid do %>
+                  <div class="w-max flex flex-col justify-center mb-2 mx-auto">
+                    <div class="mt-8 w-12/12 bg-grey rounded-lg">
+                      <div class="w-6/12 bg-[#f47c58] rounded-lg py-2 flex"></div>
+                    </div>
+                      <div class="flex flex-row space-x-96">
+                        <p class="justify-start">Ordered</p>
+                        <p class="">Paid</p>
+                        <p class="">Delivered</p>
+                      </div>
+                  </div>
+                <% else %>
+                  <div class="w-max flex flex-col justify-center mb-2 mx-auto">
+                    <div class="mt-8 w-12/12 bg-grey rounded-lg">
+                      <div class="w-1/12 bg-[#f47c58] rounded-lg py-2 flex"></div>
+                    </div>
+                      <div class="flex flex-row space-x-96">
+                        <p class="justify-start">Ordered</p>
+                        <p class="">Paid</p>
+                        <p class="">Delivered</p>
+                      </div>
+                  </div>
+                    <%= live_patch to: Routes.order_show_path(@socket, :show ,order.id),class: "button" do %>
+                      <button class="flex items-center justify-center w-32 bg-black py-2 px-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#f47c58]">
+                          <span class="w-full text-center">
+                              Go to order
+                          </span>
+                      </button>
+                    <% end %>
+                <% end %>
+              <% end %>
+            </ul>
           </div>
+          <% end %>
         <% end %>
+      <% end %>
       </div>
     </div>
-  </div>`
+  </section>
 </main>
-
-<!--
-<h1>Listing Orders</h1>
-
-<%= if @live_action in [:new, :edit] do %>
-  <.modal return_to={Routes.order_index_path(@socket, :index)}>
-    <.live_component
-      module={StoreWeb.OrderLive.FormComponent}
-      id={@order.id || :new}
-      title={@page_title}
-      action={@live_action}
-      order={@order}
-      return_to={Routes.order_index_path(@socket, :index)}
-    />
-  </.modal>
-<% end %>
-
-<table>
-  <thead>
-    <tr>
-      <th>Redeemed</th>
-
-      <th></th>
-    </tr>
-  </thead>
-  <tbody id="orders">
-    <%= for order <- @orders do %>
-      <tr id={"order-#{order.id}"}>
-        <td><%= order.redeemed %></td>
-
-        <td>
-          <span><%= live_redirect "Show", to: Routes.order_show_path(@socket, :show, order) %></span>
-          <span><%= live_patch "Edit", to: Routes.order_index_path(@socket, :edit, order) %></span>
-          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: order.id, data: [confirm: "Are you sure?"] %></span>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<span><%= live_patch "New Order", to: Routes.order_index_path(@socket, :new) %></span>
-
--->
- 

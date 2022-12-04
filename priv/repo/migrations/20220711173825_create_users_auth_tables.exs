@@ -7,6 +7,8 @@ defmodule Store.Repo.Migrations.CreateUsersAuthTables do
     create table(:users, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :email, :citext, null: false
+      add :role, :string, null: false
+      add :partnership, :boolean, default: false
       add :hashed_password, :string, null: false
       add :confirmed_at, :naive_datetime
       timestamps()
@@ -16,10 +18,11 @@ defmodule Store.Repo.Migrations.CreateUsersAuthTables do
 
     create table(:users_tokens, primary_key: false) do
       add :id, :binary_id, primary_key: true
-      add :user_id, references(:users, type: :uuid), null: false
+      add :user_id, references(:users, type: :binary_id, on_delete: :delete_all), null: false
       add :token, :binary, null: false
       add :context, :string, null: false
       add :sent_to, :string
+
       timestamps(updated_at: false)
     end
 

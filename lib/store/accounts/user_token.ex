@@ -1,7 +1,10 @@
 defmodule Store.Accounts.UserToken do
-  use Ecto.Schema
-  import Ecto.Query
+  @moduledoc """
+  User Tokens to manage web sessions with full control.
+  """
+  use Store.Schema
   alias Store.Accounts.UserToken
+  import Ecto.Query
 
   @hash_algorithm :sha256
   @rand_size 32
