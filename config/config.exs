@@ -35,7 +35,9 @@ config :waffle,
 config :store, Store.Mailer, adapter: Swoosh.Adapters.Local
 
 # Swoosh API client is needed for adapters other than SMTP.
-config :swoosh, :api_client, false
+config :swoosh, :api_client, Swoosh.ApiClient.Hackney
+
+config :store, StoreWeb.Gettext, default_locale: "pt", locales: ~w(en pt)
 
 # Configure esbuild (the version is required)
 config :esbuild,

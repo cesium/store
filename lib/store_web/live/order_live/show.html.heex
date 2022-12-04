@@ -1,13 +1,13 @@
 <main>
     <section aria-labelledby="recent-heading" class="mt-16">
       <div>
-        <%= live_redirect to: Routes.admin_order_index_path(@socket, :index), class:
+        <%= live_redirect to: Routes.order_index_path(@socket, :index), class:
         "flex flex-row space-x-4 uppercase font-semibold pt-4
         hover:text-[#f47c58]" do %> <%= "< Return" %> <% end %>
         <div class="space-y-8">
             <div class="border-t border-b border-gray-200 bg-white shadow-sm sm:border">
               <h3 class="sr-only">Order placed on <time datetime="2021-07-06">Jul 6, 2021</time></h3>
-  
+
               <div class="flex items-center border-b border-gray-200 p-4 sm:grid sm:grid-cols-4 sm:gap-x-6 sm:p-6">
                 <dl class="grid flex-1 grid-cols-2 gap-x-6 text-sm sm:col-span-3 sm:grid-cols-4 lg:col-span-2">
                   <div>
@@ -29,22 +29,12 @@
                     <dd class="mt-1 font-medium"><%= capitalize_status(@order.status) %></dd>
                   </div>
                 </dl>
-  
+
                 <!-- Add a button at the final at the grid -->
                 <div class="hidden lg:col-span-2 lg:flex lg:items-center lg:justify-end lg:space-x-4">
-                  <%= if @order.status != :draft && @order.status != :delivered do %>
-                    <%= if @order.status != :ready do %>
-                    <button phx-click="ready" class="flex items-center justify-center w-32 bg-black py-2 px-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#f47c58]">
-                      <span> Ready </span>
-                    </button>
-                    <% end %>
-                    <%= if @order.status != :paid do %>
-                    <button phx-click="paid" class="flex items-center justify-center w-32 bg-black py-2 px-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#f47c58]">
-                        <span> Paid </span>
-                    </button>
-                    <% end %>
-                    <button phx-click="delivered" class="flex items-center justify-center w-32 bg-black py-2 px-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#f47c58]">
-                        <span> Delivered </span>
+                  <%= if @order.status == :ordered do %>
+                    <button phx-click="canceled" class="flex items-center justify-center w-32 bg-black py-2 px-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#f47c58]">
+                        <span> Cancel </span>
                     </button>
                   <% end %>
                 </div>
@@ -52,7 +42,7 @@
               <!-- Products -->
               <h4 class="sr-only">Items</h4>
               <ul role="list" class="divide-y divide-gray-200">
-  
+
                   <%= for product <- @order.products do %>
                     <li class="p-4 sm:p-6">
                       <div class="flex items-center sm:items-start">
@@ -73,7 +63,7 @@
                           <p class="hidden sm:mt-2 sm:block"><%= product.description %></p>
                         </div>
                       </div>
-  
+
                       <div class="mt-6 sm:flex sm:justify-between">
                         <div class="flex items-center">
                           <!-- Heroicon name: mini/check-circle -->
@@ -82,7 +72,7 @@
                           </svg>
                           <p class="ml-2 text-sm font-medium">Inserted on <time datetime="2021-07-12"><%= NaiveDateTime.to_string(product.updated_at) %></time></p>
                         </div>
-  
+
                         <div class="mt-6 flex items-center space-x-4 divide-x divide-gray-200 border-t border-gray-200 pt-4 text-sm font-medium sm:mt-0 sm:ml-4 sm:border-none sm:pt-0">
                           <div class="flex flex-1 justify-center">
                             <a href="#" class="whitespace-nowrap text-[#f47c58]">View product</a>

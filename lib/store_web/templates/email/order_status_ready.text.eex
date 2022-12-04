@@ -1,0 +1,6 @@
+Olá 
+
+A sua encomenda encontra-se pronta para pagamento e respetiva entrega.
+(Texto)
+
+<%= @link %>

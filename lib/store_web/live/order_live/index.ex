@@ -10,12 +10,10 @@ defmodule StoreWeb.OrderLive.Index do
   alias Store.Uploaders
   alias Store.Accounts
 
-
   @impl true
   def mount(_params, _socket, socket) do
     {:ok, socket}
     {:ok, assign(socket, :orders, Inventory.list_orders() |> Repo.preload(:products))}
-
   end
 
   @impl true
@@ -24,7 +22,6 @@ defmodule StoreWeb.OrderLive.Index do
      socket
      |> assign(:current_page, :orders)
      |> apply_action(socket.assigns.live_action, params)}
-
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
@@ -59,13 +56,26 @@ defmodule StoreWeb.OrderLive.Index do
     |> Order.changeset(%{status: :ordered})
     |> Repo.update!()
 
-      {:noreply, socket}
+    {:noreply, socket}
   end
-
 
   defp draw_qr_code(order) do
     Routes.admin_order_show_path(StoreWeb.Endpoint, :show, order.id)
     |> QRCodeEx.encode()
     |> QRCodeEx.svg(color: "#1F2937", width: 295, background_color: :transparent)
+  end
+
+  @impl true
+  def handle_event("draft", _payload, socket) do
+    order = socket.assigns.order
+    Inventory.update_status(order, %{status: :draft})
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("cancel", _payload, socket) do
+    order = socket.assigns.order
+    Inventory.delete_order(order)
+    {:noreply, socket}
   end
 end

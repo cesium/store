@@ -1,9 +1,9 @@
 defmodule StoreWeb.ProductLive.Show do
   use StoreWeb, :live_view
 
+  alias Store.Accounts
   alias Store.Inventory
   alias Store.Uploaders
-  alias Store.Inventory.Order
 
   @impl true
   def mount(%{"id" => id}, _session, socket) do
@@ -21,7 +21,7 @@ defmodule StoreWeb.ProductLive.Show do
     {:noreply,
      socket
      |> assign(:current_page, :products)
-     |> assign(:product, Inventory.get_product!(id))}
+     |> assign(:product, Inventory.get_product!(id, [preloads: :order]))}
   end
 
   @impl true
@@ -51,8 +51,7 @@ defmodule StoreWeb.ProductLive.Show do
         {:noreply,
          socket
          |> put_flash(:success, "Product purchased successfully!")
-         |> push_redirect(to: Routes.cart_index_path(socket, :index))
-        }
+         |> push_redirect(to: Routes.cart_index_path(socket, :index))}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}
@@ -73,6 +72,15 @@ defmodule StoreWeb.ProductLive.Show do
 
     socket
     |> assign(:current_page, :store)
-    |> assign(:product, Inventory.get_product!(id))
+    |> assign(:product, Inventory.get_product!(id, [preloads: :order]))
+  end
+
+  def user_email(order) do
+    user = Accounts.get_user!(order.user_id)
+    user.email
+  end
+
+  def total_quantity(product) do
+    Enum.count(product.order, fn order -> order.status != :draft end)
   end
 end

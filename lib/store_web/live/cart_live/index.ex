@@ -6,6 +6,8 @@ defmodule StoreWeb.CartLive.Index do
   alias Store.Repo
   alias Store.Inventory
   alias Store.Inventory.Order
+  alias Store.Mailer
+  alias StoreWeb.Emails.OrdersEmail
 
   @impl true
   def mount(_params, _session, socket) do
@@ -34,10 +36,12 @@ defmodule StoreWeb.CartLive.Index do
     |> Order.changeset(%{status: :ordered})
     |> Repo.update!()
 
-    {:noreply, socket
-    |> put_flash(:success, "Order update successfly")
-    |> redirect(to: Routes.order_index_path(socket, :index))
-    }
+    OrdersEmail.ordered(order.id, to: current_user.email) |> Mailer.deliver()
+
+    {:noreply,
+     socket
+     |> put_flash(:success, "Order update successfly")
+     |> redirect(to: Routes.order_index_path(socket, :index))}
   end
 
   def handle_event("delete", %{"id" => id}, socket) do
@@ -55,7 +59,6 @@ defmodule StoreWeb.CartLive.Index do
       |> where(order_id: ^order.id)
       |> where(product_id: ^id)
       |> Repo.one()
-
 
     Repo.delete!(order_product)
 

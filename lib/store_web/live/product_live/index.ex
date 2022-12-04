@@ -3,9 +3,10 @@ defmodule StoreWeb.ProductLive.Index do
 
   alias Store.Inventory
   alias Store.Uploaders
+  alias Store.Repo
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :products, list_products())}
+    {:ok, assign(socket, :products, Inventory.list_products())}
   end
 
   @impl true
