@@ -8,6 +8,7 @@ defmodule Store.Inventory do
   alias StoreWeb.Inventory.Product
   alias Store.Inventory.Order
   alias Store.Inventory.OrdersProducts
+  alias Store.Inventory
 
   @doc """
   Returns the list of products.
@@ -341,8 +342,8 @@ defmodule Store.Inventory do
 
     quantity =
       case order_quantity do
-        0 -> Inventory.get_product!(product_id).max_per_user
-        _ -> Inventory.get_product!(product_id).max_per_user - order_quantity
+        0 -> Inventory.get_product!(product_id, []).max_per_user
+        _ -> Inventory.get_product!(product_id, []).max_per_user - order_quantity
       end
 
     if quantity < 0 do
