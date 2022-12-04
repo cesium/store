@@ -5,7 +5,6 @@ defmodule Store.InventoryTest do
 
   describe "products" do
     alias StoreWeb.Inventory.Product
-    import Ecto
     import Store.InventoryFixtures
     import Store.AccountsFixtures
 
@@ -65,13 +64,13 @@ defmodule Store.InventoryTest do
     test "update_product/2 with invalid data returns error changeset" do
       product = product_fixture()
       assert {:error, %Ecto.Changeset{}} = Inventory.update_product(product, @invalid_attrs)
-      assert product == Inventory.get_product!(product.id)
+      assert product == Inventory.get_product!(product.id, [])
     end
 
     test "delete_product/1 deletes the product" do
       product = product_fixture()
       assert {:ok, %Product{}} = Inventory.delete_product(product)
-      assert_raise Ecto.NoResultsError, fn -> Inventory.get_product!(product.id) end
+      assert_raise Ecto.NoResultsError, fn -> Inventory.get_product!(product.id, []) end
     end
 
     test "change_product/1 returns a product changeset" do

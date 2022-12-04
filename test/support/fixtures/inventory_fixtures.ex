@@ -4,6 +4,7 @@ defmodule Store.InventoryFixtures do
   entities via the `Store.Inventory` context.
   """
   import Store.AccountsFixtures
+
   @doc """
   Generate a product.
   """
@@ -28,10 +29,11 @@ defmodule Store.InventoryFixtures do
   """
   def order_fixture(attrs \\ %{}) do
     user = user_fixture()
+
     {:ok, order} =
       attrs
       |> Enum.into(%{
-        user_id: user.id,
+        user_id: user.id
       })
       |> Store.Inventory.create_order()
 

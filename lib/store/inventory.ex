@@ -4,8 +4,6 @@ defmodule Store.Inventory do
   """
 
   use Store.Context
-  import Ecto.Changeset
-  alias Ecto.Multi
   alias StoreWeb.Accounts.User
   alias StoreWeb.Inventory.Product
   alias Store.Inventory.Order

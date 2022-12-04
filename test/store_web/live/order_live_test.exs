@@ -3,12 +3,6 @@ defmodule StoreWeb.OrderLiveTest do
 
   import Phoenix.LiveViewTest
   import Store.InventoryFixtures
-  import Store.AccountsFixtures
-  import Ecto
-
-  @create_attrs %{user_id: Ecto.UUID.generate() , status: :draft}
-  @update_attrs %{status: :ordered}
-  @invalid_attrs %{status: :abc}
 
   defp create_order(_) do
     order = order_fixture()

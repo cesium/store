@@ -81,7 +81,7 @@ defmodule StoreWeb.UserAuth do
     conn
     |> renew_session()
     |> delete_resp_cookie(@remember_me_cookie)
-    |> redirect(to: Routes.user_session_path(@conn, :new))
+    |> redirect(to: "/")
   end
 
   @doc """
@@ -118,7 +118,6 @@ defmodule StoreWeb.UserAuth do
       |> halt()
     else
       conn
-      |> redirect(to: Routes.user_session_path(conn, :new))
     end
   end
 

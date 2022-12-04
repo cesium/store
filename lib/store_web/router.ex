@@ -55,7 +55,6 @@ defmodule StoreWeb.Router do
       live "/products", ProductLive.Index, :index
       live "/products/:id", ProductLive.Show, :show
     end
-
   end
 
   # Other scopes may use custom stacks.
@@ -92,20 +91,19 @@ defmodule StoreWeb.Router do
   ## Authentication routes
 
   scope "/", StoreWeb do
-    pipe_through [:browser, :redirect_if_user_is_authenticated]
-    get "/users/reset_password", UserResetPasswordController, :new
-    post "/users/reset_password", UserResetPasswordController, :create
-    get "/users/reset_password/:token", UserResetPasswordController, :edit
-    put "/users/reset_password/:token", UserResetPasswordController, :update
-  end
+    pipe_through :browser
 
-  scope "/", StoreWeb do
-    pipe_through [:browser]
-    delete "/users/log_out", UserSessionController, :delete
-    get "/users/confirm", UserConfirmationController, :new
-    post "/users/confirm", UserConfirmationController, :create
-    get "/users/confirm/:token", UserConfirmationController, :edit
-    post "/users/confirm/:token", UserConfirmationController, :update
+    scope "/users" do
+      delete "/users/log_out", UserSessionController, :delete
+      get "/users/confirm", UserConfirmationController, :new
+      post "/users/confirm", UserConfirmationController, :create
+      get "/users/confirm/:token", UserConfirmationController, :edit
+      post "/users/confirm/:token", UserConfirmationController, :update
+      get "/reset_password", UserResetPasswordController, :new
+      post "/reset_password", UserResetPasswordController, :create
+      get "/reset_password/:token", UserResetPasswordController, :edit
+      put "/reset_password/:token", UserResetPasswordController, :update
+    end
   end
 
   scope "/", StoreWeb do
