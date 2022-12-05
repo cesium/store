@@ -3,6 +3,7 @@ defmodule Store.InventoryFixtures do
   This module defines test helpers for creating
   entities via the `Store.Inventory` context.
   """
+  import Store.AccountsFixtures
 
   @doc """
   Generate a product.
@@ -13,7 +14,10 @@ defmodule Store.InventoryFixtures do
       |> Enum.into(%{
         description: "some description",
         name: "some name",
-        type: "some type"
+        price_partnership: 22,
+        price: 42,
+        stock: 100,
+        max_per_user: 2
       })
       |> Store.Inventory.create_product()
 
@@ -24,10 +28,12 @@ defmodule Store.InventoryFixtures do
   Generate a order.
   """
   def order_fixture(attrs \\ %{}) do
+    user = user_fixture()
+
     {:ok, order} =
       attrs
       |> Enum.into(%{
-        redeemed: true
+        user_id: user.id
       })
       |> Store.Inventory.create_order()
 

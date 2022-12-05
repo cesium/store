@@ -15,6 +15,6 @@ defmodule StoreWeb.Backoffice.ProductLive.Edit do
      socket
      |> assign(:current_page, :products)
      |> assign(:page_title, "Edit Product")
-     |> assign(:product, Inventory.get_product!(id))}
+     |> assign(:product, Inventory.get_product!(id, []))}
   end
 end

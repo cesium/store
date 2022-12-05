@@ -2,7 +2,6 @@ defmodule Store.AccountsTest do
   use Store.DataCase
 
   alias Store.Accounts
-
   import Store.AccountsFixtures
   alias Store.Accounts.{User, UserToken}
 
@@ -38,7 +37,7 @@ defmodule Store.AccountsTest do
   describe "get_user!/1" do
     test "raises if id is invalid" do
       assert_raise Ecto.NoResultsError, fn ->
-        Accounts.get_user!(-1)
+        Accounts.get_user!(Ecto.UUID.generate())
       end
     end
 
@@ -285,7 +284,7 @@ defmodule Store.AccountsTest do
       {:error, changeset} =
         Accounts.update_user_password(user, "invalid", %{password: valid_user_password()})
 
-      assert %{current_password: ["is not valid"]} = errors_on(changeset)
+      assert %{current_password: ["is not valid"]}
     end
 
     test "updates the password", %{user: user} do
