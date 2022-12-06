@@ -1,13 +1,8 @@
 defmodule StoreWeb.Backoffice.UserLive.Index do
   @moduledoc false
   use StoreWeb, :live_view
-  import Ecto.Query
   alias Store.Repo
   alias Store.Inventory
-  alias Store.Inventory.Order
-  alias Store.Inventory.OrdersProducts
-  alias Store.Uploaders
-  alias Store.Accounts
 
   @impl true
   def mount(_params, _session, socket) do

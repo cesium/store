@@ -1,8 +1,6 @@
 defmodule Store.Inventory.Order do
   use Store.Schema
 
-  alias Store.Repo
-  alias Store.Accounts.QRCode
   alias Store.Accounts.User
   alias StoreWeb.Inventory.Product
 

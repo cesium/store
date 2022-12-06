@@ -21,23 +21,10 @@ defmodule Store.Events do
       {event_type, data}
     )
 
-    # 2. Send to Absinthe API
-    Absinthe.Subscription.publish(
-      StoreWeb.Endpoint,
-      data,
-      Keyword.put([], event_type, topic)
-    )
-
     # 3. Send to the Absinthe Firehose API
     if firehose_topic do
       Logger.debug(
         "Store.Events: Dispatching topic=#{firehose_topic} with event_type=#{event_type}"
-      )
-
-      Absinthe.Subscription.publish(
-        StoreWeb.Endpoint,
-        data,
-        Keyword.put([], event_type, firehose_topic)
       )
     end
   end
