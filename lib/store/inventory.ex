@@ -313,7 +313,8 @@ defmodule Store.Inventory do
       end
     else
       {:ok, order} = create_order(%{user_id: user.id})
-      create_order_product(%{order_id: order.id, product_id: product.id})    end
+      create_order_product(%{order_id: order.id, product_id: product.id})
+    end
   end
 
   @doc """
