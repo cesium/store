@@ -1,5 +1,4 @@
 defmodule StoreWeb.Backoffice.OrderLive.Index do
-  import Ecto.Query
   use StoreWeb, :live_view
   import Store.Inventory
   alias Store.Repo

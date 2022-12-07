@@ -55,10 +55,11 @@ defmodule Store.Inventory do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_product(attrs \\ %{}) do
+  def create_product(attrs \\ %{}, after_save \\ &{:ok, &1}) do
     %Product{}
     |> Product.changeset(attrs)
     |> Repo.insert()
+    |> after_save(after_save)
   end
 
   @doc """
@@ -77,6 +78,7 @@ defmodule Store.Inventory do
     product
     |> Product.changeset(attrs)
     |> Repo.update()
+    |> after_save(after_save)
   end
 
   @doc """
@@ -143,7 +145,7 @@ defmodule Store.Inventory do
       [%Order{}, ...]
 
   """
-  def list_orders(params \\ %{}) do
+  def list_orders() do
     Order
     |> order_by(desc: :inserted_at)
     |> Repo.all()
@@ -162,7 +164,7 @@ defmodule Store.Inventory do
     iex> list_orders_products()
     [%OrdersProducts{}, ...]
   """
-  def list_orders_products(params \\ %{}) do
+  def list_orders_products() do
     OrdersProducts
     |> Repo.all()
   end
@@ -336,8 +338,8 @@ defmodule Store.Inventory do
 
   """
 
-  def redeem_quantity(order_id, product_id) do
-    order_quantity = Enum.count(list_orders(where: [id: order_id]))
+  def redeem_quantity(product_id) do
+    order_quantity = Enum.count(list_orders())
 
     quantity =
       case order_quantity do
@@ -370,7 +372,7 @@ defmodule Store.Inventory do
     total_price(order) - total_price_with_partnership(order)
   end
 
-  def total_price_cart(order, id) do
+  def total_price_cart(id) do
     order =
       Order
       |> where(user_id: ^id)
@@ -390,7 +392,7 @@ defmodule Store.Inventory do
     end
   end
 
-  def total_price_partnership_cart(order, id) do
+  def total_price_partnership_cart(id) do
     order =
       Order
       |> where(user_id: ^id)
@@ -416,8 +418,8 @@ defmodule Store.Inventory do
     |> Repo.update()
   end
 
-  def discount_cart(order, id) do
-    total_price_cart(order, id) - total_price_partnership_cart(order, id)
+  def discount_cart(id) do
+    total_price_cart(id) - total_price_partnership_cart(id)
   end
 
   defp broadcast({:error, _reason} = error, _event), do: error

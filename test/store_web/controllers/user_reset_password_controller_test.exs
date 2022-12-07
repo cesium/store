@@ -9,13 +9,6 @@ defmodule StoreWeb.UserResetPasswordControllerTest do
     %{user: user_fixture()}
   end
 
-  describe "GET /users/reset_password" do
-    test "renders the reset password page", %{conn: conn} do
-      conn = get(conn, Routes.user_reset_password_path(conn, :new))
-      response = html_response(conn, 200)
-    end
-  end
-
   describe "POST /users/reset_password" do
     @tag :capture_log
     test "sends a new reset password token", %{conn: conn, user: user} do
