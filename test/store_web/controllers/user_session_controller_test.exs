@@ -11,7 +11,7 @@ defmodule StoreWeb.UserSessionControllerTest do
     test "renders log in page", %{conn: conn} do
       conn = get(conn, Routes.user_session_path(conn, :new))
       response = html_response(conn, 200)
-      assert response =~ "<h1>Log in</h1>"
+      assert response =~ "Login"
     end
   end
 
@@ -61,7 +61,7 @@ defmodule StoreWeb.UserSessionControllerTest do
         })
 
       response = html_response(conn, 200)
-      assert response =~ "<h1>Log in</h1>"
+      assert response =~ "Login"
       assert response =~ "Invalid email or password"
     end
   end

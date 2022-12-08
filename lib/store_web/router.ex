@@ -43,8 +43,6 @@ defmodule StoreWeb.Router do
 
   scope "/", StoreWeb do
     pipe_through :browser
-    live "/", HomeLive.Index, :index
-
     get "/users/register", UserRegistrationController, :new
     post "/users/register", UserRegistrationController, :create
 
@@ -52,6 +50,7 @@ defmodule StoreWeb.Router do
     post "/users/log_in", UserSessionController, :create
 
     live_session :user_product, on_mount: [{StoreWeb.Hooks, :current_user}] do
+      live "/", HomeLive.Index, :index
       live "/products", ProductLive.Index, :index
       live "/products/:id", ProductLive.Show, :show
     end
