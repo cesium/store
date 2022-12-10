@@ -39,10 +39,6 @@
     </div>
 
     <div class="text-sm">
-      <%= link(gettext("Register Now"), to: Routes.user_registration_path(@conn, :new), class: "font-medium text-[#f47c58] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#f47c58]") %>
-    </div>
-
-    <div class="text-sm">
       <%= link(gettext("Forgot your password?"), to: Routes.user_reset_password_path(@conn, :new), class: "font-medium text-[#f47c58] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#f47c58]") %>
     </div>
   </div>
@@ -55,6 +51,11 @@
       <%= gettext("Login") %>
     <% end %>
   </div>
+
+  <div class="text-sm">
+    Don't have an account?  <%= link(gettext("Register Now"), to: Routes.user_registration_path(@conn, :new), class: "font-medium text-[#f47c58] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#f47c58]") %>
+  </div>
+
 
 </.form>
 
