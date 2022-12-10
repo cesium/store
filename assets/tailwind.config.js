@@ -22,10 +22,14 @@ module.exports = {
         fontFamily: {
           montserrat: ["Montserrat"],
         },
+        gridAutoColumns: {
+          '8fr': 'minmax(0, 8fr)',
+        }
       },
     },
     plugins: [
       require('@tailwindcss/aspect-ratio'),
-      require("@tailwindcss/forms")
+      require("@tailwindcss/forms"),
+      require('tailwind-scrollbar-hide')
     ],
   }; 

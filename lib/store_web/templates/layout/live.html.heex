@@ -1,11 +1,11 @@
-<div class="px-8 relative mx-auto flex flex-col justify-between h-screen">
+<div class="relative mx-auto flex flex-col justify-between h-screen px-5">
 
   <header x-data="{ navbar: false }">
     <%= render("_mobile_navbar.html", assigns) %>
     <%= render("_desktop_navbar.html", assigns) %>
   </header>
 
-  <main class="">
+  <main class="px-0">
     <p class="alert alert-info" role="alert"
       phx-click="lv:clear-flash"
       phx-value-key="info"><%= live_flash(@flash, :info) %></p>

@@ -3,7 +3,7 @@
     <div class="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
       <section aria-labelledby="cart-heading" class="lg:col-span-7">
         <ul role="list" class="divide-y divide-gray-200 border-t-2 border-b border-gray-200">
-          <%= for order <- @orders do %> 
+          <%= for order <- @orders do %>
             <%= if @current_user && @current_user.id == order.user_id do %>
               <%= if order.status == :draft do %>
                 <%= for product <- order.products do %>

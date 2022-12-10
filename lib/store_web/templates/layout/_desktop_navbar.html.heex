@@ -1,5 +1,5 @@
     <nav aria-label="Top">
-      <div class="bg-white py-4">
+      <div class="bg-white py-1">
         <div class="mx-auto">
           <div class="">
             <div class="flex h-16 items-center justify-between">
@@ -7,7 +7,7 @@
               <div class="hidden lg:flex lg:flex-1 lg:items-center">
                 <%= live_redirect to: Routes.home_index_path(@socket, :index) do %>
                   <span class="sr-only">Your Company</span>
-                  <img class="h-10 w-auto" src={Routes.static_path(@socket, "/images/logos/logo_lettering.svg")} alt="">
+                  <img class="pl-2 h-10 w-auto" src={Routes.static_path(@socket, "/images/logos/logo_lettering.svg")} alt="">
                 <% end %>
               </div>
 
