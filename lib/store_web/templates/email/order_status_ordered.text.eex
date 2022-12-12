@@ -1,6 +1,5 @@
-Olá 
+Olá,
 
-A sua encomenda foi feita com sucesso.
-(Texto)
+A sua encomenda foi colocada com sucesso.
 
 <%= @link %>
