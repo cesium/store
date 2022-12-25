@@ -11,6 +11,6 @@ defmodule StoreWeb.Backoffice.DashboardLive.Index do
   def handle_params(_params, _url, socket) do
     {:noreply,
      socket
-     |> assign(:current_page, :home)}
+     |> assign(:current_page, :dashboard)}
   end
 end
