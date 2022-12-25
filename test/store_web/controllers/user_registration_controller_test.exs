@@ -8,7 +8,7 @@ defmodule StoreWeb.UserRegistrationControllerTest do
       conn = get(conn, Routes.user_registration_path(conn, :new))
       response = html_response(conn, 200)
       assert response =~ "Register"
-      assert response =~ "Log in</a>"
+      assert response =~ "Login Now"
     end
   end
 
@@ -39,8 +39,7 @@ defmodule StoreWeb.UserRegistrationControllerTest do
 
       response = html_response(conn, 200)
       assert response =~ "Register"
-      assert response =~ "must have the @ sign and no spaces"
-      assert response =~ "should be at least 12 character"
+      assert response =~ "Oops, something went wrong! Please check the errors below."
     end
   end
 end
