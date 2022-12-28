@@ -3,10 +3,13 @@ defmodule Store.Inventory.OrdersProducts do
   alias StoreWeb.Inventory.Product
   alias Store.Inventory.Order
 
+  @sizes ~w(extra_small small medium large extra_large extra_extra_large)a
+
   schema "orders_products" do
     belongs_to :order, Order
     belongs_to :product, Product
     field :quantity, :integer, default: 1
+    field :size, Ecto.Enum, values: @sizes
     timestamps()
   end
 
