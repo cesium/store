@@ -1,3 +1,9 @@
+<%= if assigns[:current_user] && @current_user.role in [:admin] do %>
+  <%= live_patch to: Routes.admin_product_new_path(@socket, :new), class: "button" do %>
+      <span class="absolute inset-0" aria-hidden="true"></span>
+      <span class="relative bg-sky-500 font-white m-10 p-5 text-white flex w-64 items-center justify-center rounded hover:bg-sky-700">Add new product</span>
+  <% end %>
+<% end %>
 <div class="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
     <%= for product <- @products do %>
       <%= live_redirect to: Routes.product_show_path(@socket, :show, product), class: "group" do %>
