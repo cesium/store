@@ -5,7 +5,7 @@ defmodule StoreWeb.Emails.AuthEmails do
   use Phoenix.Swoosh, view: StoreWeb.EmailView, layout: {StoreWeb.LayoutView, :email}
 
   def reset_password_email(id, to: email) do
-    frontend_url = Application.fetch_env!(:bokken, StoreWeb.Endpoint)[:frontend_url]
+    frontend_url = Application.fetch_env!(:store, StoreWeb.Endpoint)[:frontend_url]
 
     new()
     |> from({"CeSIUM - Store", "noreply@store.cesium.di.uminho.pt"})
@@ -13,5 +13,17 @@ defmodule StoreWeb.Emails.AuthEmails do
     |> subject("[CeSIUM - Store] Instruções para repor a password")
     |> reply_to("noreply@store.cesium.di.uminho.pt")
     |> assign(:link, frontend_url <> "/users/reset_password/" <> id)
+  end
+
+  def verify_user_email(id, to: email) do
+    frontend_url = Application.fetch_env!(:store, StoreWeb.Endpoint)[:frontend_url]
+
+    new()
+    |> from({"CeSIUM - Store", "noreply@store.cesium.di.uminho.pt"})
+    |> to(email)
+    |> subject("[CeSIUM - Store] Verifique a sua conta")
+    |> reply_to("noreply@store.cesium.di.uminho.pt")
+    |> assign(:link, frontend_url <> "/dashboard/confirm?token=" <> id)
+    |> render_body(:verify_account)
   end
 end

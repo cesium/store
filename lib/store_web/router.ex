@@ -49,6 +49,9 @@ defmodule StoreWeb.Router do
     get "/users/log_in", UserSessionController, :new
     post "/users/log_in", UserSessionController, :create
 
+    post "/verify", UserRegistrationController, :verify
+
+
     live_session :user_product, on_mount: [{StoreWeb.Hooks, :current_user}] do
       live "/", HomeLive.Index, :index
       live "/products", ProductLive.Index, :index
