@@ -60,15 +60,14 @@ defmodule Store.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
-
   def get_user(attrs) when is_list(attrs) do
     Repo.get_by(User, attrs)
   end
 
   def verify_user_emails(email) do
     user =
-    get_user(email: email)
-    |> Repo.preload([])
+      get_user(email: email)
+      |> Repo.preload([])
 
     if is_nil(user) do
       {:error, :not_found}
@@ -82,6 +81,7 @@ defmodule Store.Accounts do
     |> User.registration_changeset(attrs)
     |> Repo.update()
   end
+
   ## User registration
 
   @doc """

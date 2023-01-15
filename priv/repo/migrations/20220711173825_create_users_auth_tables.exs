@@ -9,7 +9,6 @@ defmodule Store.Repo.Migrations.CreateUsersAuthTables do
       add :email, :citext, null: false
       add :role, :string, null: false
       add :partnership, :boolean, default: false
-      add :verified, :boolean, default: false
       add :hashed_password, :string, null: false
       add :confirmed_at, :naive_datetime
       timestamps()

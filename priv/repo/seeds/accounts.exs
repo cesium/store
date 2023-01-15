@@ -24,7 +24,6 @@ defmodule Store.Repo.Seeds.Accounts do
             password: "Password1234",
             role: :user,
             partnership: Enum.random([false, true]),
-            verified: Enum.random([false, true])
           }
           |> insert_user()
         end
@@ -36,14 +35,12 @@ defmodule Store.Repo.Seeds.Accounts do
             password: "Password1234",
             role: :admin,
             partnership: true,
-            verified: true
           },
           %{
             email: "rui@gmail.com",
             password: "Password1234",
             role: :admin,
             partnership: true,
-            verified: true
           }
         ]
         |> Enum.each(&insert_user/1)

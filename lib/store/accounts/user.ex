@@ -1,7 +1,7 @@
 defmodule Store.Accounts.User do
   use Store.Schema
 
-  @required_fields ~w(email password role verified)a
+  @required_fields ~w(email password role)a
   @roles ~w(user admin)a
 
   schema "users" do
@@ -11,7 +11,6 @@ defmodule Store.Accounts.User do
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
     field :partnership, :boolean, default: false
-    field :verified, :boolean, default: false
     has_many :orders, Store.Inventory.Order
     timestamps()
   end
