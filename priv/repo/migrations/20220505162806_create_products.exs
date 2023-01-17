@@ -8,16 +8,13 @@ defmodule Store.Repo.Migrations.CreateProducts do
       add :description, :text
       add :price, :integer
       add :price_partnership, :integer
-      add :stock, :integer
       add :max_per_user, :integer
       add :image, :string
       add :pre_order, :boolean, default: false
       timestamps()
     end
 
-    create constraint(:products, :stock_must_be_positive, check: "stock >= 0")
-
-    create constraint(:products, :partners_price_highlow_then_price,
+    create constraint(:products, :partners_price_highlow_then_price, if_not_exists: true,
              check: "price >= price_partnership"
            )
   end

@@ -1,4 +1,4 @@
-defmodule StoreWeb.Backoffice.ProductLive.Edit do
+defmodule StoreWeb.Backoffice.StockLive.Edit do
   @moduledoc false
   use StoreWeb, :live_view
 
@@ -13,8 +13,8 @@ defmodule StoreWeb.Backoffice.ProductLive.Edit do
   def handle_params(%{"id" => id}, _, socket) do
     {:noreply,
      socket
-     |> assign(:current_page, :products)
-     |> assign(:page_title, "Edit Product")
-     |> assign(:product, Inventory.get_product!(id, [:stock]))}
+     |> assign(:current_page, :product_stocks)
+     |> assign(:page_title, "Edit Stock")
+     |> assign(:stock, Inventory.get_stock!(id, []))}
   end
 end

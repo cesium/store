@@ -118,7 +118,8 @@ defmodule StoreWeb.Router do
 
         live "/product/new", ProductLive.New, :new
         live "/product/:id/edit", ProductLive.Edit, :edit
-
+        live "/product/stock/:id", StockLive.New, :new
+        live "/product/stock/:id/edit", StockLive.Edit, :edit
         live "/orders", OrderLive.Index, :index
         live "/orders/:id/edit", OrderLive.Edit, :edit
         live "/orders/:id", OrderLive.Show, :show

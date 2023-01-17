@@ -9,6 +9,9 @@ defmodule Store.Inventory do
   alias Store.Inventory.Order
   alias Store.Inventory.OrdersProducts
   alias Store.Inventory
+  alias Store.Inventory.Stock
+
+
 
   @doc """
   Returns the list of products.
@@ -21,6 +24,10 @@ defmodule Store.Inventory do
   """
   def list_products do
     Repo.all(Product)
+  end
+
+  def list_stocks do
+    Repo.all(Stock)
   end
 
   @doc """
@@ -42,6 +49,18 @@ defmodule Store.Inventory do
     |> apply_filters(opts)
     |> Repo.get!(id)
   end
+
+
+  def get_stock!(id, opts) when is_list(opts) do
+    Stock
+    |> apply_filters(opts)
+    |> Repo.get!(id)
+  end
+
+  def get_stock_by_product_id!(id) do
+    Repo.get_by!(Stock, product_id: id)
+  end
+
 
   @doc """
   Creates a product.
@@ -132,6 +151,24 @@ defmodule Store.Inventory do
   """
   def change_product(%Product{} = product, attrs \\ %{}) do
     Product.changeset(product, attrs)
+  end
+
+  def change_stock(%Stock{} = stock, attrs \\ %{}) do
+    Stock.changeset(stock, attrs)
+  end
+
+  def update_stock(%Stock{} = stock, attrs, after_save \\ &{:ok, &1}) do
+    stock
+    |> Stock.changeset(attrs)
+    |> Repo.update()
+    |> after_save(after_save)
+  end
+
+  def create_stock(attrs \\ %{}, after_save \\ &{:ok, &1}) do
+    %Stock{}
+    |> Stock.changeset(attrs)
+    |> Repo.insert()
+    |> after_save(after_save)
   end
 
   alias Store.Inventory.Order

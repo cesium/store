@@ -5,9 +5,10 @@ defmodule StoreWeb.Inventory.Product do
   use Store.Schema
   alias Store.Inventory.Order
   alias Store.Uploaders
+  alias Store.Inventory.Stock
 
   @required_fields ~w(name description
-                      price price_partnership stock max_per_user pre_order)a
+                      price price_partnership max_per_user pre_order)a
 
   @optional_fields []
 
@@ -27,11 +28,12 @@ defmodule StoreWeb.Inventory.Product do
     field :description, :string
     field :price, :integer
     field :price_partnership, :integer
-    field :stock, :integer
+    has_one :stock, Stock
     field :max_per_user, :integer
     field :image, Uploaders.ProductImage.Type
     field :pre_order, :boolean, default: false
     many_to_many :order, Order, join_through: Store.Inventory.OrdersProducts
+
     timestamps()
   end
 

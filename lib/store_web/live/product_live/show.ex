@@ -21,7 +21,7 @@ defmodule StoreWeb.ProductLive.Show do
     {:noreply,
      socket
      |> assign(:current_page, :products)
-     |> assign(:product, Inventory.get_product!(id, preloads: :order))}
+     |> assign(:product, Inventory.get_product!(id, preloads: [:order, :stock]))}
   end
 
   @impl true

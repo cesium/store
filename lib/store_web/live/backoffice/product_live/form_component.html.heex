@@ -37,11 +37,6 @@
               <label for="street-address" class="block text-sm font-medium text-gray-700">Description</label>
               <%= textarea(f, :description, rows: 3, class: "mt-1 focus:ring-red-500 focus:border-red-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md") %>
             </div>
-            <p class="text-xs text-red-500"><%= error_tag(f, :description) %></p>
-            <div class="mt-4">
-              <label for="street-address" class="block text-sm font-medium text-gray-700">Stock</label>
-              <%= number_input(f, :stock, rows: 3, class: "mt-1 focus:ring-red-500 focus:border-red-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md") %>
-            </div>
             <p class="text-xs text-red-500"><%= error_tag(f, :stock) %></p>
             <div class="mt-4">
               <label for="street-address" class="block text-sm font-medium text-gray-700">Maximum purchases per user</label>

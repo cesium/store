@@ -77,9 +77,14 @@
            <%= if assigns[:current_user] && @current_user.role in [:admin] do %> 
              <%= live_patch to: Routes.admin_product_edit_path(@socket, :edit, @product),class: "button" do %>
              <div type="button" class="w-full inline-flex items-center bg-black py-4 text-white border-2 border-gray-200 shadow-sm hover:bg-[#f47c58] font-bold">
-               <span class="w-full text-center"> Edit </span>
+               <span class="w-full text-center"> Edit Data </span>
              </div>
-             <% end %> 
+             <% end %>
+             <%= live_patch to: Routes.admin_stock_edit_path(@socket, :edit, @product.stock),class: "button" do %>
+             <div type="button" class="w-full inline-flex items-center bg-black py-4 text-white border-2 border-gray-200 shadow-sm hover:bg-[#f47c58] font-bold">
+               <span class="w-full text-center"> Edit Stock </span>
+             </div>
+             <% end %>
            <% else %>
              <%= if assigns[:current_user] do %>
                <button phx-click="purchase" class="">
