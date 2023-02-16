@@ -14,7 +14,7 @@ defmodule Store.Inventory.OrdersProducts do
   @doc false
   def changeset(orders_products, attrs) do
     orders_products
-    |> cast(attrs, [:order_id, :product_id])
+    |> cast(attrs, [:order_id, :product_id, :quantity, :size])
     |> validate_required([:order_id, :product_id])
   end
 end
