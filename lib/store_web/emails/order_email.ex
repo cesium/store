@@ -1,5 +1,7 @@
 defmodule StoreWeb.Emails.OrdersEmail do
   use Phoenix.Swoosh, view: StoreWeb.EmailView, layout: {StoreWeb.LayoutView, :email}
+  alias Store.Inventory
+  alias Store.Repo
 
   def ready(id, to: email) do
     frontend_url = Application.fetch_env!(:store, StoreWeb.Endpoint)[:frontend_url]
@@ -10,6 +12,7 @@ defmodule StoreWeb.Emails.OrdersEmail do
     |> subject("[CeSIUM - Store] A tua encomenda encontra-se pronta para levantamento!")
     |> reply_to("noreply@store.cesium.di.uminho.pt")
     |> assign(:link, frontend_url <> "/orders/" <> id)
+    |> assign(:order, Inventory.get_order!(id) |> Repo.preload(:products))
     |> render_body(:order_status_ready)
   end
 
@@ -22,6 +25,7 @@ defmodule StoreWeb.Emails.OrdersEmail do
     |> subject("[CeSIUM - Store] A tua encomenda foi realizada com sucesso!")
     |> reply_to("noreply@store.cesium.di.uminho.pt")
     |> assign(:link, frontend_url <> "/orders/" <> id)
+    |> assign(:order, Inventory.get_order!(id) |> Repo.preload(:products))
     |> render_body(:order_status_ordered)
   end
 
@@ -34,6 +38,7 @@ defmodule StoreWeb.Emails.OrdersEmail do
     |> subject("[CeSIUM - Store] A tua encomenda foi paga com sucesso!")
     |> reply_to("noreply@store.cesium.di.uminho.pt")
     |> assign(:link, frontend_url <> "/orders/" <> id)
+    |> assign(:order, Inventory.get_order!(id) |> Repo.preload(:products))
     |> render_body(:order_status_paid)
   end
 
@@ -46,6 +51,7 @@ defmodule StoreWeb.Emails.OrdersEmail do
     |> subject("[CeSIUM - Store] A tua encomenda foi entregue com sucesso!")
     |> reply_to("noreply@store.cesium.di.uminho.pt")
     |> assign(:link, frontend_url <> "/orders/" <> id)
+    |> assign(:order, Inventory.get_order!(id) |> Repo.preload(:products))
     |> render_body(:order_status_delivered)
   end
 
@@ -58,6 +64,7 @@ defmodule StoreWeb.Emails.OrdersEmail do
     |> subject("[CeSIUM - Store] A tua encomenda foi cancelada!")
     |> reply_to("noreply@store.cesium.di.uminho.pt")
     |> assign(:link, frontend_url <> "/orders/" <> id)
+    |> assign(:order, Inventory.get_order!(id) |> Repo.preload(:products))
     |> render_body(:order_status_canceled)
   end
 end
