@@ -16,7 +16,7 @@ defmodule StoreWeb.Emails.OrdersEmail do
     |> assign(:link, frontend_url <> "/orders/" <> id)
     |> assign(:order, Inventory.get_order!(id) |> Repo.preload(:products))
     |> assign(:qr_code_base64, draw_qr_code_base64(id))
-    |> render_body(:order_status_ready)
+    |> render_body("order_status_ready.html")
   end
 
   def ordered(id, to: email) do
@@ -30,7 +30,7 @@ defmodule StoreWeb.Emails.OrdersEmail do
     |> assign(:link, frontend_url <> "/orders/" <> id)
     |> assign(:order, Inventory.get_order!(id) |> Repo.preload(:products))
     |> assign(:qr_code_base64, draw_qr_code_base64(id))
-    |> render_body(:order_status_ordered)
+    |> render_body("order_status_ordered.html")
   end
 
   def paid(id, to: email) do
@@ -44,7 +44,7 @@ defmodule StoreWeb.Emails.OrdersEmail do
     |> assign(:link, frontend_url <> "/orders/" <> id)
     |> assign(:order, Inventory.get_order!(id) |> Repo.preload(:products))
     |> assign(:qr_code_base64, draw_qr_code_base64(id))
-    |> render_body(:order_status_paid)
+    |> render_body("order_status_paid.html")
   end
 
   def delivered(id, to: email) do
@@ -57,7 +57,7 @@ defmodule StoreWeb.Emails.OrdersEmail do
     |> reply_to("noreply@store.cesium.di.uminho.pt")
     |> assign(:link, frontend_url <> "/orders/" <> id)
     |> assign(:order, Inventory.get_order!(id) |> Repo.preload(:products))
-    |> render_body(:order_status_delivered)
+    |> render_body("order_status_delivered.html")
   end
 
   def canceled(id, to: email) do
@@ -71,7 +71,7 @@ defmodule StoreWeb.Emails.OrdersEmail do
     |> assign(:link, frontend_url <> "/orders/" <> id)
     |> assign(:order, Inventory.get_order!(id) |> Repo.preload(:products))
     |> assign(:qr_code_base64, draw_qr_code_base64(id))
-    |> render_body(:order_status_canceled)
+    |> render_body("order_status_canceled.html")
   end
 
   defp draw_qr_code_base64(order_id) do
