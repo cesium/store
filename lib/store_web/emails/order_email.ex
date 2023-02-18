@@ -80,5 +80,4 @@ defmodule StoreWeb.Emails.OrdersEmail do
     |> QRCodeEx.png(color: <<0, 0, 0>>, width: 140)
     |> Base.encode64()
   end
-
 end
