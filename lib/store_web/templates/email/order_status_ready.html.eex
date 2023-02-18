@@ -25,7 +25,7 @@
                                        Olá,</br>A tua encomenda encontra-se pronta para levantamento!
                                     </p>
                                     <p>
-                                      Para o fazeres, basta dirigires-te à sala do CeSIUM (1.04) do Departamento de Informática da Universidade do Minho e mostrares o código QR (disponível carregando no botão abaixo) a um dos nossos colaboradores.
+                                      Para o fazeres, basta dirigires-te à sala do CeSIUM (1.04) do Departamento de Informática da Universidade do Minho e mostrares o código QR a um dos nossos colaboradores.
                                     </p>
                                  </div>
                               </div>
@@ -62,6 +62,10 @@
                                     </tr>
                                  </tbody>
                               </table>
+                              <div style="Margin-left: 20px;Margin-right: 20px; Margin-top:24px; Margin-bottom:24px; padding-top:2px; background-color:rgb(230,230,230)"></div>
+                                 <div style="font-size: 12px; Margin-top: 20px; font-style: normal;font-weight: normal;line-height: 19px;" align="center">
+                                    <img src="data:image/png;base64,<%= @qr_code_base64 %>"></img>
+                                 </div>
                               <div style="Margin-left: 20px;Margin-right: 20px; Margin-top:24px; Margin-bottom:24px; padding-top:2px; background-color:rgb(230,230,230)"></div>
                               <a href="<%= @link %>" style="text-decoration: none !important;">
                                  <div style="Margin-left: 20px;Margin-right: 20px; background-color: black; font-weight:bold; line-height:30px; text-align:center; color:#ffffff; padding-top: 10px; padding-bottom: 10px;">
