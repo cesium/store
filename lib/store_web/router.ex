@@ -36,7 +36,6 @@ defmodule StoreWeb.Router do
     live_session :user, on_mount: [{StoreWeb.Hooks, :current_user}] do
       live "/orders", OrderLive.Index, :index
       live "/orders/:id", OrderLive.Show, :show
-      live "/users/profile", ProfileLive.Index, :index
       live "/cart", CartLive.Index, :index
     end
   end
@@ -116,17 +115,19 @@ defmodule StoreWeb.Router do
     pipe_through [:browser, :require_authenticated_user, :admin]
 
     scope "/admin", Backoffice, as: :admin do
-      live "/dashboard", DashboardLive.Index, :index
+      live_session :admin, on_mount: [{StoreWeb.Hooks, :current_user}] do
+        live "/dashboard", DashboardLive.Index, :index
 
-      live "/product/new", ProductLive.New, :new
-      live "/product/:id/edit", ProductLive.Edit, :edit
+        live "/product/new", ProductLive.New, :new
+        live "/product/:id/edit", ProductLive.Edit, :edit
 
-      live "/orders", OrderLive.Index, :index
-      live "/orders/:id/edit", OrderLive.Edit, :edit
-      live "/orders/:id", OrderLive.Show, :show
-      live "/orders/:id/show/edit", OrderLive.Edit, :edit
+        live "/orders", OrderLive.Index, :index
+        live "/orders/:id/edit", OrderLive.Edit, :edit
+        live "/orders/:id", OrderLive.Show, :show
+        live "/orders/:id/show/edit", OrderLive.Edit, :edit
 
-      live "/users", UserLive.Index, :index
+        live "/users", UserLive.Index, :index
+      end
     end
   end
 end
