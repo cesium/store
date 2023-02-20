@@ -11,7 +11,7 @@ defmodule Store.AccountsTest do
     end
 
     test "returns the user if the email exists" do
-      %{id: id} = user = user_fixture()
+      %{id: id} = user = user_fixture2()
       assert %User{id: ^id} = Accounts.get_user_by_email(user.email)
     end
   end
@@ -22,12 +22,12 @@ defmodule Store.AccountsTest do
     end
 
     test "does not return the user if the password is not valid" do
-      user = user_fixture()
+      user = user_fixture2()
       refute Accounts.get_user_by_email_and_password(user.email, "invalid")
     end
 
     test "returns the user if the email and password are valid" do
-      %{id: id} = user = user_fixture()
+      %{id: id} = user = user_fixture2()
 
       assert %User{id: ^id} =
                Accounts.get_user_by_email_and_password(user.email, valid_user_password())
@@ -42,7 +42,7 @@ defmodule Store.AccountsTest do
     end
 
     test "returns the user with the given id" do
-      %{id: id} = user = user_fixture()
+      %{id: id} = user = user_fixture2()
       assert %User{id: ^id} = Accounts.get_user!(user.id)
     end
   end
@@ -74,7 +74,7 @@ defmodule Store.AccountsTest do
     end
 
     test "validates email uniqueness" do
-      %{email: email} = user_fixture()
+      %{email: email} = user_fixture2()
       {:error, changeset} = Accounts.register_user(%{email: email})
       assert "has already been taken" in errors_on(changeset).email
 
@@ -125,7 +125,7 @@ defmodule Store.AccountsTest do
 
   describe "apply_user_email/3" do
     setup do
-      %{user: user_fixture()}
+      %{user: user_fixture2()}
     end
 
     test "requires email to change", %{user: user} do
@@ -150,7 +150,7 @@ defmodule Store.AccountsTest do
     end
 
     test "validates email uniqueness", %{user: user} do
-      %{email: email} = user_fixture()
+      %{email: email} = user_fixture2()
 
       {:error, changeset} =
         Accounts.apply_user_email(user, valid_user_password(), %{email: email})
@@ -175,7 +175,7 @@ defmodule Store.AccountsTest do
 
   describe "deliver_update_email_instructions/3" do
     setup do
-      %{user: user_fixture()}
+      %{user: user_fixture2()}
     end
 
     test "sends token through notification", %{user: user} do
@@ -194,7 +194,7 @@ defmodule Store.AccountsTest do
 
   describe "update_user_email/2" do
     setup do
-      user = user_fixture()
+      user = user_fixture2()
       email = unique_user_email()
 
       token =
@@ -255,7 +255,7 @@ defmodule Store.AccountsTest do
 
   describe "update_user_password/3" do
     setup do
-      %{user: user_fixture()}
+      %{user: user_fixture2()}
     end
 
     test "validates password", %{user: user} do
@@ -310,7 +310,7 @@ defmodule Store.AccountsTest do
 
   describe "generate_user_session_token/1" do
     setup do
-      %{user: user_fixture()}
+      %{user: user_fixture2()}
     end
 
     test "generates a token", %{user: user} do
@@ -322,7 +322,7 @@ defmodule Store.AccountsTest do
       assert_raise Ecto.ConstraintError, fn ->
         Repo.insert!(%UserToken{
           token: user_token.token,
-          user_id: user_fixture().id,
+          user_id: user_fixture2().id,
           context: "session"
         })
       end
@@ -331,7 +331,7 @@ defmodule Store.AccountsTest do
 
   describe "get_user_by_session_token/1" do
     setup do
-      user = user_fixture()
+      user = user_fixture2()
       token = Accounts.generate_user_session_token(user)
       %{user: user, token: token}
     end
@@ -353,7 +353,7 @@ defmodule Store.AccountsTest do
 
   describe "delete_session_token/1" do
     test "deletes the token" do
-      user = user_fixture()
+      user = user_fixture2()
       token = Accounts.generate_user_session_token(user)
       assert Accounts.delete_session_token(token) == :ok
       refute Accounts.get_user_by_session_token(token)
@@ -362,7 +362,7 @@ defmodule Store.AccountsTest do
 
   describe "deliver_user_confirmation_instructions/2" do
     setup do
-      %{user: user_fixture()}
+      %{user: user_fixture2()}
     end
 
     test "sends token through notification", %{user: user} do
@@ -381,7 +381,7 @@ defmodule Store.AccountsTest do
 
   describe "confirm_user/1" do
     setup do
-      user = user_fixture()
+      user = user_fixture2()
 
       token =
         extract_user_token(fn url ->
@@ -415,7 +415,7 @@ defmodule Store.AccountsTest do
 
   describe "deliver_user_reset_password_instructions/2" do
     setup do
-      %{user: user_fixture()}
+      %{user: user_fixture2()}
     end
 
     test "sends token through notification", %{user: user} do
@@ -434,7 +434,7 @@ defmodule Store.AccountsTest do
 
   describe "get_user_by_reset_password_token/1" do
     setup do
-      user = user_fixture()
+      user = user_fixture2()
 
       token =
         extract_user_token(fn url ->
@@ -463,7 +463,7 @@ defmodule Store.AccountsTest do
 
   describe "reset_user_password/2" do
     setup do
-      %{user: user_fixture()}
+      %{user: user_fixture2()}
     end
 
     test "validates password", %{user: user} do

@@ -3,6 +3,7 @@ defmodule Store.Accounts.User do
 
   @required_fields ~w(email password role)a
   @roles ~w(user admin)a
+  @optional_fields ~w(partnership)a
 
   schema "users" do
     field :email, :string
@@ -34,9 +35,14 @@ defmodule Store.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, @required_fields)
+    |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_email()
     |> validate_password(opts)
+  end
+
+  def confirm_changeset(user) do
+    now = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
+    change(user, confirmed_at: now)
   end
 
   defp validate_email(changeset) do
@@ -138,5 +144,19 @@ defmodule Store.Accounts.User do
     else
       changeset
     end
+  end
+
+  defp validate_role(changeset) do
+    changeset
+    |> validate_required([:role])
+    |> validate_inclusion(:role, @roles)
+  end
+
+  def admin_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:email, :password, :role, :partnership])
+    |> validate_email()
+    |> validate_role()
+    |> validate_password(opts)
   end
 end

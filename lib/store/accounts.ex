@@ -65,9 +65,7 @@ defmodule Store.Accounts do
   end
 
   def verify_user_emails(email) do
-    user =
-      get_user(email: email)
-      |> Repo.preload([])
+    user = get_user(email: email)
 
     if is_nil(user) do
       {:error, :not_found}

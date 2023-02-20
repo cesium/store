@@ -4,10 +4,15 @@ defmodule Store.AccountsFixtures do
   entities via the `Store.Accounts` context.
   """
 
+  alias Store.Accounts
+  alias Store.Accounts.User
+  alias Store.Repo
+
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
   def valid_user_password, do: "hello world!"
   def valid_role, do: :user
   def valid_partnership, do: true
+  def valid_confirmed_at, do: DateTime.utc_now()
 
   def valid_user_attributes(attrs \\ %{}) do
     Enum.into(attrs, %{
@@ -22,7 +27,21 @@ defmodule Store.AccountsFixtures do
     {:ok, user} =
       attrs
       |> valid_user_attributes()
-      |> Store.Accounts.register_user()
+      |> Accounts.register_user()
+
+    user2 =
+      user
+      |> User.confirm_changeset()
+      |> Repo.update!()
+
+    user2
+  end
+
+  def user_fixture2(attrs \\ %{}) do
+    {:ok, user} =
+      attrs
+      |> valid_user_attributes()
+      |> Accounts.register_user()
 
     user
   end

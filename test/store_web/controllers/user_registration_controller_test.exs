@@ -28,7 +28,9 @@ defmodule StoreWeb.UserRegistrationControllerTest do
       # Now do a logged in request and assert on the menu
       conn = get(conn, "/")
       response = html_response(conn, 200)
-      assert response =~ "Buy Now"
+      assert response =~ email
+      assert response =~ "Settings</a>"
+      assert response =~ "Log out</a>"
     end
 
     test "render errors for invalid data", %{conn: conn} do
