@@ -40,11 +40,6 @@ defmodule Store.Accounts.User do
     |> validate_password(opts)
   end
 
-  def confirm_changeset(user) do
-    now = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
-    change(user, confirmed_at: now)
-  end
-
   defp validate_email(changeset) do
     changeset
     |> validate_required([:email])
