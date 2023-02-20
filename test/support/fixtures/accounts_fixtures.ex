@@ -23,6 +23,15 @@ defmodule Store.AccountsFixtures do
     })
   end
 
+  def valid_user_attributes_with_confirmedat(attrs \\ %{}) do
+    Enum.into(attrs, %{
+      email: unique_user_email(),
+      password: valid_user_password(),
+      role: valid_role(),
+      partnership: valid_partnership()
+    })
+  end
+
   def user_fixture(attrs \\ %{}) do
     {:ok, user} =
       attrs
@@ -37,7 +46,7 @@ defmodule Store.AccountsFixtures do
     user2
   end
 
-  def user_fixture2(attrs \\ %{}) do
+  def user_fixture_not_confirmed(attrs \\ %{}) do
     {:ok, user} =
       attrs
       |> valid_user_attributes()

@@ -20,7 +20,7 @@ defmodule StoreWeb.UserConfirmationControllerTest do
   describe "POST /users/confirm" do
     @tag :capture_log
     test "sends a new confirmation token", %{conn: conn} do
-      user = user_fixture2()
+      user = user_fixture_not_confirmed()
 
       conn =
         post(conn, Routes.user_confirmation_path(conn, :create), %{
@@ -70,7 +70,7 @@ defmodule StoreWeb.UserConfirmationControllerTest do
 
   describe "POST /users/confirm/:token" do
     test "confirms the given token once", %{conn: conn} do
-      user = user_fixture2()
+      user = user_fixture_not_confirmed()
 
       token =
         extract_user_token(fn url ->
@@ -100,7 +100,7 @@ defmodule StoreWeb.UserConfirmationControllerTest do
     end
 
     test "does not confirm email with invalid token", %{conn: conn} do
-      user = user_fixture2()
+      user = user_fixture_not_confirmed()
       conn = post(conn, Routes.user_confirmation_path(conn, :update, "oops"))
       assert redirected_to(conn) == "/"
       assert get_flash(conn, :error) =~ "User confirmation link is invalid or it has expired"
