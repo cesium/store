@@ -1,12 +1,22 @@
 <div class="min-h-full border-r border-gray-200">
-  <.form let={f} for={@changeset} id="product-form" phx-target={@myself} phx-submit="save" phx-change="validate">
+  <.form
+    let={f}
+    for={@changeset}
+    id="product-form"
+    phx-target={@myself}
+    phx-submit="save"
+    phx-change="validate"
+  >
     <div class="min-h-full bg-white">
-      <div class="py-5 pr-6 pl-4 border-gray-200 sm:px-6 lg:px-8 xl:py-6 xl:px-6 border-y">
-        <div class="flex justify-between items-center h-10">
+      <div class="border-y border-gray-200 py-5 pr-6 pl-4 sm:px-6 lg:px-8 xl:px-6 xl:py-6">
+        <div class="flex h-10 items-center justify-between">
           <h1 class="flex-1 text-lg font-medium">Store</h1>
           <!-- Action buttons -->
           <%= submit do %>
-            <div type="button" class="inline-flex justify-center items-center py-2 px-4 w-14 text-sm font-medium text-white rounded-md border-transparent shadow-sm xl:w-full bg-secondary hover:bg:primary">
+            <div
+              type="button"
+              class="bg-secondary inline-flex w-14 items-center justify-center rounded-md border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg:primary xl:w-full"
+            >
               Save
             </div>
           <% end %>
@@ -14,61 +24,121 @@
       </div>
 
       <div class="bg-white">
-        <div class="py-6 px-4 mx-auto max-w-2xl sm:px-6 lg:gap-x-8 lg:px-8 lg:max-w-7xl">
-          <%= live_redirect("< Back", to: @return_to, class: "hover:underline inline-flex items-center justify-center whitespace-nowrap") %>
+        <div class="mx-auto max-w-2xl px-4 py-6 sm:px-6 lg:max-w-7xl lg:gap-x-8 lg:px-8">
+          <%= live_redirect("< Back",
+            to: @return_to,
+            class: "inline-flex items-center justify-center whitespace-nowrap hover:underline"
+          ) %>
         </div>
-        <div class="py-1 px-4 mx-auto max-w-2xl sm:px-6 lg:grid lg:grid-cols-2 lg:gap-x-8 lg:px-8 lg:max-w-7xl">
+        <div class="mx-auto max-w-2xl px-4 py-1 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
           <!-- Product details -->
-          <div class="lg:self-end lg:max-w-lg">
+          <div class="lg:max-w-lg lg:self-end">
             <div class="mt-4">
-              <label for="street-address" class="block text-sm font-medium text-gray-700">Name</label>
-              <%= textarea(f, :name, rows: 1, class: "mt-1 focus:ring-red-500 focus:border-red-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md") %>
+              <label for="street-address" class="block text-sm font-medium text-gray-700">
+                Name
+              </label>
+              <%= textarea(f, :name,
+                rows: 1,
+                class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm"
+              ) %>
             </div>
             <div class="mt-4">
-              <label for="street-address" class="block text-sm font-medium text-gray-700">Price</label>
-              <%= number_input(f, :price, phx_debounce: "blur", class: "mt-1 focus:ring-red-500 focus:border-red-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md") %>
+              <label for="street-address" class="block text-sm font-medium text-gray-700">
+                Price
+              </label>
+              <%= number_input(f, :price,
+                phx_debounce: "blur",
+                class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm"
+              ) %>
             </div>
             <div class="mt-4">
-              <label for="street-address" class="block text-sm font-medium text-gray-700">Price with Partnership</label>
-              <%= number_input(f, :price_partnership, phx_debounce: "blur", class: "mt-1 focus:ring-red-500 focus:border-red-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md") %>
+              <label for="street-address" class="block text-sm font-medium text-gray-700">
+                Price with Partnership
+              </label>
+              <%= number_input(f, :price_partnership,
+                phx_debounce: "blur",
+                class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm"
+              ) %>
             </div>
             <p class="text-xs text-red-500"><%= error_tag(f, :price) %></p>
             <div class="mt-4">
-              <label for="street-address" class="block text-sm font-medium text-gray-700">Description</label>
-              <%= textarea(f, :description, rows: 3, class: "mt-1 focus:ring-red-500 focus:border-red-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md") %>
+              <label for="street-address" class="block text-sm font-medium text-gray-700">
+                Description
+              </label>
+              <%= textarea(f, :description,
+                rows: 3,
+                class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm"
+              ) %>
             </div>
             <p class="text-xs text-red-500"><%= error_tag(f, :description) %></p>
             <div class="mt-4">
-              <label for="street-address" class="block text-sm font-medium text-gray-700">Stock</label>
-              <%= number_input(f, :stock, rows: 3, class: "mt-1 focus:ring-red-500 focus:border-red-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md") %>
+              <label for="street-address" class="block text-sm font-medium text-gray-700">
+                Stock
+              </label>
+              <%= number_input(f, :stock,
+                rows: 3,
+                class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm"
+              ) %>
             </div>
             <p class="text-xs text-red-500"><%= error_tag(f, :stock) %></p>
             <div class="mt-4">
-              <label for="street-address" class="block text-sm font-medium text-gray-700">Maximum purchases per user</label>
-              <%= number_input(f, :max_per_user, rows: 3, class: "mt-1 focus:ring-red-500 focus:border-red-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md") %>
+              <label for="street-address" class="block text-sm font-medium text-gray-700">
+                Maximum purchases per user
+              </label>
+              <%= number_input(f, :max_per_user,
+                rows: 3,
+                class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm"
+              ) %>
             </div>
             <div class="mt-4">
-              <label for="street-address" class="block text-sm font-medium text-gray-700">Pre Order</label>
-              <%= checkbox(f, :pre_order, class: "mt-1 focus:ring-red-500 focus:border-red-500 block w-10 h-10 shadow-sm sm:text-sm border-gray-300 rounded-md") %>
+              <label for="street-address" class="block text-sm font-medium text-gray-700">
+                Pre Order
+              </label>
+              <%= checkbox(f, :pre_order,
+                class: "mt-1 block h-10 w-10 rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm"
+              ) %>
             </div>
             <p class="text-xs text-red-500"><%= error_tag(f, :max_per_user) %></p>
           </div>
           <!-- Product image -->
-          <div class="mt-10 lg:col-start-2 lg:row-span-2 lg:self-center lg:mt-0">
-            <div class="overflow-hidden rounded-lg aspect-w-1 aspect-h-1">
+          <div class="mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center">
+            <div class="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg">
               <div class="flex flex-col 1.5xl:flex-row">
-                <div class="py-5 px-4 sm:px-6 shrink-0 1.5xl:py-5 1.5xl:px-6 1.5xl:shrink-0">
+                <div class="shrink-0 px-4 py-5 1.5xl:shrink-0 1.5xl:px-6 1.5xl:py-5 sm:px-6">
                   <%= live_file_input(@uploads.image, class: "hidden") %>
-                  <div class={"#{if length(@uploads.image.entries) != 0 do "hidden" end} border-2 border-gray-300 border-dashed rounded-md"} phx-drop-target={@uploads.image.ref}>
+                  <div
+                    class={
+                      "#{if length(@uploads.image.entries) != 0 do
+                        "hidden"
+                      end} border-2 border-gray-300 border-dashed rounded-md"
+                    }
+                    phx-drop-target={@uploads.image.ref}
+                  >
                     <div class="mx-auto sm:col-span-6 lg:w-[400px]">
-                      <div class="flex justify-center px-6 my-[140px]">
+                      <div class="my-[140px] flex justify-center px-6">
                         <div class="space-y-1 text-center">
-                          <svg class="mx-auto w-12 h-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                          <svg
+                            class="mx-auto h-12 w-12 text-gray-400"
+                            stroke="currentColor"
+                            fill="none"
+                            viewBox="0 0 48 48"
+                            aria-hidden="true"
+                          >
+                            <path
+                              d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
                           </svg>
                           <div class="flex text-sm text-gray-600">
-                            <label for="file-upload" class="relative font-medium text-red-600 rounded-md cursor-pointer hover:text-red-800">
-                              <a onclick={"document.getElementById('#{@uploads.image.ref}').click()"}>
+                            <label
+                              for="file-upload"
+                              class="relative cursor-pointer rounded-md font-medium text-red-600 hover:text-red-800"
+                            >
+                              <a onclick={
+                                "document.getElementById('#{@uploads.image.ref}').click()"
+                              }>
                                 Upload a file
                               </a>
                             </label>
@@ -97,7 +167,14 @@
                                 String.slice(entry.client_name, 0..30) <> "... "
                               end %>
                             </figcaption>
-                            <button type="button" phx-click="cancel-image" phx-target={@myself} phx-value-ref={entry.ref} aria-label="cancel" class="pl-4">
+                            <button
+                              type="button"
+                              phx-click="cancel-image"
+                              phx-target={@myself}
+                              phx-value-ref={entry.ref}
+                              aria-label="cancel"
+                              class="pl-4"
+                            >
                             </button>
                           </div>
                         </figure>

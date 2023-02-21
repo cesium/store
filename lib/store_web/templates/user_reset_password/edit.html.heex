@@ -1,38 +1,62 @@
 <h1 class="sr-only">Reset password</h1>
-<div class="min-h-full max flex flex-col justify-center py-12 sm:px-6 lg:px-">
+<div class="max flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-">
   <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-    <div class="bg-gray-200 py-8 px-4 shadow rounded-lg mx-2 sm:px-10">
+    <div class="mx-2 rounded-lg bg-gray-200 px-4 py-8 shadow sm:px-10">
       <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <img class="h-12 w-auto mx-auto" src="/images/logos/logo_lettering.svg" alt="CeSIUM">
+        <img class="mx-auto h-12 w-auto" src="/images/logos/logo_lettering.svg" alt="CeSIUM" />
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Reset password</h2>
-        <p class="mt-2 text-center text-sm text-gray-600">
-        </p>
+        <p class="mt-2 text-center text-sm text-gray-600"></p>
       </div>
-      <.form class="space-y-3", let={f} for={@changeset} action={Routes.user_reset_password_path(@conn, :update, @token)}>
+      <.form
+        class="space-y-3"
+        ,
+        let={f}
+        for={@changeset}
+        action={Routes.user_reset_password_path(@conn, :update, @token)}
+      >
         <%= if @changeset.action do %>
           <div class="alert alert-danger">
             <p>Oops, something went wrong! Please check the errors below.</p>
           </div>
         <% end %>
 
-        <%= label f, :password, "New password", class: "block text-sm font-medium text-gray-700" %>
-        <%= password_input f, :password, required: true,  class: "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"%>
-        <%= error_tag f, :password %>
+        <%= label(f, :password, "New password", class: "block text-sm font-medium text-gray-700") %>
+        <%= password_input(f, :password,
+          required: true,
+          class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+        ) %>
+        <%= error_tag(f, :password) %>
 
-        <%= label f, :password_confirmation, "Confirm new password",class: "block text-sm font-medium text-gray-700" %>
-        <%= password_input f, :password_confirmation, required: true, class: "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
-        <%= error_tag f, :password_confirmation %>
+        <%= label(f, :password_confirmation, "Confirm new password",
+          class: "block text-sm font-medium text-gray-700"
+        ) %>
+        <%= password_input(f, :password_confirmation,
+          required: true,
+          class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+        ) %>
+        <%= error_tag(f, :password_confirmation) %>
 
         <div>
-          <%= submit do%>
-              <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-[#ed7950] bg-[#c65932]">Reset password</button>
-          <%end%>
+          <%= submit do %>
+            <button
+              type="submit"
+              class="bg-[#c65932] flex w-full justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[#ed7950]"
+            >
+              Reset password
+            </button>
+          <% end %>
         </div>
       </.form>
 
-      <p class="align-center justify-center  flex flex-row text-sm font-medium text-[#c65932] mt-1">
-        <%= link "Register",class: "hover:text-[#ed7950]", to: Routes.user_registration_path(@conn, :new) %> |
-        <%= link "Log in",class: "hover:text-[#ed7950]", to: Routes.user_session_path(@conn, :new) %>
+      <p class="align-center text-[#c65932] mt-1 flex flex-row justify-center text-sm font-medium">
+        <%= link("Register",
+          class: "hover:text-[#ed7950]",
+          to: Routes.user_registration_path(@conn, :new)
+        ) %> |
+        <%= link("Log in",
+          class: "hover:text-[#ed7950]",
+          to: Routes.user_session_path(@conn, :new)
+        ) %>
       </p>
     </div>
   </div>
