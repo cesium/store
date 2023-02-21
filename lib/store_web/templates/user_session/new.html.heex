@@ -32,31 +32,71 @@
     </div>
   </div>
 
-  <div class="flex flex-col space-y-2 sm:flex-row sm:justify-between sm:items-center sm:space-y-0">
-    <div class="flex items-center">
-      <%= checkbox(f, :remember_me, class: "h-4 w-4 text-[#f47c58] focus:ring-[#f47c58] border-gray-300") %>
-      <%= label(f, :remember_me, gettext("Remember me"), class: "ml-2 block text-sm text-gray-900") %>
+  <.form
+    let={f}
+    for={@conn}
+    action={Routes.user_session_path(@conn, :create)}
+    as={:user}
+    class="mx-8 mt-8 space-y-6 sm:mx-0"
+  >
+    <%= if @error_message do %>
+      <div class="alert alert-danger">
+        <p><%= @error_message %></p>
+      </div>
+    <% end %>
+    <div class="-space-y-px rounded-md shadow-sm">
+      <div>
+        <%= label(f, :email, class: "sr-only") %>
+        <%= email_input(f, :email,
+          required: true,
+          placeholder: gettext("Email address"),
+          class: "relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:ring-[#f47c58] focus:border-[#f47c58] focus:z-10 focus:outline-none sm:text-sm"
+        ) %>
+      </div>
+      <div>
+        <%= label(f, :password, class: "sr-only") %>
+        <%= password_input(f, :password,
+          required: true,
+          placeholder: gettext("Password"),
+          autocomplete: "current-password",
+          class: "relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:ring-[#f47c58] focus:border-[#f47c58] focus:z-10 focus:outline-none sm:text-sm"
+        ) %>
+      </div>
+    </div>
+
+    <div class="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+      <div class="flex items-center">
+        <%= checkbox(f, :remember_me,
+          class: "text-[#f47c58] h-4 w-4 border-gray-300 focus:ring-[#f47c58]"
+        ) %>
+        <%= label(f, :remember_me, gettext("Remember me"),
+          class: "ml-2 block text-sm text-gray-900"
+        ) %>
+      </div>
+
+      <div class="text-sm">
+        <%= link(gettext("Forgot your password?"),
+          to: Routes.user_reset_password_path(@conn, :new),
+          class: "text-[#f47c58] font-medium focus:ring-[#f47c58] focus:outline-none focus:ring-2 focus:ring-offset-2"
+        ) %>
+      </div>
+    </div>
+
+    <div>
+      <%= submit class: "group relative flex w-full justify-center border border-transparent bg-black px-4 py-2 text-sm font-bold text-white hover:bg-[#f47c58] focus:ring-[#f47c58] focus:outline-none focus:ring-2 focus:ring-offset-2" do %>
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+          <Heroicons.Solid.lock_closed class="h-5 w-5 text-white opacity-10 group-hover:text-black" />
+        </span>
+        <%= gettext("Login") %>
+      <% end %>
     </div>
 
     <div class="text-sm">
-      <%= link(gettext("Forgot your password?"), to: Routes.user_reset_password_path(@conn, :new), class: "font-medium text-[#f47c58] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#f47c58]") %>
+      Don't have an account?
+      <%= link(gettext("Register Now"),
+        to: Routes.user_registration_path(@conn, :new),
+        class: "text-[#f47c58] font-medium focus:ring-[#f47c58] focus:outline-none focus:ring-2 focus:ring-offset-2"
+      ) %>
     </div>
-  </div>
-
-  <div>
-    <%= submit class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-bold text-white bg-black hover:bg-[#f47c58] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#f47c58]" do %>
-      <span class="flex absolute inset-y-0 left-0 items-center pl-3">
-        <Heroicons.Solid.lock_closed class="w-5 h-5 text-white opacity-10 group-hover:text-black" />
-      </span>
-      <%= gettext("Login") %>
-    <% end %>
-  </div>
-
-  <div class="text-sm">
-    Don't have an account?  <%= link(gettext("Register Now"), to: Routes.user_registration_path(@conn, :new), class: "font-medium text-[#f47c58] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#f47c58]") %>
-  </div>
-
-
-</.form>
-
+  </.form>
 </div>

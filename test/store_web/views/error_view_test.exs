@@ -5,7 +5,7 @@ defmodule StoreWeb.ErrorViewTest do
   import Phoenix.View
 
   test "renders 404.html" do
-    assert render_to_string(StoreWeb.ErrorView, "404_page.html", []) =~ "Page Not Found"
+    assert render_to_string(StoreWeb.ErrorView, "404.html", []) =~ "Page Not Found"
   end
 
   test "renders 500.html" do

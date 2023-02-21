@@ -11,12 +11,6 @@ defmodule StoreWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_user
-
-    plug Plug.Static,
-      at: "/store",
-      from: :store,
-      gzip: false,
-      only: ~w(css fonts images store js favicon.ico robots.txt)
   end
 
   pipeline :api do
@@ -116,8 +110,6 @@ defmodule StoreWeb.Router do
 
     scope "/admin", Backoffice, as: :admin do
       live_session :admin, on_mount: [{StoreWeb.Hooks, :current_user}] do
-        live "/dashboard", DashboardLive.Index, :index
-
         live "/product/new", ProductLive.New, :new
         live "/product/:id/edit", ProductLive.Edit, :edit
 

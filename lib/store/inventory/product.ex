@@ -11,17 +11,6 @@ defmodule StoreWeb.Inventory.Product do
 
   @optional_fields []
 
-  @derive {
-    Flop.Schema,
-    filterable: [],
-    sortable: [:name],
-    compound_fields: [search: [:name]],
-    default_order: %{
-      order_by: [:name],
-      order_directions: [:asc]
-    }
-  }
-
   schema "products" do
     field :name, :string
     field :description, :string
