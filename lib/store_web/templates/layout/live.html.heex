@@ -1,26 +1,22 @@
-<div class="relative mx-auto flex flex-col justify-between h-screen px-5">
-
+<div class="relative mx-auto flex h-screen flex-col justify-between px-5">
   <header x-data="{ navbar: false }">
     <%= render("_mobile_navbar.html", assigns) %>
     <%= render("_desktop_navbar.html", assigns) %>
   </header>
 
   <main class="px-0">
-    <p class="alert alert-info" role="alert"
-      phx-click="lv:clear-flash"
-      phx-value-key="info"><%= live_flash(@flash, :info) %></p>
+    <p class="alert alert-info" role="alert" phx-click="lv:clear-flash" phx-value-key="info">
+      <%= live_flash(@flash, :info) %>
+    </p>
 
-    <p class="alert alert-danger" role="alert"
-      phx-click="lv:clear-flash"
-      phx-value-key="error"><%= live_flash(@flash, :error) %></p>
+    <p class="alert alert-danger" role="alert" phx-click="lv:clear-flash" phx-value-key="error">
+      <%= live_flash(@flash, :error) %>
+    </p>
 
     <%= @inner_content %>
-
   </main>
 
-
-   <footer>
+  <footer>
     <%= render("_desktop_footer.html", assigns) %>
   </footer>
-
 </div>
