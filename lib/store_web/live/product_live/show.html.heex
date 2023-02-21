@@ -4,13 +4,11 @@
       <div class="hidden lg:w-1/4 lg:flex lg:flex-col lg:space-y-4">
       <%= if @product.image do %>
         <img
-          src={Uploaders.ProductImage.url({@product.image,@product},
-          :original)}
+          src={Uploaders.ProductImage.url({@product.image,@product},:original)}
           class="object-cover object-center w-full h-full lg:w-full lg:h-full"
         />
         <img
-          src={Uploaders.ProductImage.url({@product.image,@product},
-          :original)}
+          src={Uploaders.ProductImage.url({@product.image,@product},:original)}
           class="object-cover object-center w-full h-full lg:w-full lg:h-full"
         />
       <% else %>
@@ -74,12 +72,12 @@
         <div class="py-8"><%= @product.description %></div>
       </div>
       <div class="flex flex-col justify-between space-y-4">
-           <%= if assigns[:current_user] && @current_user.role in [:admin] do %> 
+           <%= if assigns[:current_user] && @current_user.role in [:admin] do %>
              <%= live_patch to: Routes.admin_product_edit_path(@socket, :edit, @product),class: "button" do %>
              <div type="button" class="w-full inline-flex items-center bg-black py-4 text-white border-2 border-gray-200 shadow-sm hover:bg-[#f47c58] font-bold">
                <span class="w-full text-center"> Edit </span>
              </div>
-             <% end %> 
+             <% end %>
            <% else %>
              <%= if assigns[:current_user] do %>
                <button phx-click="purchase" class="">
@@ -102,7 +100,7 @@
       </div>
     </div>
   <div>
-    <%= if assigns[:current_user] && @current_user.role in [:admin] do %> 
+    <%= if assigns[:current_user] && @current_user.role in [:admin] do %>
     <h1 class="uppercase font-bold pt-16 pb-8">Product Dashboard</h1>
       <table class="border-4 w-full">
         <thead class="border-2">

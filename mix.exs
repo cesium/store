@@ -4,10 +4,9 @@ defmodule Store.MixProject do
   def project do
     [
       app: :store,
-      version: "0.1.0",
-      elixir: "~> 1.12",
+      version: "0.0.0",
+      elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -52,7 +51,7 @@ defmodule Store.MixProject do
       {:waffle_ecto, "~> 0.0"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
-      {:gettext, "~> 0.18"},
+      {:gettext, "~> 0.19"},
       {:qrcode_ex, "~> 0.1.1"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
@@ -70,7 +69,8 @@ defmodule Store.MixProject do
   defp aliases do
     [
       setup: ["deps.get", "ecto.setup"],
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      "ecto.seed": ["run priv/repo/seeds.exs"],
+      "ecto.setup": ["ecto.create", "ecto.migrate", "ecto.seed"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
