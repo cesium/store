@@ -7,7 +7,8 @@ defmodule Store.Accounts do
   alias Store.Repo
 
   alias Store.Accounts.{User, UserToken, UserNotifier}
-
+  alias StoreWeb.Emails.AuthEmails
+  alias Store.Mailer
   ## Database getters
 
   @doc """
@@ -283,7 +284,9 @@ defmodule Store.Accounts do
     else
       {encoded_token, user_token} = UserToken.build_email_token(user, "confirm")
       Repo.insert!(user_token)
-      UserNotifier.deliver_confirmation_instructions(user, confirmation_url_fun.(encoded_token))
+
+      AuthEmails.confirm_account_email(confirmation_url_fun.(encoded_token), to: user.email)
+      |> Mailer.deliver()
     end
   end
 
