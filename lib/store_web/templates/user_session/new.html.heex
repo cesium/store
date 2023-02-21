@@ -1,35 +1,12 @@
-<div class="w-full max-w-md h-screen flex flex-col justify-center mx-auto">
-<div>
-  <img class="mx-auto w-auto h-16 rounded-lg" src={Routes.static_path(@conn, "/images/logos/logo_lettering.svg")} />
-  <h2 class="mt-6 text-3xl font-extrabold text-center text-gray-900">
-    <%= gettext("Sign in to your Account") %>
-  </h2>
-</div>
-
-<.form let={f} for={@conn} action={Routes.user_session_path(@conn, :create)} as={:user} class="mx-8 mt-8 space-y-6 sm:mx-0">
-  <%= if @error_message do %>
-    <div class="alert alert-danger">
-      <p><%= @error_message %></p>
-    </div>
-  <% end %>
-  <div class="-space-y-px rounded-md shadow-sm">
-    <div>
-      <%= label(f, :email, class: "sr-only") %>
-      <%= email_input(f, :email,
-        required: true,
-        placeholder: gettext("Email address"),
-        class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-[#f47c58] focus:border-[#f47c58] focus:z-10 sm:text-sm"
-      ) %>
-    </div>
-    <div>
-      <%= label(f, :password, class: "sr-only") %>
-      <%= password_input(f, :password,
-        required: true,
-        placeholder: gettext("Password"),
-        autocomplete: "current-password",
-        class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-[#f47c58] focus:border-[#f47c58] focus:z-10 sm:text-sm"
-      ) %>
-    </div>
+<div class="mx-auto flex h-screen w-full max-w-md flex-col justify-center">
+  <div>
+    <img
+      class="mx-auto h-16 w-auto rounded-lg"
+      src={Routes.static_path(@conn, "/images/logos/logo_lettering.svg")}
+    />
+    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+      <%= gettext("Sign in to your Account") %>
+    </h2>
   </div>
 
   <.form
