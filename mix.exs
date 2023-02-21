@@ -9,7 +9,8 @@ defmodule Store.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      preferred_cli_env: [check: :test]
     ]
   end
 
@@ -56,8 +57,13 @@ defmodule Store.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
       {:tailwind_formatter, "~> 0.3.2", only: :dev, runtime: false},
+      {:icons, "~> 0.9"},
+
+      # tools
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
-      {:icons, "~> 0.9"}
+      {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.28", only: :dev, runtime: false},
+      {:sobelow, "~> 0.11", only: :dev, runtime: false}
     ]
   end
 
@@ -74,6 +80,15 @@ defmodule Store.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "ecto.seed"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       lint: ["credo --strict"],
+      check: [
+        "clean",
+        "deps.unlock --check-unused",
+        "compile --all-warnings --warnings-as-errors",
+        "format --check-formatted",
+        "deps.unlock --check-unused",
+        "test --warnings-as-errors",
+        "lint"
+      ],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
     ]
