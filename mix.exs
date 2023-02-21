@@ -60,6 +60,7 @@ defmodule Store.MixProject do
       {:icons, "~> 0.9"},
 
       # tools
+      {:ex_check, "~> 0.14.0", only: [:dev, :test], runtime: false},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.28", only: :dev, runtime: false},
@@ -80,15 +81,6 @@ defmodule Store.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "ecto.seed"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       lint: ["credo --strict"],
-      check: [
-        "clean",
-        "deps.unlock --check-unused",
-        "compile --all-warnings --warnings-as-errors",
-        "format --check-formatted",
-        "deps.unlock --check-unused",
-        "test --warnings-as-errors",
-        "lint"
-      ],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
     ]
