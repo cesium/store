@@ -1,10 +1,3 @@
-// We import the CSS which is extracted to its own file by esbuild.
-// Remove this line if you add a your own CSS build pipeline (e.g postcss).
-
-import Alpine from "alpinejs";
-window.Alpine = Alpine;
-Alpine.start();
-
 // If you want to use Phoenix channels, run `mix help phx.gen.channel`
 // to get started and then uncomment the line below.
 // import "./user_socket.js"
@@ -28,30 +21,10 @@ import "phoenix_html"
 import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
+import Alpine from "alpinejs";
 
-let Hooks = {};
-
-Hooks.CustomSelect = {
-  mounted() {
-    this.el.addEventListener("selected-change", (event) => {
-      this.pushEventTo(event.detail.id, "update", event.detail);
-    });
-
-    this.handleEvent("close-selected", (data) => {
-      const element = document.querySelector(data.id);
-
-      if (!element) return;
-      if (data.id !== `#${this.el.id}`) return;
-
-      element.dispatchEvent(new CustomEvent("reset"));
-
-      this.el.querySelector("input").value = data.value;
-      this.el
-        .querySelector("input")
-        .dispatchEvent(new Event("input", { bubbles: true }));
-    });
-  },
-};
+window.Alpine = Alpine;
+Alpine.start();
 
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")
@@ -59,7 +32,6 @@ let csrfToken = document
   
 let liveSocket = new LiveSocket("/live", Socket, {
     params: { _csrf_token: csrfToken },
-    hooks: Hooks,
     dom: {
       onBeforeElUpdated(from, to) {
         if (from._x_dataStack) {
@@ -84,11 +56,6 @@ window.addEventListener("phx:page-loading-stop", () => {
   topBarScheduled = undefined;
   topbar.hide();
 });
-
-// Show progress bar on live navigation and form submits
-topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"})
-window.addEventListener("phx:page-loading-start", info => topbar.show())
-window.addEventListener("phx:page-loading-stop", info => topbar.hide())
 
 // connect if there are any LiveViews on the page
 liveSocket.connect()

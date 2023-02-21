@@ -1,6 +1,5 @@
 defmodule StoreWeb.Emails.OrdersEmail do
   use Phoenix.Swoosh, view: StoreWeb.EmailView, layout: {StoreWeb.LayoutView, :email}
-  alias Mix.Tasks.Phx.Routes
   alias Store.Inventory
   alias Store.Repo
   alias StoreWeb.Router.Helpers, as: Routes
