@@ -13,23 +13,4 @@
       <%= gettext("Confirm your account") %>
     <% end %>
   </.form>
-
-  <p>
-    <div class="text-sm">
-      Don't have an account?
-      <%= link(gettext("Register Now"),
-        to: Routes.user_registration_path(@conn, :new),
-        class: "text-[#f47c58] font-medium focus:ring-[#f47c58] focus:outline-none focus:ring-2 focus:ring-offset-2"
-      ) %>
-    </div>
-
-    <div class="text-sm">
-      <%= link("Log in",
-        to:
-          Routes.user_session_path(@conn, :new,
-            class: "text-[#f47c58] font-medium focus:ring-[#f47c58] focus:outline-none focus:ring-2 focus:ring-offset-2"
-          )
-      ) %>
-    </div>
-  </p>
 </div>
