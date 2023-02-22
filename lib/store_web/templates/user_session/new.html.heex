@@ -69,8 +69,7 @@
     </div>
 
     <div class="text-sm">
-      Don't have an account?
-      <%= link(gettext("Register Now"),
+      Don't have an account? <%= link(gettext("Register Now"),
         to: Routes.user_registration_path(@conn, :new),
         class: "text-[#f47c58] font-medium focus:ring-[#f47c58] focus:outline-none focus:ring-2 focus:ring-offset-2"
       ) %>
