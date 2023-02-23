@@ -1,65 +1,78 @@
-<div class="max flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-">
-  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-    <div class="mx-2 rounded-lg bg-gray-200 px-4 py-8 shadow sm:px-10">
-      <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <img class="mx-auto h-12 w-auto" src="/images/logos/logo_lettering.svg" alt="CeSIUM" />
-        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Create an account</h2>
-        <p class="mt-2 text-center text-sm text-gray-600"></p>
-      </div>
-      <.form
-        class="space-y-3"
-        ,
-        let={f}
-        for={@changeset}
-        action={Routes.user_registration_path(@conn, :create)}
-      >
-        <%= if @changeset.action do %>
-          <div class="alert alert-danger">
-            <p>Oops, something went wrong! Please check the errors below.</p>
-          </div>
-        <% end %>
-
-        <div>
-          <%= label(f, :email, class: "block text-sm font-medium text-gray-700") %>
-          <div class="mt-1">
-            <%= email_input(f, :email,
-              required: true,
-              class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-            ) %>
-          </div>
-          <%= error_tag(f, :email) %>
-        </div>
-
-        <div>
-          <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-          <div class="mt-1">
-            <%= password_input(f, :password,
-              required: true,
-              class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-            ) %>
-          </div>
-          <%= error_tag(f, :password) %>
-        </div>
-
-        <div>
-          <%= submit do %>
-            <button
-              type="submit"
-              class="bg-[#c65932] flex w-full justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[#ed7950]"
-            >
-              Register
-            </button>
-          <% end %>
-        </div>
-      </.form>
-
-      <p class="align-center text-[#c65932] mt-1 flex flex-row justify-center text-sm font-medium">
-        Already have an account? -
-        <%= link("Log in",
-          class: "hover:text-[#ed7950]",
-          to: Routes.user_session_path(@conn, :new)
-        ) %>
-      </p>
-    </div>
+<div class="mx-auto flex h-screen w-full max-w-md flex-col justify-center">
+  <div>
+    <img
+      class="mx-auto h-16 w-auto rounded-lg"
+      src={Routes.static_path(@conn, "/images/logos/logo_lettering.svg")}
+    />
+    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+      <%= gettext("Create a new account") %>
+    </h2>
   </div>
+
+  <.form
+    class="mx-8 mt-8 space-y-6 sm:mx-0"
+    ,
+    let={f}
+    for={@changeset}
+    action={Routes.user_registration_path(@conn, :create)}
+  >
+    <%= if @changeset.action do %>
+      <div class="alert alert-danger">
+        <p>Oops, something went wrong! Please check the errors below.</p>
+      </div>
+    <% end %>
+    <div class="-space-y-px rounded-md shadow-sm">
+      <div>
+        <%= label(f, :email, class: "sr-only") %>
+        <%= email_input(f, :email,
+          required: true,
+          placeholder: gettext("Email address"),
+          class: "relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:ring-[#f47c58] focus:border-[#f47c58] focus:z-10 focus:outline-none sm:text-sm"
+        ) %>
+      </div>
+      <div>
+        <%= label(f, :password, class: "sr-only") %>
+        <%= password_input(f, :password,
+          required: true,
+          placeholder: gettext("Password"),
+          autocomplete: "current-password",
+          class: "relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:ring-[#f47c58] focus:border-[#f47c58] focus:z-10 focus:outline-none sm:text-sm"
+        ) %>
+      </div>
+    </div>
+
+    <div class="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+      <div class="flex items-center">
+        <%= checkbox(f, :remember_me,
+          class: "text-[#f47c58] h-4 w-4 border-gray-300 focus:ring-[#f47c58]"
+        ) %>
+        <%= label(f, :remember_me, gettext("Remember me"),
+          class: "ml-2 block text-sm text-gray-900"
+        ) %>
+      </div>
+
+      <div class="text-sm">
+        <%= link(gettext("Forgot your password?"),
+          to: Routes.user_reset_password_path(@conn, :new),
+          class: "text-[#f47c58] font-medium focus:ring-[#f47c58] focus:outline-none focus:ring-2 focus:ring-offset-2"
+        ) %>
+      </div>
+    </div>
+
+    <div>
+      <%= submit class: "group relative flex w-full justify-center border border-transparent bg-black px-4 py-2 text-sm font-bold text-white hover:bg-[#f47c58] focus:ring-[#f47c58] focus:outline-none focus:ring-2 focus:ring-offset-2" do %>
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+          <Heroicons.Solid.lock_closed class="h-5 w-5 text-white opacity-10 group-hover:text-black" />
+        </span>
+        <%= gettext("Register") %>
+      <% end %>
+    </div>
+
+    <div class="text-sm">
+      Already have an account? <%= link(gettext("Login Now"),
+        to: Routes.user_session_path(@conn, :new),
+        class: "text-[#f47c58] font-medium focus:ring-[#f47c58] focus:outline-none focus:ring-2 focus:ring-offset-2"
+      ) %>
+    </div>
+  </.form>
 </div>
