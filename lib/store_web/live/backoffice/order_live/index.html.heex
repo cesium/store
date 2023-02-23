@@ -8,8 +8,8 @@
               Order placed on <time datetime="2021-07-06">Jul 6, 2021</time>
             </h3>
 
-            <div class="flex items-center border-b border-gray-200 p-4 sm:grid sm:grid-cols-4 sm:gap-x-6 sm:p-6">
-              <dl class="grid flex-1 grid-cols-2 gap-x-6 text-sm sm:col-span-3 sm:grid-cols-4 lg:col-span-2">
+            <div class="flex flex-col items-center border-b border-gray-200 p-4 sm:grid lg:flex-col sm:grid-cols-4 sm:gap-x-6 sm:p-6">
+              <dl class="grid flex-1 flex-col grid-cols-2 gap-x-6 text-sm sm:col-span-3 sm:grid-cols-4 lg:col-span-2">
                 <div>
                   <dt class="font-semibold uppercase">Order User</dt>
                   <dd class="mt-1"><%= user_email(order.user_id) %></dd>
@@ -34,7 +34,7 @@
                 </div>
               </dl>
               <!-- Add a button at the final at the grid -->
-              <div class="hidden lg:col-span-2 lg:flex lg:items-center lg:justify-end lg:space-x-4">
+              <div class="lg:col-span-2 lg:flex lg:items-center lg:justify-end lg:space-x-4">
                 <%= if order.status != :draft do %>
                   <%= live_patch to: Routes.admin_order_show_path(@socket, :show, order.id), class: "button" do %>
                     <button class="flex w-32 items-center justify-center bg-black px-2.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#f47c58]">

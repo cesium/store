@@ -1,17 +1,17 @@
 <main class="flex items-center justify-center">
-  <section aria-labelledby="recent-heading" class="mt-16 h-max w-max">
-    <div class="flex items-center justify-center">
-      <div class="space-y-8">
+  <section aria-labelledby="recent-heading" class="mt-16 w-full">
+    <div class="flex justify-center">
+      <div class="w-full sm:w-3/4 md:w-2/3 lg:w-screen xl:w-screen space-y-8">
         <%= for order <- @orders do %>
           <%= if @current_user && @current_user.id == order.user_id do %>
             <%= if order.status != :draft && order.status != :canceled do %>
-              <div class="mr-4 w-max border-t border-b border-gray-200 bg-white shadow-sm sm:border">
-                <h3 class="sr-only">
+            <div class="w-full border-t border-b border-gray-200 bg-white shadow-sm sm:border">
+              <h3 class="sr-only">
                   Order placed on <time datetime="2021-07-06">Jul 6, 2021</time>
                 </h3>
 
-                <div class="flex items-center border-b border-gray-200 p-4 sm:grid sm:grid-cols-4 sm:gap-x-6 sm:p-6">
-                  <dl class="grid flex-1 grid-cols-2 gap-x-6 text-sm sm:col-span-3 sm:grid-cols-4 lg:col-span-2">
+                <div class="flex flex-col sm:flex-row items-center border-b border-gray-200 p-4 sm:p-6">
+                  <dl class="flex-1 grid grid-cols-2 gap-x-6 text-sm sm:col-span-3 sm:grid-cols-4 lg:col-span-2">
                     <div>
                       <%= if @current_user do %>
                         <dt class="font-semibold uppercase">Order User</dt>
@@ -34,17 +34,17 @@
                     </div>
                   </dl>
 
-                  <div class="hidden lg:col-span-2 lg:flex lg:items-center lg:justify-end lg:space-x-4">
+                  <div class="flex lg:col-span-2 lg:flex lg:items-center lg:justify-end lg:space-x-4">
                     <%= draw_qr_code(order) |> raw %>
                   </div>
                 </div>
                 <!-- Products -->
                 <h4 class="sr-only">Items</h4>
-                <ul role="list" class="">
+                <ul role="list" class="divide-y divide-gray-200">
                   <%= for product <- order.products do %>
                     <li class="p-4 sm:p-6">
-                      <div class="flex items-center sm:items-start">
-                        <div class="h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-gray-200 sm:h-40 sm:w-40">
+                      <div class="flex items-center flex-col sm:items-center sm:flex-row">
+                        <div class="h-20 w-full sm:w-20 sm:h-40 flex-shrink-0 overflow-hidden rounded-lg bg-gray-200 mb-4 sm:mb-0 sm:mr-6 ">
                           <%= if product.image  != nil do %>
                             <img
                               src={
@@ -61,7 +61,7 @@
                           <% end %>
                         </div>
                         <div class="ml-6 flex-1 text-sm">
-                          <div class="font-medium text-gray-900 sm:flex sm:justify-between">
+                          <div class="font-medium text-gray-900 flex flex-col sm:flex-row sm:justify-between">
                             <h5 class="font-semibold uppercase">
                               <%= product.name %>
                             </h5>
@@ -100,9 +100,9 @@
                     </li>
                   <% end %>
                   <%= if order.status == :delivered do %>
-                    <div class="mx-auto mb-2 flex w-full flex-col justify-center">
-                      <div class="w-12/12 bg-[#f47c58] mt-8 flex rounded-lg py-2"></div>
-                      <div class="flex flex-row space-x-96">
+                    <div class="mx-auto mb-2 flex flex-col justify-center items-center w-full sm:w-3/4 md:w-2/3 lg:w-full xl:w-full ">
+                      <div class="w-9/12 bg-[#f47c58] mt-8 flex rounded-lg py-2"></div>
+                      <div class="flex flex-row space-x-20 lg:space-x-96 xl:space-x-96">
                         <p class="justify-start">Ordered</p>
                         <p class="">Paid</p>
                         <p class="">Delivered</p>
@@ -110,28 +110,28 @@
                     </div>
                   <% else %>
                     <%= if order.status == :paid do %>
-                      <div class="mx-auto mb-2 flex w-max flex-col justify-center">
-                        <div class="w-12/12 bg-grey mt-8 rounded-lg">
+                      <div class="mx-auto mb-2 flex flex-col justify-center items-center w-full sm:w-3/4 md:w-2/3 lg:w-full xl:w-full">
+                        <div class="w-9/12 bg-grey mt-8 rounded-lg">
                           <div class="bg-[#f47c58] flex w-6/12 rounded-lg py-2"></div>
                         </div>
-                        <div class="flex flex-row space-x-96">
+                        <div class="flex flex-row space-x-20 lg:space-x-96 xl:space-x-96">
                           <p class="justify-start">Ordered</p>
                           <p class="">Paid</p>
                           <p class="">Delivered</p>
                         </div>
                       </div>
                     <% else %>
-                      <div class="mx-auto mb-2 flex w-max flex-col justify-center">
-                        <div class="w-12/12 bg-grey mt-8 rounded-lg">
-                          <div class="bg-[#f47c58] flex w-1/12 rounded-lg py-2"></div>
+                      <div class="mx-auto mb-2 flex flex-col justify-center items-center w-full sm:w-3/4 md:w-2/3  lg:w-full xl:w-full ">
+                        <div class="w-9/12 bg-grey mt-8 rounded-lg">
+                          <div class="bg-[#f47c58] flex w-1/12 rounded-lg py-2 lg:w-1/5 xl:w-1/5"></div>
                         </div>
-                        <div class="flex flex-row space-x-96">
+                        <div class="flex flex-row space-x-20 lg:space-x-96 xl:space-x-96">
                           <p class="justify-start">Ordered</p>
                           <p class="">Paid</p>
                           <p class="">Delivered</p>
                         </div>
                       </div>
-                      <%= live_patch to: Routes.order_show_path(@socket, :show ,order.id),class: "button" do %>
+                      <%= live_redirect to: Routes.order_show_path(@socket, :show ,order.id),class: "button" do %>
                         <button class="flex w-32 items-center justify-center bg-black px-2.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#f47c58]">
                           <span class="w-full text-center">
                             Go to order
