@@ -1,17 +1,17 @@
 <main class="flex items-center justify-center">
   <section aria-labelledby="recent-heading" class="mt-16 w-full">
     <div class="flex justify-center">
-      <div class="w-full sm:w-3/4 md:w-2/3 lg:w-screen xl:w-screen space-y-8">
+      <div class="w-full space-y-8 sm:w-3/4 md:w-2/3 lg:w-screen xl:w-screen">
         <%= for order <- @orders do %>
           <%= if @current_user && @current_user.id == order.user_id do %>
             <%= if order.status != :draft && order.status != :canceled do %>
-            <div class="w-full border-t border-b border-gray-200 bg-white shadow-sm sm:border">
-              <h3 class="sr-only">
+              <div class="w-full border-t border-b border-gray-200 bg-white shadow-sm sm:border">
+                <h3 class="sr-only">
                   Order placed on <time datetime="2021-07-06">Jul 6, 2021</time>
                 </h3>
 
-                <div class="flex flex-col sm:flex-row items-center border-b border-gray-200 p-4 sm:p-6">
-                  <dl class="flex-1 grid grid-cols-2 gap-x-6 text-sm sm:col-span-3 sm:grid-cols-4 lg:col-span-2">
+                <div class="flex flex-col items-center border-b border-gray-200 p-4 sm:flex-row sm:p-6">
+                  <dl class="grid flex-1 grid-cols-2 gap-x-6 text-sm sm:col-span-3 sm:grid-cols-4 lg:col-span-2">
                     <div>
                       <%= if @current_user do %>
                         <dt class="font-semibold uppercase">Order User</dt>
@@ -43,8 +43,8 @@
                 <ul role="list" class="divide-y divide-gray-200">
                   <%= for product <- order.products do %>
                     <li class="p-4 sm:p-6">
-                      <div class="flex items-center flex-col sm:items-center sm:flex-row">
-                        <div class="h-20 w-full sm:w-20 sm:h-40 flex-shrink-0 overflow-hidden rounded-lg bg-gray-200 mb-4 sm:mb-0 sm:mr-6 ">
+                      <div class="flex flex-col items-center sm:flex-row sm:items-center">
+                        <div class="mb-4 h-20 w-full flex-shrink-0 overflow-hidden rounded-lg bg-gray-200 sm:mr-6 sm:mb-0 sm:h-40 sm:w-20">
                           <%= if product.image  != nil do %>
                             <img
                               src={
@@ -61,7 +61,7 @@
                           <% end %>
                         </div>
                         <div class="ml-6 flex-1 text-sm">
-                          <div class="font-medium text-gray-900 flex flex-col sm:flex-row sm:justify-between">
+                          <div class="flex flex-col font-medium text-gray-900 sm:flex-row sm:justify-between">
                             <h5 class="font-semibold uppercase">
                               <%= product.name %>
                             </h5>
@@ -100,8 +100,8 @@
                     </li>
                   <% end %>
                   <%= if order.status == :delivered do %>
-                    <div class="mx-auto mb-2 flex flex-col justify-center items-center w-full sm:w-3/4 md:w-2/3 lg:w-full xl:w-full ">
-                      <div class="w-9/12 bg-[#f47c58] mt-8 flex rounded-lg py-2"></div>
+                    <div class="mx-auto mb-2 flex w-full flex-col items-center justify-center sm:w-3/4 md:w-2/3 lg:w-full xl:w-full">
+                      <div class="bg-[#f47c58] mt-8 flex w-9/12 rounded-lg py-2"></div>
                       <div class="flex flex-row space-x-20 lg:space-x-96 xl:space-x-96">
                         <p class="justify-start">Ordered</p>
                         <p class="">Paid</p>
@@ -110,8 +110,8 @@
                     </div>
                   <% else %>
                     <%= if order.status == :paid do %>
-                      <div class="mx-auto mb-2 flex flex-col justify-center items-center w-full sm:w-3/4 md:w-2/3 lg:w-full xl:w-full">
-                        <div class="w-9/12 bg-grey mt-8 rounded-lg">
+                      <div class="mx-auto mb-2 flex w-full flex-col items-center justify-center sm:w-3/4 md:w-2/3 lg:w-full xl:w-full">
+                        <div class="bg-grey mt-8 w-9/12 rounded-lg">
                           <div class="bg-[#f47c58] flex w-6/12 rounded-lg py-2"></div>
                         </div>
                         <div class="flex flex-row space-x-20 lg:space-x-96 xl:space-x-96">
@@ -121,9 +121,10 @@
                         </div>
                       </div>
                     <% else %>
-                      <div class="mx-auto mb-2 flex flex-col justify-center items-center w-full sm:w-3/4 md:w-2/3  lg:w-full xl:w-full ">
-                        <div class="w-9/12 bg-grey mt-8 rounded-lg">
-                          <div class="bg-[#f47c58] flex w-1/12 rounded-lg py-2 lg:w-1/5 xl:w-1/5"></div>
+                      <div class="mx-auto mb-2 flex w-full flex-col items-center justify-center sm:w-3/4 md:w-2/3 lg:w-full xl:w-full">
+                        <div class="bg-grey mt-8 w-9/12 rounded-lg">
+                          <div class="bg-[#f47c58] flex w-1/12 rounded-lg py-2 lg:w-1/5 xl:w-1/5">
+                          </div>
                         </div>
                         <div class="flex flex-row space-x-20 lg:space-x-96 xl:space-x-96">
                           <p class="justify-start">Ordered</p>
