@@ -33,6 +33,7 @@ defmodule StoreWeb.UserAuth do
     |> put_session(:user_token, token)
     |> put_session(:live_socket_id, "users_sessions:#{Base.url_encode64(token)}")
     |> maybe_write_remember_me_cookie(token, params)
+    |> verify_confirmed_email(user)
     |> redirect(to: user_return_to || signed_in_path(conn))
   end
 
@@ -155,4 +156,15 @@ defmodule StoreWeb.UserAuth do
   defp maybe_store_return_to(conn), do: conn
 
   defp signed_in_path(_conn), do: "/"
+
+  defp verify_confirmed_email(conn, user) do
+    if user && user.confirmed_at do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You must confirm your email address before continuing.")
+      |> redirect(to: Routes.user_session_path(conn, :new))
+      |> halt()
+    end
+  end
 end

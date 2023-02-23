@@ -7,7 +7,8 @@ defmodule Store.Accounts do
   alias Store.Repo
 
   alias Store.Accounts.{User, UserToken, UserNotifier}
-
+  alias StoreWeb.Emails.AuthEmails
+  alias Store.Mailer
   ## Database getters
 
   @doc """
@@ -59,6 +60,26 @@ defmodule Store.Accounts do
 
   """
   def get_user!(id), do: Repo.get!(User, id)
+
+  def get_user(attrs) when is_list(attrs) do
+    Repo.get_by(User, attrs)
+  end
+
+  def verify_user_emails(email) do
+    user = get_user(email: email)
+
+    if is_nil(user) do
+      {:error, :not_found}
+    else
+      update_user(user, %{verified: true})
+    end
+  end
+
+  def update_user(%User{} = user, attrs) do
+    user
+    |> User.registration_changeset(attrs)
+    |> Repo.update()
+  end
 
   ## User registration
 
@@ -263,7 +284,9 @@ defmodule Store.Accounts do
     else
       {encoded_token, user_token} = UserToken.build_email_token(user, "confirm")
       Repo.insert!(user_token)
-      UserNotifier.deliver_confirmation_instructions(user, confirmation_url_fun.(encoded_token))
+
+      AuthEmails.confirm_account_email(confirmation_url_fun.(encoded_token), to: user.email)
+      |> Mailer.deliver()
     end
   end
 

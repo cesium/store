@@ -21,7 +21,7 @@ defmodule StoreWeb.UserConfirmationController do
       "If your email is in our system and it has not been confirmed yet, " <>
         "you will receive an email with instructions shortly."
     )
-    |> redirect(to: "/")
+    |> redirect(to: "/users/log_in")
   end
 
   def edit(conn, %{"token" => token}) do

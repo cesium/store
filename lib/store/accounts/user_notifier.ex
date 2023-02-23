@@ -4,12 +4,13 @@ defmodule Store.Accounts.UserNotifier do
   alias Store.Mailer
 
   # Delivers the email using the application mailer.
-  defp deliver(recipient, subject, body) do
+  defp deliver(recipient, _, body) do
     email =
       new()
       |> to(recipient)
-      |> from({"Store", "contact@example.com"})
-      |> subject(subject)
+      |> from({"CeSIUM - Store", "noreply@store.cesium.di.uminho.pt"})
+      |> subject("[CeSIUM - Store] Verifique a sua conta")
+      |> reply_to("noreply@store.cesium.di.uminho.pt")
       |> text_body(body)
 
     with {:ok, _metadata} <- Mailer.deliver(email) do
