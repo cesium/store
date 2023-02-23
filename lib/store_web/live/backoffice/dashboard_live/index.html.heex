@@ -1,0 +1,55 @@
+<main>
+  <section aria-labelledby="recent-heading" class="mt-16">
+    <div>
+      <div class="space-y-8">
+        <%= for order <- @orders do %>
+          <%= if order.status != :draft and order.status != :ordered and order.status != :canceled do %>
+            <div class="border-t border-b border-gray-200 bg-white shadow-sm sm:border">
+              <h3 class="sr-only">
+                Order placed on <time datetime="2021-07-06">Jul 6, 2021</time>
+              </h3>
+
+              <div class="flex items-center border-b border-gray-200 p-4 sm:grid sm:grid-cols-4 sm:gap-x-6 sm:p-6">
+                <dl class="grid flex-1 grid-cols-2 gap-x-6 text-sm sm:col-span-3 sm:grid-cols-5 lg:col-span-2">
+                  <div>
+                    <dt class="font-semibold uppercase">Order User</dt>
+                    <dd class="mt-1"><%= user_email(order.user_id) %></dd>
+                  </div>
+                  <div>
+                    <dt class="font-semibold uppercase">Order Manager</dt>
+                    <dd class="mt-1"><%= user_email(order.admin_id) %></dd>
+                  </div>
+                  <div class="hidden sm:block">
+                    <dt class="font-semibold uppercase">Date placed</dt>
+                    <dd class="mt-1">
+                      <time datetime=""><%= NaiveDateTime.to_string(order.inserted_at) %></time>
+                    </dd>
+                  </div>
+                  <div class="hidden sm:block">
+                    <dt class="font-semibold uppercase">Order updated</dt>
+                    <dd class="mt-1">
+                      <time datetime=""><%= NaiveDateTime.to_string(order.updated_at) %></time>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt class="font-semibold uppercase">Status</dt>
+                    <dd class="mt-1 font-medium"><%= capitalize_status(order.status) %></dd>
+                  </div>
+                </dl>
+                <div class="hidden lg:col-span-2 lg:flex lg:items-center lg:justify-end lg:space-x-4">
+                  <%= live_patch to: Routes.admin_order_show_path(@socket, :show, order.id), class: "button" do %>
+                    <button class="flex w-32 items-center justify-center bg-black px-2.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#f47c58]">
+                      <span class="w-full text-center">
+                        Go to order
+                      </span>
+                    </button>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </section>
+</main>

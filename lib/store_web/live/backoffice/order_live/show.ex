@@ -26,7 +26,8 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
   @impl true
   def handle_event("paid", _payload, socket) do
     order = socket.assigns.order
-    Inventory.update_status(order, %{status: :paid})
+    admin = socket.assigns.current_user
+    Inventory.update_status(order, %{status: :paid, admin_id: admin.id})
 
     user = Accounts.get_user!(order.user_id)
     OrdersEmail.paid(order.id, to: user.email) |> Mailer.deliver()
@@ -39,7 +40,8 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
   @impl true
   def handle_event("delivered", _payload, socket) do
     order = socket.assigns.order
-    Inventory.change_status(order, %{status: :delivered})
+    admin = socket.assigns.current_user
+    Inventory.change_status(order, %{status: :delivered, admin_id: admin.id})
 
     user = Accounts.get_user!(order.user_id)
     OrdersEmail.delivered(order.id, to: user.email) |> Mailer.deliver()
@@ -51,7 +53,8 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
 
   def handle_event("ready", _payload, socket) do
     order = socket.assigns.order
-    Inventory.change_status(order, %{status: :ready})
+    admin = socket.assigns.current_user
+    Inventory.change_status(order, %{status: :ready, admin_id: admin.id})
 
     user = Accounts.get_user!(order.user_id)
     OrdersEmail.ready(order.id, to: user.email) |> Mailer.deliver()

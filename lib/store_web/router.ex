@@ -119,6 +119,8 @@ defmodule StoreWeb.Router do
         live "/orders/:id/show/edit", OrderLive.Edit, :edit
 
         live "/users", UserLive.Index, :index
+
+        live "/dashboard", DashboardLive.Index, :index
       end
     end
   end

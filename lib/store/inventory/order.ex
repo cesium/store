@@ -5,11 +5,12 @@ defmodule Store.Inventory.Order do
   alias StoreWeb.Inventory.Product
 
   @required_fields ~w(user_id)a
-  @optional_fields ~w(status)a
+  @optional_fields ~w(status admin_id)a
   @status ~w(draft ordered ready paid canceled delivered)a
 
   schema "orders" do
     belongs_to :user, User
+    belongs_to :admin, User
     field :status, Ecto.Enum, values: @status, default: :draft
     many_to_many :products, Product, join_through: Store.Inventory.OrdersProducts
     timestamps()

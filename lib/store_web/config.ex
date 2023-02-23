@@ -40,6 +40,12 @@ defmodule StoreWeb.Config do
   defp adm_pages() do
     [
       %{
+        key: :dashboard,
+        title: "Dashboard",
+        url: Routes.admin_dashboard_index_path(@conn, :index),
+        tabs: []
+      },
+      %{
         key: :products,
         title: "Products",
         url: Routes.product_index_path(@conn, :index),
