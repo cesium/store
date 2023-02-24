@@ -423,6 +423,19 @@ defmodule Store.Inventory do
     total_price_cart(id) - total_price_partnership_cart(id)
   end
 
+  alias Store.Inventory.OrderHistory
+
+  def create_orders_history(order) do
+    %OrderHistory{}
+    |> OrderHistory.changeset(order)
+    |> Repo.insert()
+  end
+
+  def list_orders_history() do
+    OrderHistory
+    |> Repo.all()
+  end
+
   defp broadcast({:error, _reason} = error, _event), do: error
 
   defp broadcast({:ok, %Product{} = product}, event)

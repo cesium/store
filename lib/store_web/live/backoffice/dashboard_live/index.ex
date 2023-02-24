@@ -3,13 +3,12 @@ defmodule StoreWeb.Backoffice.DashboardLive.Index do
   import Store.Inventory
   alias Store.Repo
   alias Store.Inventory
-  alias Store.Inventory.Order
   alias Store.Accounts
 
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
-     assign(socket, :orders, Inventory.list_orders() |> Repo.preload([:products, :user, :admin]))}
+     assign(socket, :orders, Inventory.list_orders_history() |> Repo.preload([:order, :admin]))}
   end
 
   @impl true
@@ -18,18 +17,6 @@ defmodule StoreWeb.Backoffice.DashboardLive.Index do
      socket
      |> assign(:current_page, :orders)
      |> apply_action(socket.assigns.live_action, params)}
-  end
-
-  defp apply_action(socket, :edit, %{"id" => id}) do
-    socket
-    |> assign(:page_title, "Edit Order")
-    |> assign(:order, Inventory.get_order!(id))
-  end
-
-  defp apply_action(socket, :new, _params) do
-    socket
-    |> assign(:page_title, "New Order")
-    |> assign(:order, %Order{})
   end
 
   defp apply_action(socket, :index, _params) do
