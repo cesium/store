@@ -9,6 +9,5 @@ defmodule Store.Repo.Migrations.OrdersHistory do
       add :status, :string
       timestamps()
     end
-
   end
 end
