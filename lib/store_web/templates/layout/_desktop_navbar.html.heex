@@ -18,7 +18,7 @@
           <div class="hidden h-full lg:flex">
             <div class="inset-x-0 bottom-0 px-4">
               <div class="flex h-full justify-center space-x-20">
-                <%= if assigns[:current_user] && @current_user.role in [:admin] do %>
+                <%= if assigns[:current_user] && @current_user.role == :admin do %>
                   <%= for page <- StoreWeb.Config.admin_pages do %>
                     <div class="relative flex items-center">
                       <%= live_redirect(page.title,
@@ -33,7 +33,7 @@
                   <% end %>
                 <% else %>
                   <%= for page <- StoreWeb.Config.user_pages do %>
-                    <%= if assigns[:current_user] && @current_user.role in [:user] do %>
+                    <%= if assigns[:current_user] && @current_user.role == :user do %>
                       <div class="relative flex items-center">
                         <%= live_redirect(page.title,
                           to: page.url,
@@ -102,7 +102,7 @@
               <% end %>
             <% end %>
             <div class="flex items-center lg:ml-8">
-              <%= if assigns[:current_user] && @current_user.role in [:user] do %>
+              <%= if assigns[:current_user] && @current_user.role == :user do %>
                 <div class="ml-4 flow-root lg:ml-8">
                   <%= live_redirect to: Routes.cart_index_path(@socket, :index), class: "group flex items-center p-2" do %>
                     <Heroicons.Outline.shopping_bag class="text-block h-6 w-6 flex-shrink-0 group-hover:text-[#f47c58]" />

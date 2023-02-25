@@ -110,6 +110,8 @@ defmodule StoreWeb.Router do
 
     scope "/admin", Backoffice, as: :admin do
       live_session :admin, on_mount: [{StoreWeb.Hooks, :current_user}] do
+        live "/dashboard", DashboardLive.Index, :index
+
         live "/product/new", ProductLive.New, :new
         live "/product/:id/edit", ProductLive.Edit, :edit
 
@@ -119,8 +121,6 @@ defmodule StoreWeb.Router do
         live "/orders/:id/show/edit", OrderLive.Edit, :edit
 
         live "/users", UserLive.Index, :index
-
-        live "/dashboard", DashboardLive.Index, :index
       end
     end
   end

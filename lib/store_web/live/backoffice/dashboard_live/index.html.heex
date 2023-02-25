@@ -37,7 +37,7 @@
                   </div>
                 </dl>
                 <div class="hidden lg:col-span-2 lg:flex lg:items-center lg:justify-end lg:space-x-4">
-                  <%= live_patch to: Routes.admin_order_show_path(@socket, :show, order.id), class: "button" do %>
+                  <%= live_patch to: Routes.admin_order_show_path(@socket, :show, order.order_id), class: "button" do %>
                     <button class="flex w-32 items-center justify-center bg-black px-2.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#f47c58]">
                       <span class="w-full text-center">
                         Go to order

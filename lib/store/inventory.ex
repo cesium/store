@@ -431,8 +431,9 @@ defmodule Store.Inventory do
     |> Repo.insert()
   end
 
-  def list_orders_history() do
+  def list_orders_history(opts) when is_list(opts) do
     OrderHistory
+    |> apply_filters(opts)
     |> Repo.all()
   end
 

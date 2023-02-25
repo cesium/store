@@ -1,14 +1,12 @@
 defmodule StoreWeb.Backoffice.DashboardLive.Index do
   use StoreWeb, :live_view
   import Store.Inventory
-  alias Store.Repo
-  alias Store.Inventory
   alias Store.Accounts
 
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
-     assign(socket, :orders, Inventory.list_orders_history() |> Repo.preload([:order, :admin]))}
+     assign(socket, :orders, list_orders_history(preloads: [:order, :admin]) |> Enum.reverse())}
   end
 
   @impl true

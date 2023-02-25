@@ -1,4 +1,4 @@
-<%= if assigns[:current_user] && @current_user.role in [:admin] do %>
+<%= if assigns[:current_user] && @current_user.role == :admin do %>
   <%= live_redirect to: Routes.admin_product_new_path(@socket, :new), class: "button" do %>
     <span class="font-white relative m-10 flex w-64 items-center justify-center rounded bg-sky-500 p-5 text-white hover:bg-sky-700">
       Add new product
