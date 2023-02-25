@@ -8,19 +8,19 @@
               Order placed on <time datetime="2021-07-06">Jul 6, 2021</time>
             </h3>
 
-            <div class="flex items-center border-b border-gray-200 p-4 sm:grid sm:grid-cols-4 sm:gap-x-6 sm:p-6">
-              <dl class="grid flex-1 grid-cols-2 gap-x-6 text-sm sm:col-span-3 sm:grid-cols-4 lg:col-span-2">
-                <div>
+            <div class="flex flex-col items-center border-b border-gray-200 p-4 sm:flex-row sm:p-6">
+              <dl class="grid flex-1 grid-cols-1 grid-rows-4 lg:grid-cols-3 lg:grid-rows-1 xl:grid-cols-4 xl:grid-rows-1">
+                <div class="flex flex-col items-center">
                   <dt class="font-semibold uppercase">Order User</dt>
                   <dd class="mt-1"><%= user_email(order.user_id) %></dd>
                 </div>
-                <div class="hidden sm:block">
+                <div class="flex flex-col items-center">
                   <dt class="font-semibold uppercase">Date placed</dt>
                   <dd class="mt-1">
                     <time datetime=""><%= NaiveDateTime.to_string(order.inserted_at) %></time>
                   </dd>
                 </div>
-                <div>
+                <div class="flex flex-col items-center">
                   <dt class="font-semibold uppercase">Total amount</dt>
                   <%= if order.user.partnership == false do %>
                     <dd class="mt-1 font-medium"><%= total_price(order) %> €</dd>
@@ -28,13 +28,13 @@
                     <dd class="mt-1 font-medium"><%= total_price_with_partnership(order) %> €</dd>
                   <% end %>
                 </div>
-                <div>
+                <div class="flex flex-col items-center">
                   <dt class="font-semibold uppercase">Status</dt>
                   <dd class="mt-1 font-medium"><%= capitalize_status(order.status) %></dd>
                 </div>
               </dl>
               <!-- Add a button at the final at the grid -->
-              <div class="hidden lg:col-span-2 lg:flex lg:items-center lg:justify-end lg:space-x-4">
+              <div class="lg:col-span-2 lg:flex lg:items-center lg:justify-end lg:space-x-4">
                 <%= if order.status != :draft do %>
                   <%= live_patch to: Routes.admin_order_show_path(@socket, :show, order.id), class: "button" do %>
                     <button class="flex w-32 items-center justify-center bg-black px-2.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#f47c58]">
