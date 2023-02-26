@@ -17,7 +17,15 @@ defmodule Store.InventoryFixtures do
         price_partnership: 22,
         price: 42,
         stock: 100,
-        max_per_user: 2
+        max_per_user: 2,
+        sizes: %{
+          xs_size: 10,
+          s_size: 10,
+          m_size: 10,
+          l_size: 10,
+          xl_size: 10,
+          xxl_size: 10
+        }
       })
       |> Store.Inventory.create_product()
 
