@@ -496,12 +496,6 @@ defmodule Store.Inventory do
     |> Repo.all()
   end
 
-  def add_to_cart(order, product) do
-    order
-    |> Order.changeset(%{products: [product]})
-    |> Repo.update()
-  end
-
   defp broadcast({:error, _reason} = error, _event), do: error
 
   defp broadcast({:ok, %Product{} = product}, event)
