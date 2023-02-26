@@ -291,7 +291,7 @@ defmodule Store.Inventory do
   """
   alias Store.Accounts.User
 
-  def purchase(%User{} = user, %Product{} = product) do
+  def purchase(%User{} = user, %Product{} = product, product_params) do
     order =
       Order
       |> where(user_id: ^user.id)
@@ -309,11 +309,70 @@ defmodule Store.Inventory do
       if order_product != nil do
         {:error, "Product already in cart"}
       else
-        create_order_product(%{order_id: order.id, product_id: product.id})
+        {val, _} = Integer.parse(product_params["quantity"])
+        size = product_params["size"]
+
+        if update_stock_sizes(product, size, val) == {:error, "Not enough stock"} do
+          {:error, "Not enough stock"}
+        else
+          create_order_product(%{
+            order_id: order.id,
+            product_id: product.id,
+            quantity: val,
+            size: size
+          })
+        end
       end
     else
       {:ok, order} = create_order(%{user_id: user.id})
-      create_order_product(%{order_id: order.id, product_id: product.id})
+      {val, _} = Integer.parse(product_params["quantity"])
+      size = product_params["size"]
+
+      if update_stock_sizes(product, size, val) == {:error, "Not enough stock"} do
+        {:error, "Not enough stock"}
+      else
+        create_order_product(%{
+          order_id: order.id,
+          product_id: product.id,
+          quantity: val,
+          size: size
+        })
+      end
+    end
+  end
+
+  def update_stock_sizes(product, size, quantity) do
+    new_sizes =
+      case size do
+        "XS" -> Map.put(product.sizes, :xs_size, product.sizes.xs_size - quantity)
+        "S" -> Map.put(product.sizes, :s_size, product.sizes.s_size - quantity)
+        "M" -> Map.put(product.sizes, :m_size, product.sizes.m_size - quantity)
+        "L" -> Map.put(product.sizes, :l, product.sizes.l_size - quantity)
+        "XL" -> Map.put(product.sizes, :xl_size, product.sizes.xl_size - quantity)
+        "XXL" -> Map.put(product.sizes, :xxl_size, product.sizes.xxl_size - quantity)
+      end
+
+    values = Map.values(new_sizes) |> Enum.filter(&is_integer/1)
+    IO.inspect(values)
+
+    if Enum.any?(values, &(&1 < 0)) or product.stock - quantity < 0 do
+      {:error, "Not enough stock"}
+    else
+      product
+      |> Product.changeset(%{
+        stock: product.stock - quantity,
+        sizes: %{
+          xs_size: new_sizes.xs_size,
+          s_size: new_sizes.s_size,
+          m_size: new_sizes.m_size,
+          l_size: new_sizes.l_size,
+          xl_size: new_sizes.xl_size,
+          xxl_size: new_sizes.xxl_size
+        }
+      })
+      |> Repo.update!()
+
+      {:ok, "Product added to cart"}
     end
   end
 
@@ -421,6 +480,26 @@ defmodule Store.Inventory do
 
   def discount_cart(id) do
     total_price_cart(id) - total_price_partnership_cart(id)
+  end
+
+  alias Store.Inventory.OrderHistory
+
+  def create_orders_history(order) do
+    %OrderHistory{}
+    |> OrderHistory.changeset(order)
+    |> Repo.insert()
+  end
+
+  def list_orders_history(opts) when is_list(opts) do
+    OrderHistory
+    |> apply_filters(opts)
+    |> Repo.all()
+  end
+
+  def add_to_cart(order, product) do
+    order
+    |> Order.changeset(%{products: [product]})
+    |> Repo.update()
   end
 
   defp broadcast({:error, _reason} = error, _event), do: error
