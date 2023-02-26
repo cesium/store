@@ -89,7 +89,7 @@ defmodule StoreWeb do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      # Import LiveView and .heex helpers (live_render, live_patch, <.form>, etc)
+      # Import LiveView and .heex helpers (live_render, live_redirect, <.form>, etc)
       import Phoenix.LiveView.Helpers
       import StoreWeb.LiveHelpers
 

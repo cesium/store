@@ -36,7 +36,7 @@ defmodule StoreWeb.LiveHelpers do
         phx-key="escape"
       >
         <%= if @return_to do %>
-          <%= live_patch("✖",
+          <%= live_redirect("✖",
             to: @return_to,
             id: "close",
             class: "phx-modal-close",

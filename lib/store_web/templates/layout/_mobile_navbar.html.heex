@@ -40,7 +40,7 @@
     </div>
 
     <div class="flex flex-col items-center w-full mx-auto overflow-scroll gap-y-8 my-6 h-[75%]">
-      <%= if assigns[:current_user] && @current_user.role in [:admin] do %>
+      <%= if assigns[:current_user] && @current_user.role == :admin do %>
         <%= for page <- StoreWeb.Config.admin_pages do %>
           <div class="relative flex items-center">
             <%= live_redirect(page.title,
