@@ -309,35 +309,27 @@ defmodule Store.Inventory do
       if order_product != nil do
         {:error, "Product already in cart"}
       else
-        {val, _} = Integer.parse(product_params["quantity"])
-        size = product_params["size"]
-
-        if update_stock_sizes(product, size, val) == {:error, "Not enough stock"} do
-          {:error, "Not enough stock"}
-        else
-          create_order_product(%{
-            order_id: order.id,
-            product_id: product.id,
-            quantity: val,
-            size: size
-          })
-        end
+        add_product_to_order(order, product, product_params)
       end
     else
       {:ok, order} = create_order(%{user_id: user.id})
-      {val, _} = Integer.parse(product_params["quantity"])
-      size = product_params["size"]
+      add_product_to_order(order, product, product_params)
+    end
+  end
 
-      if update_stock_sizes(product, size, val) == {:error, "Not enough stock"} do
-        {:error, "Not enough stock"}
-      else
-        create_order_product(%{
-          order_id: order.id,
-          product_id: product.id,
-          quantity: val,
-          size: size
-        })
-      end
+  def add_product_to_order(%Order{} = order, %Product{} = product, product_params) do
+    {val, _} = Integer.parse(product_params["quantity"])
+    size = product_params["size"]
+
+    if update_stock_sizes(product, size, val) == {:error, "Not enough stock"} do
+      {:error, "Not enough stock"}
+    else
+      create_order_product(%{
+        order_id: order.id,
+        product_id: product.id,
+        quantity: val,
+        size: size
+      })
     end
   end
 
