@@ -71,7 +71,7 @@
                 </div>
                 <div class="flex items-center justify-between border-b-2 border-gray-200 py-8 font-bold uppercase">
                   <p>Units</p>
-                  <%= select(f, :quantity, 1..@product.stock,
+                  <%= select(f, :quantity, 1..@product.max_per_user,
                     class: "flex w-20 items-center justify-between"
                   ) %>
                 </div>
