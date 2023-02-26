@@ -4,6 +4,7 @@ defmodule StoreWeb.ProductLive.FormComponent do
 
   import Store.Inventory
   alias Store.Accounts
+  alias Store.Uploaders
 
   def mount(%{"id" => id}, _session, socket) do
     {:ok,
@@ -19,7 +20,7 @@ defmodule StoreWeb.ProductLive.FormComponent do
   end
 
   @impl true
-  def update(%{product: product, user: current_user} = assigns, socket) do
+  def update(%{product: product} = assigns, socket) do
     changeset = change_product(product)
 
     {:ok,
