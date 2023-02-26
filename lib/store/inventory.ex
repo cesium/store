@@ -353,7 +353,6 @@ defmodule Store.Inventory do
       end
 
     values = Map.values(new_sizes) |> Enum.filter(&is_integer/1)
-    IO.inspect(values)
 
     if Enum.any?(values, &(&1 < 0)) or product.stock - quantity < 0 do
       {:error, "Not enough stock"}
