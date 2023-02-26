@@ -55,9 +55,9 @@ defmodule StoreWeb.CartLive.Index do
       |> Repo.one()
       |> Repo.preload(:products)
 
-    quantidade = Enum.count(order.products)
+    quantity = Enum.count(order.products)
 
-    if quantidade == 1 do
+    if quantity == 1 do
       order
       |> Order.changeset(%{status: :canceled})
       |> Repo.update!()

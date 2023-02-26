@@ -347,7 +347,7 @@ defmodule Store.Inventory do
         "XS" -> Map.put(product.sizes, :xs_size, product.sizes.xs_size - quantity)
         "S" -> Map.put(product.sizes, :s_size, product.sizes.s_size - quantity)
         "M" -> Map.put(product.sizes, :m_size, product.sizes.m_size - quantity)
-        "L" -> Map.put(product.sizes, :l, product.sizes.l_size - quantity)
+        "L" -> Map.put(product.sizes, :l_size, product.sizes.l_size - quantity)
         "XL" -> Map.put(product.sizes, :xl_size, product.sizes.xl_size - quantity)
         "XXL" -> Map.put(product.sizes, :xxl_size, product.sizes.xxl_size - quantity)
       end

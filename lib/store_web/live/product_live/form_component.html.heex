@@ -84,7 +84,7 @@
                 <div class="py-8"><%= @product.description %></div>
               </div>
               <div class="flex flex-col justify-between space-y-4">
-                <%= if assigns[:current_user] && @current_user.role == :admin do %>
+                <%= if assigns[:user] && @user.role == :admin do %>
                   <%= live_redirect to: Routes.admin_product_edit_path(@socket, :edit, @product),class: "button" do %>
                     <div
                       type="button"
@@ -95,17 +95,17 @@
                   <% end %>
                 <% else %>
                   <%= if assigns[:user] do %>
-                    <div
-                      type="button"
-                      class="inline-flex w-full items-center justify-center bg-black py-4 font-bold text-white shadow-sm hover:border-[#f47c58] hover:bg-[#f47c58] hover:border-2"
-                      id="sort-menu-button"
-                      aria-expanded="false"
-                      aria-haspopup="true"
-                    >
-                      <%= submit do %>
+                    <%= submit do %>
+                      <div
+                        type="button"
+                        class="inline-flex w-full items-center justify-center bg-black py-4 font-bold text-white shadow-sm hover:border-[#f47c58] hover:bg-[#f47c58] hover:border-2"
+                        id="sort-menu-button"
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                      >
                         Add to cart
-                      <% end %>
-                    </div>
+                      </div>
+                    <% end %>
                   <% else %>
                     <a href="/users/log_in">
                       <div
@@ -125,51 +125,6 @@
                 </button>
               </div>
             </div>
-          </div>
-          <div>
-            <%= if assigns[:current_user] && @current_user.role == :admin do %>
-              <h1 class="pt-16 pb-8 font-bold uppercase">Product Dashboard</h1>
-              <table class="w-full border-4">
-                <thead class="border-2">
-                  <tr>
-                    <th>Order ID</th>
-                    <th>Time</th>
-                    <th>Customer Email</th>
-                    <th>Status</th>
-                    <th>Quantity</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <%= for order <- @product.order do %>
-                    <%= if order.status != :draft && order.status != :canceled  do %>
-                      <tr class="mx-auto items-center border-2">
-                        <td class="text-center hover:text-[#f47c58]">
-                          <%= live_redirect to: Routes.admin_order_show_path(@socket, :show, order), class: "group" do %>
-                            <%= order.id %>
-                          <% end %>
-                        </td>
-                        <td class="text-center">
-                          <%= NaiveDateTime.to_string(order.inserted_at) %>
-                        </td>
-                        <td class="text-center"><%= user_email(order) %></td>
-                        <td class="text-center"><%= capitalize_status(order.status) %></td>
-                        <td class="text-center">1</td>
-                      </tr>
-                    <% end %>
-                  <% end %>
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <td>
-                      <b>Total Price:</b> <%= total_quantity(@product) * @product.price %> €
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><b>Total Quantity:</b> <%= total_quantity(@product) %></td>
-                  </tr>
-                </tfoot>
-              </table>
-            <% end %>
           </div>
         </div>
       </div>
