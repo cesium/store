@@ -8,7 +8,6 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
   alias Store.Accounts
   alias StoreWeb.Emails.OrdersEmail
   alias Store.Mailer
-
   @impl true
   def mount(%{"id" => id}, _session, socket) do
     {:ok, assign(socket, order: Inventory.get_order!(id))}
@@ -26,7 +25,10 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
   @impl true
   def handle_event("paid", _payload, socket) do
     order = socket.assigns.order
+    admin = socket.assigns.current_user
     Inventory.update_status(order, %{status: :paid})
+
+    Inventory.create_orders_history(%{status: :paid, admin_id: admin.id, order_id: order.id})
 
     user = Accounts.get_user!(order.user_id)
     OrdersEmail.paid(order.id, to: user.email) |> Mailer.deliver()
@@ -39,7 +41,10 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
   @impl true
   def handle_event("delivered", _payload, socket) do
     order = socket.assigns.order
+    admin = socket.assigns.current_user
     Inventory.change_status(order, %{status: :delivered})
+
+    Inventory.create_orders_history(%{status: :delivered, admin_id: admin.id, order_id: order.id})
 
     user = Accounts.get_user!(order.user_id)
     OrdersEmail.delivered(order.id, to: user.email) |> Mailer.deliver()
@@ -51,7 +56,9 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
 
   def handle_event("ready", _payload, socket) do
     order = socket.assigns.order
-    Inventory.change_status(order, %{status: :ready})
+    admin = socket.assigns.current_user
+    Inventory.change_status(order, %{status: :ready, admin_id: admin.id})
+    Inventory.create_orders_history(%{status: :ready, admin_id: admin.id, order_id: order.id})
 
     user = Accounts.get_user!(order.user_id)
     OrdersEmail.ready(order.id, to: user.email) |> Mailer.deliver()
