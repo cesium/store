@@ -27,6 +27,7 @@ defmodule Store.Repo.Seeds.OrdersProducts do
       %{
         order_id: order_id,
         product_id: product_id,
+        size: Enum.random(~w(XS S M L XL XXL)a)
       }
     end
   end

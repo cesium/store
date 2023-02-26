@@ -8,6 +8,7 @@ defmodule StoreWeb.CartLive.Index do
   alias Store.Inventory.Order
   alias Store.Mailer
   alias StoreWeb.Emails.OrdersEmail
+  alias Store.Inventory.OrdersProducts
 
   @impl true
   def mount(_params, _session, socket) do
@@ -54,14 +55,42 @@ defmodule StoreWeb.CartLive.Index do
       |> Repo.one()
       |> Repo.preload(:products)
 
-    order_product =
-      OrdersProducts
-      |> where(order_id: ^order.id)
-      |> where(product_id: ^id)
-      |> Repo.one()
+    quantidade = Enum.count(order.products)
 
-    Repo.delete!(order_product)
+    if quantidade == 1 do
+      order
+      |> Order.changeset(%{status: :canceled})
+      |> Repo.update!()
+    else
+      order_product =
+        OrdersProducts
+        |> where(order_id: ^order.id)
+        |> where(product_id: ^id)
+        |> Repo.one()
+
+      Repo.delete(order_product)
+    end
 
     {:noreply, socket}
+  end
+
+  defp get_quantity(order_id, product_id) do
+    order_product =
+      OrdersProducts
+      |> where(order_id: ^order_id)
+      |> where(product_id: ^product_id)
+      |> Repo.one()
+
+    order_product.quantity
+  end
+
+  defp get_size(order_id, product_id) do
+    order_product =
+      OrdersProducts
+      |> where(order_id: ^order_id)
+      |> where(product_id: ^product_id)
+      |> Repo.one()
+
+    order_product.size
   end
 end

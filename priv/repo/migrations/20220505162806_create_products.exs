@@ -12,6 +12,7 @@ defmodule Store.Repo.Migrations.CreateProducts do
       add :max_per_user, :integer
       add :image, :string
       add :pre_order, :boolean, default: false
+      add :sizes, :map
       timestamps()
     end
 

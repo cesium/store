@@ -18,6 +18,14 @@ defmodule Store.Repo.Seeds.Inventory do
             price_partnership: 100,
             stock: 3,
             max_per_user: 1,
+            sizes: %{
+              xs_size: 1,
+              s_size: 1,
+              m_size: 1,
+              l_size: 1,
+              xl_size: 1,
+              xxl_size: 1
+            }
           },
           %{
             name: "Caderno",
@@ -25,7 +33,15 @@ defmodule Store.Repo.Seeds.Inventory do
             price: 200,
             price_partnership: 100,
             stock: 3,
-            max_per_user: 1
+            max_per_user: 1,
+            sizes: %{
+              xs_size: 1,
+              s_size: 1,
+              m_size: 1,
+              l_size: 1,
+              xl_size: 1,
+              xxl_size: 1
+            }
           },
           %{
             name: "Caneta",
@@ -33,7 +49,15 @@ defmodule Store.Repo.Seeds.Inventory do
             price: 200,
             price_partnership: 100,
             stock: 3,
-            max_per_user: 1
+            max_per_user: 1,
+            sizes: %{
+              xs_size: 1,
+              s_size: 1,
+              m_size: 1,
+              l_size: 1,
+              xl_size: 1,
+              xxl_size: 1
+            }
           },
           %{
             name: "Lápis",
@@ -41,8 +65,16 @@ defmodule Store.Repo.Seeds.Inventory do
             price: 200,
             price_partnership: 100,
             stock: 3,
-            max_per_user: 1
-          },
+            max_per_user: 1,
+            sizes: %{
+              xs_size: 1,
+              s_size: 1,
+              m_size: 1,
+              l_size: 1,
+              xl_size: 1,
+              xxl_size: 1
+            }
+          }
         ]
         |> Enum.each(&insert_product/1)
 
