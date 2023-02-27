@@ -1,16 +1,49 @@
-<h1>Resend confirmation instructions</h1>
-
-<.form let={f} for={:user} action={Routes.user_confirmation_path(@conn, :create)}>
-  <%= label(f, :email) %>
-  <%= email_input(f, :email, required: true) %>
-
+<div class="mx-auto flex h-screen w-full max-w-md flex-col justify-center">
   <div>
-    <%= submit("Resend confirmation instructions") %>
+    <img
+      class="mx-auto h-16 w-auto rounded-lg"
+      src={Routes.static_path(@conn, "/images/logos/logo_lettering.svg")}
+    />
+    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+      <%= gettext("Resend confirmation instructions") %>
+    </h2>
   </div>
-</.form>
 
-<p>
-  <%= link("Register", to: Routes.user_registration_path(@conn, :new)) %> | <%= link("Log in",
-    to: Routes.user_session_path(@conn, :new)
-  ) %>
-</p>
+  <.form
+    let={f}
+    for={:user}
+    action={Routes.user_confirmation_path(@conn, :create)}
+    class="mx-8 mt-8 space-y-6 sm:mx-0"
+  >
+    <div class="-space-y-px rounded-md shadow-sm">
+      <div>
+        <%= label(f, :email, class: "sr-only") %>
+        <%= email_input(f, :email,
+          required: true,
+          placeholder: gettext("Email address"),
+          class: "relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:ring-[#f47c58] focus:border-[#f47c58] focus:z-10 focus:outline-none sm:text-sm"
+        ) %>
+      </div>
+      <div>
+        <%= label(f, :password, class: "sr-only") %>
+      </div>
+    </div>
+
+    <div>
+      <%= submit class: "group relative flex w-full justify-center border border-transparent bg-black px-4 py-2 text-sm font-bold text-white hover:bg-[#f47c58] focus:ring-[#f47c58] focus:outline-none focus:ring-2 focus:ring-offset-2"
+        do %>
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+          <Heroicons.Solid.lock_closed class="h-5 w-5 text-white opacity-10 group-hover:text-black" />
+        </span>
+        <%= gettext("Resend confirmation instructions") %>
+      <% end %>
+    </div>
+
+    <div class="text-sm">
+      <%= link(gettext("Login Now"),
+        to: Routes.user_session_path(@conn, :new),
+        class: "text-[#f47c58] font-medium focus:ring-[#f47c58] focus:outline-none focus:ring-2 focus:ring-offset-2"
+      ) %>
+    </div>
+  </.form>
+</div>
