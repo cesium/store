@@ -21,13 +21,13 @@
     class="fixed inset-0 z-50 h-full w-full bg-white sm:inset-y-0 sm:right-auto sm:left-0 sm:w-full sm:max-w-sm sm:shadow-lg"
     aria-label="Global"
   >
-    <div class="flex h-16 items-center justify-between px-4 sm:px-6">
+    <div class="mt-1 flex h-16 items-center justify-between px-4 sm:px-6">
       <button
         @click="navbar = false"
         class="inline-flex items-center justify-center p-2 text-gray-400 hover:text-gray-500"
       >
         <span class="sr-only">Close main menu</span>
-        <Heroicons.Solid.x class="h-6 w-6" />
+        <Heroicons.Solid.x class="pl-[2px] h-6 w-6" />
       </button>
       <%= live_redirect to: Routes.home_index_path(@socket, :index) do %>
         <img
