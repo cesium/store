@@ -4,16 +4,14 @@ defmodule StoreWeb.CartLive.Index do
   import Ecto.Query
   import Store.Inventory
   alias Store.Repo
-  alias Store.Inventory
   alias Store.Inventory.Order
   alias Store.Mailer
   alias StoreWeb.Emails.OrdersEmail
-  alias Store.Inventory.OrdersProducts
 
   @impl true
   def mount(_params, _session, socket) do
     {:ok, socket}
-    {:ok, assign(socket, :orders, Inventory.list_orders() |> Repo.preload(:products))}
+    {:ok, assign(socket, :orders, list_orders(preloads: :products))}
   end
 
   @impl true
@@ -62,11 +60,7 @@ defmodule StoreWeb.CartLive.Index do
       |> Order.changeset(%{status: :canceled})
       |> Repo.update!()
     else
-      order_product =
-        OrdersProducts
-        |> where(order_id: ^order.id)
-        |> where(product_id: ^id)
-        |> Repo.one()
+      order_product = get_order_product_by_ids(order.id, id)
 
       Repo.delete(order_product)
     end
@@ -75,21 +69,13 @@ defmodule StoreWeb.CartLive.Index do
   end
 
   defp get_quantity(order_id, product_id) do
-    order_product =
-      OrdersProducts
-      |> where(order_id: ^order_id)
-      |> where(product_id: ^product_id)
-      |> Repo.one()
+    order_product = get_order_product_by_ids(order_id, product_id)
 
     order_product.quantity
   end
 
   defp get_size(order_id, product_id) do
-    order_product =
-      OrdersProducts
-      |> where(order_id: ^order_id)
-      |> where(product_id: ^product_id)
-      |> Repo.one()
+    order_product = get_order_product_by_ids(order_id, product_id)
 
     order_product.size
   end

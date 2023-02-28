@@ -11,7 +11,7 @@ defmodule StoreWeb.OrderLive.Index do
   @impl true
   def mount(_params, _socket, socket) do
     {:ok, socket}
-    {:ok, assign(socket, :orders, Inventory.list_orders() |> Repo.preload(:products))}
+    {:ok, assign(socket, :orders, Inventory.list_orders(preloads: :products))}
   end
 
   @impl true

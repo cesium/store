@@ -18,7 +18,7 @@ defmodule Store.Repo.Seeds.OrdersProducts do
   end
 
   defp generate_order_product(count) do
-    orders = Inventory.list_orders()
+    orders = Inventory.list_orders(preloads: [])
     products = Inventory.list_products()
 
     for _ <- 1..count do

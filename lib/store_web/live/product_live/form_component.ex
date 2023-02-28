@@ -3,7 +3,6 @@ defmodule StoreWeb.ProductLive.FormComponent do
   use StoreWeb, :live_component
 
   import Store.Inventory
-  alias Store.Accounts
   alias Store.Uploaders
 
   def mount(%{"id" => id}, _session, socket) do
@@ -44,14 +43,5 @@ defmodule StoreWeb.ProductLive.FormComponent do
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}
     end
-  end
-
-  def user_email(order) do
-    user = Accounts.get_user!(order.user_id)
-    user.email
-  end
-
-  def total_quantity(product) do
-    Enum.count(product.order, fn order -> order.status != :draft end)
   end
 end

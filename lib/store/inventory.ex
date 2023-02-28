@@ -145,8 +145,9 @@ defmodule Store.Inventory do
       [%Order{}, ...]
 
   """
-  def list_orders() do
+  def list_orders(opts) when is_list(opts) do
     Order
+    |> apply_filters(opts)
     |> order_by(desc: :inserted_at)
     |> Repo.all()
   end
@@ -156,8 +157,6 @@ defmodule Store.Inventory do
     |> Order.changeset(attrs)
     |> Repo.update()
   end
-
-  alias Store.Inventory.OrdersProducts
 
   @doc """
   Returns the list of orders_products.
@@ -219,6 +218,24 @@ defmodule Store.Inventory do
     %OrdersProducts{}
     |> OrdersProducts.changeset(attrs)
     |> Repo.insert()
+  end
+
+  @doc """
+  Updates an order_product.
+
+  ## Examples
+
+      iex> update_order_product(order_product, %{field: new_value})
+      {:ok, %Order{}}
+
+      iex> update_order_product(order_product, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_order_product(%OrdersProducts{} = orders_product, attrs) do
+    orders_product
+    |> OrdersProducts.changeset(attrs)
+    |> Repo.update()
   end
 
   @doc """
@@ -306,8 +323,14 @@ defmodule Store.Inventory do
         |> where(product_id: ^product.id)
         |> Repo.one()
 
+      {val, _} = Integer.parse(product_params["quantity"])
+
       if order_product != nil do
-        {:error, "Product already in cart"}
+        if order_product.quantity + val <= product.max_per_user do
+          update_order_product(order_product, %{quantity: order_product.quantity + val})
+        else
+          {:error, "You can't buy more than #{product.max_per_user}"}
+        end
       else
         add_product_to_order(order, product, product_params)
       end
@@ -390,7 +413,7 @@ defmodule Store.Inventory do
   """
 
   def redeem_quantity(product_id) do
-    order_quantity = Enum.count(list_orders())
+    order_quantity = Enum.count(list_orders(preloads: []))
 
     quantity =
       case order_quantity do
@@ -485,6 +508,16 @@ defmodule Store.Inventory do
     OrderHistory
     |> apply_filters(opts)
     |> Repo.all()
+  end
+
+  def get_order_product_by_ids(order_id, product_id) do
+    order_products =
+      OrdersProducts
+      |> where(order_id: ^order_id)
+      |> where(product_id: ^product_id)
+      |> Repo.one()
+
+    order_products
   end
 
   defp broadcast({:error, _reason} = error, _event), do: error

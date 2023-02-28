@@ -97,7 +97,7 @@ defmodule Store.InventoryTest do
 
     test "list_orders/0 returns all orders" do
       order = order_fixture()
-      assert Inventory.list_orders() == [order]
+      assert Inventory.list_orders(preloads: []) == [order]
     end
 
     test "get_order!/1 returns the order with given id" do
