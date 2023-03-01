@@ -27,7 +27,7 @@ defmodule StoreWeb.CartLive.Index do
     order = get_order_draft_by_id(current_user.id, preloads: [])
 
     order
-    |> update_order(%{status: :canceled})
+    |> update_order(%{status: :ordered})
 
     OrdersEmail.ordered(order.id, to: current_user.email) |> Mailer.deliver()
 
