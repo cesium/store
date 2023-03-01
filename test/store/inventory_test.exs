@@ -30,7 +30,15 @@ defmodule Store.InventoryTest do
         price: 42,
         stock: 100,
         max_per_user: 1,
-        user_id: user_fixture().id
+        user_id: user_fixture().id,
+        sizes: %{
+          xs_size: 10,
+          s_size: 10,
+          m_size: 10,
+          l_size: 10,
+          xl_size: 10,
+          xxl_size: 10
+        }
       }
 
       assert {:ok, %Product{} = product} = Inventory.create_product(valid_attrs)
@@ -89,7 +97,7 @@ defmodule Store.InventoryTest do
 
     test "list_orders/0 returns all orders" do
       order = order_fixture()
-      assert Inventory.list_orders() == [order]
+      assert Inventory.list_orders(preloads: []) == [order]
     end
 
     test "get_order!/1 returns the order with given id" do

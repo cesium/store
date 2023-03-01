@@ -1,8 +1,9 @@
 <.live_component
-  module={StoreWeb.Backoffice.ProductLive.FormComponent}
-  id={@product.id}
+  module={StoreWeb.ProductLive.FormComponent}
+  id={:id}
+  title={@page_title}
   action={@live_action}
   product={@product}
-  title={@page_title}
+  user={@current_user}
   return_to={Routes.product_index_path(@socket, :index)}
 />

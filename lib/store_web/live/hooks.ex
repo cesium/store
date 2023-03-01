@@ -3,7 +3,6 @@ defmodule StoreWeb.Hooks do
   Ensures common `assigns` are applied to all LiveViews attaching this hook.
   """
   import Phoenix.LiveView
-
   alias Store.Accounts
 
   def on_mount(:default, _params, _session, socket) do

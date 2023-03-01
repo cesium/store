@@ -145,8 +145,9 @@ defmodule Store.Inventory do
       [%Order{}, ...]
 
   """
-  def list_orders() do
+  def list_orders(opts) when is_list(opts) do
     Order
+    |> apply_filters(opts)
     |> order_by(desc: :inserted_at)
     |> Repo.all()
   end
@@ -156,8 +157,6 @@ defmodule Store.Inventory do
     |> Order.changeset(attrs)
     |> Repo.update()
   end
-
-  alias Store.Inventory.OrdersProducts
 
   @doc """
   Returns the list of orders_products.
@@ -219,6 +218,24 @@ defmodule Store.Inventory do
     %OrdersProducts{}
     |> OrdersProducts.changeset(attrs)
     |> Repo.insert()
+  end
+
+  @doc """
+  Updates an order_product.
+
+  ## Examples
+
+      iex> update_order_product(order_product, %{field: new_value})
+      {:ok, %Order{}}
+
+      iex> update_order_product(order_product, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_order_product(%OrdersProducts{} = orders_product, attrs) do
+    orders_product
+    |> OrdersProducts.changeset(attrs)
+    |> Repo.update()
   end
 
   @doc """
@@ -291,7 +308,7 @@ defmodule Store.Inventory do
   """
   alias Store.Accounts.User
 
-  def purchase(%User{} = user, %Product{} = product) do
+  def purchase(%User{} = user, %Product{} = product, product_params) do
     order =
       Order
       |> where(user_id: ^user.id)
@@ -306,14 +323,70 @@ defmodule Store.Inventory do
         |> where(product_id: ^product.id)
         |> Repo.one()
 
+      {val, _} = Integer.parse(product_params["quantity"])
+
       if order_product != nil do
-        {:error, "Product already in cart"}
+        if order_product.quantity + val <= product.max_per_user do
+          update_order_product(order_product, %{quantity: order_product.quantity + val})
+        else
+          {:error, "You can't buy more than #{product.max_per_user}"}
+        end
       else
-        create_order_product(%{order_id: order.id, product_id: product.id})
+        add_product_to_order(order, product, product_params)
       end
     else
       {:ok, order} = create_order(%{user_id: user.id})
-      create_order_product(%{order_id: order.id, product_id: product.id})
+      add_product_to_order(order, product, product_params)
+    end
+  end
+
+  def add_product_to_order(%Order{} = order, %Product{} = product, product_params) do
+    {val, _} = Integer.parse(product_params["quantity"])
+    size = product_params["size"]
+
+    if update_stock_sizes(product, size, val) == {:error, "Not enough stock"} do
+      {:error, "Not enough stock"}
+    else
+      create_order_product(%{
+        order_id: order.id,
+        product_id: product.id,
+        quantity: val,
+        size: size
+      })
+    end
+  end
+
+  def update_stock_sizes(product, size, quantity) do
+    new_sizes =
+      case size do
+        "XS" -> Map.put(product.sizes, :xs_size, product.sizes.xs_size - quantity)
+        "S" -> Map.put(product.sizes, :s_size, product.sizes.s_size - quantity)
+        "M" -> Map.put(product.sizes, :m_size, product.sizes.m_size - quantity)
+        "L" -> Map.put(product.sizes, :l_size, product.sizes.l_size - quantity)
+        "XL" -> Map.put(product.sizes, :xl_size, product.sizes.xl_size - quantity)
+        "XXL" -> Map.put(product.sizes, :xxl_size, product.sizes.xxl_size - quantity)
+      end
+
+    values = Map.values(new_sizes) |> Enum.filter(&is_integer/1)
+
+    if Enum.any?(values, &(&1 < 0)) or product.stock - quantity < 0 do
+      {:error, "Not enough stock"}
+    else
+      product
+      |> Product.changeset(%{
+        stock: product.stock - quantity,
+        sizes: %{
+          xs_size: new_sizes.xs_size,
+          s_size: new_sizes.s_size,
+          m_size: new_sizes.m_size,
+          l_size: new_sizes.l_size,
+          xl_size: new_sizes.xl_size,
+          xxl_size: new_sizes.xxl_size
+        }
+      })
+      |> Repo.update!()
+
+      {:ok, "Product added to cart"}
     end
   end
 
@@ -340,7 +413,7 @@ defmodule Store.Inventory do
   """
 
   def redeem_quantity(product_id) do
-    order_quantity = Enum.count(list_orders())
+    order_quantity = Enum.count(list_orders(preloads: []))
 
     quantity =
       case order_quantity do
@@ -435,6 +508,21 @@ defmodule Store.Inventory do
     OrderHistory
     |> apply_filters(opts)
     |> Repo.all()
+  end
+
+  def get_order_product_by_ids(order_id, product_id) do
+    OrdersProducts
+    |> where(order_id: ^order_id)
+    |> where(product_id: ^product_id)
+    |> Repo.one()
+  end
+
+  def get_order_draft_by_id(user_id, opts) when is_list(opts) do
+    Order
+    |> where(user_id: ^user_id)
+    |> where(status: :draft)
+    |> Repo.one()
+    |> apply_filters(opts)
   end
 
   defp broadcast({:error, _reason} = error, _event), do: error

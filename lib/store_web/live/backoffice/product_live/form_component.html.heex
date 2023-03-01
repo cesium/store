@@ -90,6 +90,76 @@
                 class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm"
               ) %>
             </div>
+            <p class="text-xs text-red-500"><%= error_tag(f, :max_per_user) %></p>
+            <%= for product_sizes <- inputs_for(f, :sizes) do %>
+              <div class="mt-4">
+                <label for="street-address" class="block text-sm font-medium text-gray-700">
+                  XS Quantity
+                </label>
+                <%= hidden_inputs_for(product_sizes) %>
+                <%= number_input(product_sizes, :xs_size,
+                  rows: 3,
+                  class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm"
+                ) %>
+              </div>
+              <p class="text-xs text-red-500"><%= error_tag(product_sizes, :xs_size) %></p>
+              <div class="mt-4">
+                <label for="street-address" class="block text-sm font-medium text-gray-700">
+                  S Quantity
+                </label>
+                <%= hidden_inputs_for(product_sizes) %>
+                <%= number_input(product_sizes, :s_size,
+                  rows: 3,
+                  class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm"
+                ) %>
+              </div>
+              <p class="text-xs text-red-500"><%= error_tag(product_sizes, :s_size) %></p>
+              <div class="mt-4">
+                <label for="street-address" class="block text-sm font-medium text-gray-700">
+                  M Quantity
+                </label>
+                <%= hidden_inputs_for(product_sizes) %>
+                <%= number_input(product_sizes, :m_size,
+                  rows: 3,
+                  class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm"
+                ) %>
+              </div>
+              <p class="text-xs text-red-500"><%= error_tag(product_sizes, :m_size) %></p>
+              <div class="mt-4">
+                <label for="street-address" class="block text-sm font-medium text-gray-700">
+                  L Quantity
+                </label>
+                <%= hidden_inputs_for(product_sizes) %>
+                <%= number_input(product_sizes, :l_size,
+                  rows: 3,
+                  class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm"
+                ) %>
+              </div>
+              <p class="text-xs text-red-500"><%= error_tag(product_sizes, :l_size) %></p>
+              <div class="mt-4">
+                <label for="street-address" class="block text-sm font-medium text-gray-700">
+                  XL Quantity
+                </label>
+                <%= hidden_inputs_for(product_sizes) %>
+                <%= number_input(product_sizes, :xl_size,
+                  rows: 3,
+                  class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm"
+                ) %>
+              </div>
+              <p class="text-xs text-red-500"><%= error_tag(product_sizes, :xl_size) %></p>
+
+              <div class="mt-4">
+                <label for="street-address" class="block text-sm font-medium text-gray-700">
+                  XXL Quantity
+                </label>
+                <%= hidden_inputs_for(product_sizes) %>
+                <%= number_input(product_sizes, :xxl_size,
+                  rows: 3,
+                  class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm"
+                ) %>
+              </div>
+              <p class="text-xs text-red-500"><%= error_tag(product_sizes, :xxl_size) %></p>
+            <% end %>
             <div class="mt-4">
               <label for="street-address" class="block text-sm font-medium text-gray-700">
                 Pre Order

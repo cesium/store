@@ -1,7 +1,6 @@
 defmodule StoreWeb.Backoffice.OrderLive.Index do
   use StoreWeb, :live_view
   import Store.Inventory
-  alias Store.Repo
   alias Store.Inventory
   alias Store.Inventory.Order
   alias Store.Uploaders
@@ -9,7 +8,7 @@ defmodule StoreWeb.Backoffice.OrderLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :orders, Inventory.list_orders() |> Repo.preload([:products, :user]))}
+    {:ok, assign(socket, :orders, Inventory.list_orders(preloads: [:products, :user]))}
   end
 
   @impl true
