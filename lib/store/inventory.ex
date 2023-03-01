@@ -511,13 +511,18 @@ defmodule Store.Inventory do
   end
 
   def get_order_product_by_ids(order_id, product_id) do
-    order_products =
-      OrdersProducts
-      |> where(order_id: ^order_id)
-      |> where(product_id: ^product_id)
-      |> Repo.one()
+    OrdersProducts
+    |> where(order_id: ^order_id)
+    |> where(product_id: ^product_id)
+    |> Repo.one()
+  end
 
-    order_products
+  def get_order_draft_by_id(user_id, opts) when is_list(opts) do
+    Order
+    |> where(user_id: ^user_id)
+    |> where(status: :draft)
+    |> Repo.one()
+    |> apply_filters(opts)
   end
 
   defp broadcast({:error, _reason} = error, _event), do: error

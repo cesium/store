@@ -1,7 +1,6 @@
 defmodule StoreWeb.CartLive.Index do
   @moduledoc false
   use StoreWeb, :live_view
-  import Ecto.Query
   import Store.Inventory
   alias Store.Repo
   alias Store.Inventory.Order
@@ -25,15 +24,10 @@ defmodule StoreWeb.CartLive.Index do
   def handle_event("checkout", _payload, socket) do
     current_user = socket.assigns.current_user
 
-    order =
-      Order
-      |> where(status: :draft)
-      |> where(user_id: ^current_user.id)
-      |> Repo.one()
+    order = get_order_draft_by_id(current_user.id, preloads: [])
 
     order
-    |> Order.changeset(%{status: :ordered})
-    |> Repo.update!()
+    |> update_order(%{status: :canceled})
 
     OrdersEmail.ordered(order.id, to: current_user.email) |> Mailer.deliver()
 
@@ -46,12 +40,7 @@ defmodule StoreWeb.CartLive.Index do
   def handle_event("delete", %{"id" => id}, socket) do
     current_user = socket.assigns.current_user
 
-    order =
-      Order
-      |> where(status: :draft)
-      |> where(user_id: ^current_user.id)
-      |> Repo.one()
-      |> Repo.preload(:products)
+    order = get_order_draft_by_id(current_user.id, preloads: :products)
 
     quantity = Enum.count(order.products)
 
