@@ -37,7 +37,7 @@ defmodule StoreWeb.ProductLive.FormComponent do
       {:ok, _product} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Product purchased successfully!")
+         |> put_flash(:info, "Product added to cart successfully!")
          |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, message} ->
