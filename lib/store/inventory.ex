@@ -329,7 +329,7 @@ defmodule Store.Inventory do
         if order_product.quantity + val <= product.max_per_user do
           update_order_product(order_product, %{quantity: order_product.quantity + val})
         else
-          {:error, "You can't buy more than #{product.max_per_user}"}
+          {:error, "The maximum quantity for this product per user is #{product.max_per_user}"}
         end
       else
         add_product_to_order(order, product, product_params)

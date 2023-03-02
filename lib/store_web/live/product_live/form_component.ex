@@ -37,11 +37,32 @@ defmodule StoreWeb.ProductLive.FormComponent do
       {:ok, _product} ->
         {:noreply,
          socket
-         |> put_flash(:success, "Product purchased successfully!")
-         |> push_redirect(to: Routes.cart_index_path(socket, :index))}
+         |> put_flash(:info, "Product purchased successfully!")
+         |> push_redirect(to: socket.assigns.return_to)}
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, :changeset, changeset)}
+      {:error, message} ->
+        {:noreply,
+         socket
+         |> put_flash(:error, message)
+         |> push_redirect(to: socket.assigns.return_to)}
     end
+  end
+
+  defp get_available_sizes(product) do
+    sizes = [
+      {product.sizes.xs_size, "XS"},
+      {product.sizes.s_size, "S"},
+      {product.sizes.m_size, "M"},
+      {product.sizes.l_size, "L"},
+      {product.sizes.xl_size, "XL"},
+      {product.sizes.xxl_size, "XXL"}
+    ]
+
+    list =
+      sizes
+      |> Enum.filter(fn {count, _} -> count > 0 end)
+      |> Enum.map(fn {_, size} -> size end)
+
+    list
   end
 end

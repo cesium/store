@@ -76,8 +76,8 @@
                   ) %>
                 </div>
                 <div class="flex items-center justify-between border-b-2 border-gray-200 py-8 font-bold uppercase">
-                  <p>Choose a size</p>
-                  <%= select(f, :size, ["S", "M", "L", "XL"],
+                  <p>Choose an available size</p>
+                  <%= select(f, :size, get_available_sizes(@product),
                     class: "flex w-20 items-center justify-between"
                   ) %>
                 </div>
