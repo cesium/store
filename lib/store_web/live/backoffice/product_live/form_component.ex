@@ -51,11 +51,14 @@ defmodule StoreWeb.Backoffice.ProductLive.FormComponent do
       {:ok, _product} ->
         {:noreply,
          socket
-         |> put_flash(:success, "Product updated successfully!")
+         |> put_flash(:info, "Product updated successfully!")
          |> push_redirect(to: socket.assigns.return_to)}
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, :changeset, changeset)}
+      {:error, message} ->
+        {:noreply,
+         socket
+         |> put_flash(:error, message)
+         |> push_redirect(to: socket.assigns.return_to)}
     end
   end
 
@@ -70,8 +73,11 @@ defmodule StoreWeb.Backoffice.ProductLive.FormComponent do
          |> put_flash(:info, "Product created successfully!")
          |> push_redirect(to: socket.assigns.return_to)}
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, changeset: changeset)}
+      {:error, message} ->
+        {:noreply,
+         socket
+         |> put_flash(:error, message)
+         |> push_redirect(to: socket.assigns.return_to)}
     end
   end
 

@@ -35,7 +35,8 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
 
     {:noreply,
      socket
-     |> redirect(to: Routes.admin_order_index_path(socket, :index))}
+     |> put_flash(:info, "Order status updated successfly")
+     |> push_redirect(to: socket.assigns.return_to)}
   end
 
   @impl true
@@ -51,7 +52,8 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
 
     {:noreply,
      socket
-     |> redirect(to: Routes.admin_order_index_path(socket, :index))}
+     |> put_flash(:info, "Order status updated successfly")
+     |> push_redirect(to: socket.assigns.return_to)}
   end
 
   def handle_event("ready", _payload, socket) do
@@ -65,7 +67,8 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
 
     {:noreply,
      socket
-     |> redirect(to: Routes.admin_order_index_path(socket, :index))}
+     |> put_flash(:info, "Order status updated successfly")
+     |> push_redirect(to: socket.assigns.return_to)}
   end
 
   defp user_email(id) do
