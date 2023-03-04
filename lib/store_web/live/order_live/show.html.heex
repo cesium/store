@@ -1,7 +1,7 @@
 <main>
   <section aria-labelledby="recent-heading" class="mt-16">
     <div>
-      <%= live_redirect to: Routes.order_index_path(@socket, :index), class: "flex flex-row space-x-4 pt-4 font-semibold uppercase hover:text-[#f47c58]" do %>
+      <%= live_redirect to: Routes.order_index_path(@socket, :index), class: "flex flex-row space-x-4 pt-4 font-semibold uppercase hover:text-primary-light" do %>
         <%= "< Return" %>
       <% end %>
       <div class="space-y-8">
@@ -34,7 +34,7 @@
               <%= if @order.status == :ordered do %>
                 <button
                   phx-click="canceled"
-                  class="flex w-32 items-center justify-center bg-black px-2.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#f47c58]"
+                  class="flex w-32 items-center justify-center bg-black px-2.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-light"
                 >
                   <span>Cancel</span>
                 </button>
@@ -100,7 +100,7 @@
                     <div class="flex flex-1 justify-center">
                       <%= link("View Product",
                         to: Routes.product_show_path(@socket, :show, product.id),
-                        class: "text-[#f47c58] whitespace-nowrap"
+                        class: "text-primary-light whitespace-nowrap"
                       ) %>
                     </div>
                   </div>

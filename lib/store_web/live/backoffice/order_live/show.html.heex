@@ -1,7 +1,7 @@
 <main>
   <section aria-labelledby="recent-heading" class="mt-16">
     <div>
-      <%= live_redirect to: Routes.admin_order_index_path(@socket, :index), class: "flex flex-row space-x-4 pt-4 font-semibold uppercase hover:text-[#f47c58]" do %>
+      <%= live_redirect to: Routes.admin_order_index_path(@socket, :index), class: "flex flex-row space-x-4 pt-4 font-semibold uppercase hover:text-primary-light" do %>
         <%= "< Return" %>
       <% end %>
       <div class="space-y-8">
@@ -35,7 +35,7 @@
                 <%= if @order.status != :ready do %>
                   <button
                     phx-click="ready"
-                    class="flex w-32 items-center justify-center bg-black px-2.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#f47c58]"
+                    class="flex w-32 items-center justify-center bg-black px-2.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-light"
                   >
                     <span>Ready</span>
                   </button>
@@ -43,14 +43,14 @@
                 <%= if @order.status != :paid do %>
                   <button
                     phx-click="paid"
-                    class="flex w-32 items-center justify-center bg-black px-2.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#f47c58]"
+                    class="flex w-32 items-center justify-center bg-black px-2.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-light"
                   >
                     <span>Paid</span>
                   </button>
                 <% end %>
                 <button
                   phx-click="delivered"
-                  class="flex w-32 items-center justify-center bg-black px-2.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#f47c58]"
+                  class="flex w-32 items-center justify-center bg-black px-2.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-light"
                 >
                   <span>Delivered</span>
                 </button>
@@ -114,7 +114,7 @@
 
                   <div class="mt-6 flex items-center space-x-4 divide-x divide-gray-200 border-t border-gray-200 pt-4 text-sm font-medium sm:mt-0 sm:ml-4 sm:border-none sm:pt-0">
                     <div class="flex flex-1 justify-center">
-                      <a href="#" class="text-[#f47c58] whitespace-nowrap">View product</a>
+                      <a href="#" class="text-primary-light whitespace-nowrap">View product</a>
                     </div>
                   </div>
                 </div>

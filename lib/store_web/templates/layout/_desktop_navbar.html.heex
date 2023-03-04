@@ -23,7 +23,7 @@
                     <div class="relative flex items-center">
                       <%= live_redirect(page.title,
                         to: page.url,
-                        class: "#{(@current_page == page.key && "") || "hover:text-[#f47c58]"} text-sm font-semibold text-black"
+                        class: "#{(@current_page == page.key && "") || "hover:text-primary-light"} text-sm font-semibold text-black"
                       ) %>
                       <span class={
                         (@current_page == page.key &&
@@ -37,7 +37,7 @@
                       <div class="relative flex items-center">
                         <%= live_redirect(page.title,
                           to: page.url,
-                          class: "#{(@current_page == page.key && "") || "hover:text-[#f47c58]"} text-sm font-semibold text-black"
+                          class: "#{(@current_page == page.key && "") || "hover:text-primary-light"} text-sm font-semibold text-black"
                         ) %>
                         <span class={
                           (@current_page == page.key &&
@@ -49,7 +49,7 @@
                 <% end %>
                 <%= link("About us",
                   to: "https://cesium.di.uminho.pt/",
-                  class: "flex items-center text-sm font-semibold text-black hover:text-[#f47c58]"
+                  class: "flex items-center text-sm font-semibold text-black hover:text-primary-light"
                 ) %>
               </div>
             </div>
@@ -93,11 +93,11 @@
 
           <div class="flex flex-1 items-center justify-end">
             <%= if assigns[:current_user] do %>
-              <%= link to: Routes.user_session_path(@socket, :new),class: "hidden text-sm font-semibold text-black hover:text-[#f47c58] lg:block" do %>
+              <%= link to: Routes.user_session_path(@socket, :new),class: "hidden text-sm font-semibold text-black hover:text-primary-light lg:block" do %>
                 Logout
               <% end %>
             <% else %>
-              <%= link to: Routes.user_session_path(@socket, :new),class: "hidden text-sm font-semibold text-black hover:text-[#f47c58] lg:block" do %>
+              <%= link to: Routes.user_session_path(@socket, :new),class: "hidden text-sm font-semibold text-black hover:text-primary-light lg:block" do %>
                 Login
               <% end %>
             <% end %>
@@ -105,7 +105,7 @@
               <%= if assigns[:current_user] && @current_user.role == :user do %>
                 <div class="ml-4 flow-root lg:ml-8">
                   <%= live_redirect to: Routes.cart_index_path(@socket, :index), class: "group flex items-center p-2" do %>
-                    <Heroicons.Outline.shopping_bag class="text-block h-6 w-6 flex-shrink-0 group-hover:text-[#f47c58]" />
+                    <Heroicons.Outline.shopping_bag class="text-block h-6 w-6 flex-shrink-0 group-hover:text-primary-light" />
                     <span class="sr-only">items in cart, view bag</span>
                   <% end %>
                 </div>

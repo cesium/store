@@ -37,7 +37,7 @@
               <div class="lg:col-span-2 lg:flex lg:items-center lg:justify-end lg:space-x-4">
                 <%= if order.status != :draft do %>
                   <%= live_redirect to: Routes.admin_order_show_path(@socket, :show, order.id), class: "button" do %>
-                    <button class="flex w-32 items-center justify-center bg-black px-2.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#f47c58]">
+                    <button class="flex w-32 items-center justify-center bg-black px-2.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-light">
                       <span class="w-full text-center">
                         Go to order
                       </span>
@@ -103,7 +103,7 @@
 
                     <div class="mt-6 flex items-center space-x-4 divide-x divide-gray-200 border-t border-gray-200 pt-4 text-sm font-medium sm:mt-0 sm:ml-4 sm:border-none sm:pt-0">
                       <div class="flex flex-1 justify-center">
-                        <a href="#" class="text-[#f47c58] whitespace-nowrap">View product</a>
+                        <a href="#" class="text-primary-light whitespace-nowrap">View product</a>
                       </div>
                     </div>
                   </div>

@@ -23,7 +23,7 @@
         <% end %>
       </div>
       <div class="flex w-full flex-col space-y-4 lg:w-3/4">
-        <%= live_redirect to: Routes.product_index_path(@socket, :index), class: "flex flex-row space-x-4 pt-4 font-semibold uppercase hover:text-[#f47c58]" do %>
+        <%= live_redirect to: Routes.product_index_path(@socket, :index), class: "flex flex-row space-x-4 pt-4 font-semibold uppercase hover:text-primary-light" do %>
           <%= "< Return" %>
         <% end %>
         <div class="flex h-full w-full flex-row lg:space-x-4">
@@ -80,7 +80,7 @@
           <%= live_redirect to: Routes.admin_product_edit_path(@socket, :edit, @product),class: "button" do %>
             <div
               type="button"
-              class="inline-flex w-full items-center border-2 border-gray-200 bg-black py-4 font-bold text-white shadow-sm hover:bg-[#f47c58]"
+              class="inline-flex w-full items-center border-2 border-gray-200 bg-black py-4 font-bold text-white shadow-sm hover:bg-primary-light"
             >
               <span class="w-full text-center">Edit</span>
             </div>
@@ -90,7 +90,7 @@
             <button phx-click="purchase" class="">
               <div
                 type="button"
-                class="inline-flex w-full items-center bg-black py-4 font-bold text-white shadow-sm hover:border-[#f47c58] hover:bg-[#f47c58] hover:border-2"
+                class="inline-flex w-full items-center bg-black py-4 font-bold text-white shadow-sm hover:border-primary-light hover:bg-primary-light hover:border-2"
                 id="sort-menu-button"
                 aria-expanded="false"
                 aria-haspopup="true"
@@ -102,7 +102,7 @@
             <a href="/users/log_in">
               <div
                 type="button"
-                class="inline-flex w-full items-center border-2 border-gray-200 bg-black py-4 font-bold text-white shadow-sm hover:bg-[#f47c58]"
+                class="inline-flex w-full items-center border-2 border-gray-200 bg-black py-4 font-bold text-white shadow-sm hover:bg-primary-light"
               >
                 <span class="w-full text-center">Add to cart</span>
               </div>
@@ -111,7 +111,7 @@
         <% end %>
         <button
           type="button"
-          class="inline-flex w-full items-center border-2 border-gray-200 bg-white py-4 font-bold text-black shadow-sm hover:bg-[#f47c58] hover:text-white"
+          class="inline-flex w-full items-center border-2 border-gray-200 bg-white py-4 font-bold text-black shadow-sm hover:bg-primary-light hover:text-white"
         >
           <span class="w-full text-center">Similar products</span>
         </button>
@@ -135,7 +135,7 @@
           <%= for order <- @product.order do %>
             <%= if order.status != :draft && order.status != :canceled  do %>
               <tr class="mx-auto items-center border-2">
-                <td class="text-center hover:text-[#f47c58]">
+                <td class="text-center hover:text-primary-light">
                   <%= live_redirect to: Routes.admin_order_show_path(@socket, :show, order), class: "group" do %>
                     <%= order.id %>
                   <% end %>

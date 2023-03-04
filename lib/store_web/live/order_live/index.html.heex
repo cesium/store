@@ -101,7 +101,7 @@
                   <% end %>
                   <%= if order.status == :delivered do %>
                     <div class="mx-auto mb-2 flex w-full flex-col items-center justify-center sm:w-3/4 md:w-2/3 lg:w-full xl:w-full">
-                      <div class="bg-[#f47c58] mt-8 flex w-9/12 rounded-lg py-2"></div>
+                      <div class="bg-primary-light mt-8 flex w-9/12 rounded-lg py-2"></div>
                       <div class="flex flex-row space-x-20 lg:space-x-96 xl:space-x-96">
                         <p class="justify-start">Ordered</p>
                         <p class="">Paid</p>
@@ -112,7 +112,7 @@
                     <%= if order.status == :paid do %>
                       <div class="mx-auto mb-2 flex w-full flex-col items-center justify-center sm:w-3/4 md:w-2/3 lg:w-full xl:w-full">
                         <div class="bg-grey mt-8 w-9/12 rounded-lg">
-                          <div class="bg-[#f47c58] flex w-6/12 rounded-lg py-2"></div>
+                          <div class="bg-primary-light flex w-6/12 rounded-lg py-2"></div>
                         </div>
                         <div class="flex flex-row space-x-20 lg:space-x-96 xl:space-x-96">
                           <p class="justify-start">Ordered</p>
@@ -123,7 +123,7 @@
                     <% else %>
                       <div class="mx-auto mb-2 flex w-full flex-col items-center justify-center sm:w-3/4 md:w-2/3 lg:w-full xl:w-full">
                         <div class="bg-grey mt-8 w-9/12 rounded-lg">
-                          <div class="bg-[#f47c58] flex w-1/12 rounded-lg py-2 xl:w-1/5"></div>
+                          <div class="bg-primary-light flex w-1/12 rounded-lg py-2 xl:w-1/5"></div>
                         </div>
                         <div class="flex flex-row space-x-20 lg:space-x-96 xl:space-x-96">
                           <p class="justify-start">Ordered</p>
@@ -132,7 +132,7 @@
                         </div>
                       </div>
                       <%= live_redirect to: Routes.order_show_path(@socket, :show , order.id),class: "button" do %>
-                        <button class="flex w-32 items-center justify-center bg-black px-2.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#f47c58]">
+                        <button class="flex w-32 items-center justify-center bg-black px-2.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-light">
                           <span class="w-full text-center">
                             Go to order
                           </span>
