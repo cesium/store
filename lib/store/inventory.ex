@@ -136,6 +136,8 @@ defmodule Store.Inventory do
 
   alias Store.Inventory.Order
 
+  def list_orders(params \\ %{})
+
   @doc """
   Returns the list of orders.
 
@@ -150,6 +152,16 @@ defmodule Store.Inventory do
     |> apply_filters(opts)
     |> order_by(desc: :inserted_at)
     |> Repo.all()
+  end
+
+  def list_orders(flop) do
+    Flop.validate_and_run(Order, flop, for: Order)
+  end
+
+  def list_orders(%{} = flop, opts) when is_list(opts) do
+    Order
+    |> apply_filters(opts)
+    |> Flop.validate_and_run(flop, for: Order)
   end
 
   def update_status(order, attrs) do

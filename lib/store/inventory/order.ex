@@ -8,6 +8,13 @@ defmodule Store.Inventory.Order do
   @optional_fields ~w(status)a
   @status ~w(draft ordered ready paid canceled delivered)a
 
+  @derive {
+    Flop.Schema,
+    filterable: [:status],
+    sortable: [:updated_at],
+    default_limit: 5
+  }
+
   schema "orders" do
     belongs_to :user, User
     field :status, Ecto.Enum, values: @status, default: :draft

@@ -49,6 +49,7 @@ defmodule Store.MixProject do
       {:hackney, "~> 1.18"},
       {:waffle, "~> 1.1"},
       {:waffle_ecto, "~> 0.0"},
+      {:flop, "~> 0.19.0"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.19"},
