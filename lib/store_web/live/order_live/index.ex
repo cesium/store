@@ -3,15 +3,16 @@ defmodule StoreWeb.OrderLive.Index do
   import Ecto.Query
   use StoreWeb, :live_view
   alias Store.Repo
-  import Store.Inventory
+  import Store.Inventory, except: [list_displayable_user_orders: 2]
   alias Store.Inventory
   alias Store.Inventory.Order
   alias Store.Uploaders
+  import StoreWeb.Components.Pagination
 
   @impl true
-  def mount(_params, _socket, socket) do
+  def mount(params, _socket, socket) do
     {:ok, socket}
-    {:ok, assign(socket, :orders, Inventory.list_orders(preloads: :products))}
+    {:ok, assign(socket, list_displayable_user_orders(params, socket.assigns.current_user))}
   end
 
   @impl true
@@ -19,6 +20,8 @@ defmodule StoreWeb.OrderLive.Index do
     {:noreply,
      socket
      |> assign(:current_page, :orders)
+     |> assign(:params, params)
+     |> assign(list_displayable_user_orders(params, socket.assigns.current_user))
      |> apply_action(socket.assigns.live_action, params)}
   end
 
@@ -55,6 +58,16 @@ defmodule StoreWeb.OrderLive.Index do
     |> Repo.update!()
 
     {:noreply, socket}
+  end
+
+  defp list_displayable_user_orders(params, user) do
+    case Inventory.list_displayable_user_orders(params, preloads: [:products], where: [user_id: user.id]) do
+      {:ok, {orders, meta}} ->
+        %{orders: orders, meta: meta}
+
+      {:error, flop} ->
+        %{orders: [], meta: flop}
+    end
   end
 
   defp draw_qr_code(order) do

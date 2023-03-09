@@ -1,6 +1,6 @@
 <main class="flex items-center justify-center">
   <section aria-labelledby="recent-heading" class="mt-16 w-full">
-    <div class="flex justify-center">
+    <div class="h-[70vh] relative overflow-auto flex justify-center">
       <div class="w-full space-y-8 sm:w-3/4 md:w-2/3 lg:w-screen xl:w-screen">
         <%= for order <- @orders do %>
           <%= if @current_user && @current_user.id == order.user_id do %>
@@ -147,5 +147,6 @@
         <% end %>
       </div>
     </div>
+    <.pagination items={@orders} meta={@meta} params={@params} class="flex justify-between items-center w-full" />
   </section>
 </main>

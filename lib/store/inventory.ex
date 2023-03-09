@@ -164,6 +164,26 @@ defmodule Store.Inventory do
     |> Flop.validate_and_run(flop, for: Order)
   end
 
+  def list_displayable_user_orders(params \\ %{})
+
+  def list_displayable_user_orders(opts) when is_list(opts) do
+    Order
+    |> apply_filters(opts)
+    |> order_by(desc: :inserted_at)
+    |> where([o], o.status not in [:draft, :cancelled])
+    |> Repo.all()
+  end
+
+  def list_displayable_user_orders(flop) do
+    Flop.validate_and_run(Order, flop, for: Order)
+  end
+
+  def list_displayable_user_orders(%{} = flop, opts) when is_list(opts) do
+    Order
+    |> apply_filters(opts)
+    |> Flop.validate_and_run(flop, for: Order)
+  end
+
   def update_status(order, attrs) do
     order
     |> Order.changeset(attrs)
