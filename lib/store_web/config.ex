@@ -14,6 +14,10 @@ defmodule StoreWeb.Config do
     adm_pages()
   end
 
+  def guest_pages() do
+    g_pages()
+  end
+
   defp base_pages do
     [
       %{
@@ -61,6 +65,23 @@ defmodule StoreWeb.Config do
         key: :users,
         title: "Users",
         url: Routes.admin_user_index_path(@conn, :index)
+      }
+    ]
+  end
+
+  defp g_pages() do
+    [
+      %{
+        key: :home,
+        title: "Home",
+        url: Routes.home_index_path(@conn, :index),
+        tabs: []
+      },
+      %{
+        key: :products,
+        title: "Products",
+        url: Routes.product_index_path(@conn, :index),
+        tabs: []
       }
     ]
   end
