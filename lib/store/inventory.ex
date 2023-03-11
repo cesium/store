@@ -164,6 +164,15 @@ defmodule Store.Inventory do
     |> Flop.validate_and_run(flop, for: Order)
   end
 
+  def list_displayable_orders(%{} = flop, opts) when is_list(opts) do
+    Order
+    |> status_filter([:ordered, :ready, :paid, :delivered])
+    |> apply_filters(opts)
+    |> Flop.validate_and_run(flop, for: Order)
+  end
+
+  defp status_filter(q, status), do: where(q, [o], o.status in ^status)
+
   def update_status(order, attrs) do
     order
     |> Order.changeset(attrs)
@@ -530,6 +539,13 @@ defmodule Store.Inventory do
 
   def list_orders_history(%{} = flop, opts) when is_list(opts) do
     OrderHistory
+    |> apply_filters(opts)
+    |> Flop.validate_and_run(flop, for: OrderHistory)
+  end
+
+  def list_displayable_orders_history(%{} = flop, opts) when is_list(opts) do
+    OrderHistory
+    |> status_filter([:ready, :paid, :delivered])
     |> apply_filters(opts)
     |> Flop.validate_and_run(flop, for: OrderHistory)
   end

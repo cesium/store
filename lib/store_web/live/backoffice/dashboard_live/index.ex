@@ -27,7 +27,7 @@ defmodule StoreWeb.Backoffice.DashboardLive.Index do
   end
 
   defp list_history(params) do
-    case list_orders_history(params, preloads: [:order, :admin]) do
+    case list_displayable_orders_history(params, preloads: [:order, :admin]) do
       {:ok, {orders, meta}} ->
         %{orders: orders, meta: meta}
 
