@@ -10,9 +10,7 @@ defmodule Store.Inventory.Order do
 
   @derive {
     Flop.Schema,
-    filterable: [:status],
-    sortable: [:updated_at],
-    default_limit: 5
+    filterable: [:status], sortable: [:updated_at], default_limit: 5
   }
 
   schema "orders" do

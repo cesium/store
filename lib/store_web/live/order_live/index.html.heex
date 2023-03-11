@@ -1,6 +1,6 @@
 <main class="flex items-center justify-center">
   <section aria-labelledby="recent-heading" class="mt-16 w-full">
-    <div class="h-[70vh] relative overflow-auto flex justify-center">
+    <div class="h-[70vh] relative flex justify-center overflow-auto">
       <div class="w-full space-y-8 sm:w-3/4 md:w-2/3 lg:w-screen xl:w-screen">
         <%= for order <- @orders do %>
           <div class="w-full border-t border-b border-gray-200 bg-white shadow-sm sm:border">
@@ -44,9 +44,7 @@
                     <div class="mb-4 h-20 w-full flex-shrink-0 overflow-hidden rounded-lg bg-gray-200 sm:mr-6 sm:mb-0 sm:h-40 sm:w-20">
                       <%= if product.image  != nil do %>
                         <img
-                          src={
-                            Uploaders.ProductImage.url({product.image, product}, :original)
-                          }
+                          src={Uploaders.ProductImage.url({product.image, product}, :original)}
                           class="h-full w-full object-cover object-center"
                         />
                       <% else %>
@@ -142,6 +140,11 @@
         <% end %>
       </div>
     </div>
-    <.pagination items={@orders} meta={@meta} params={@params} class="flex justify-between items-center w-full" />
+    <.pagination
+      items={@orders}
+      meta={@meta}
+      params={@params}
+      class="flex w-full items-center justify-between"
+    />
   </section>
 </main>

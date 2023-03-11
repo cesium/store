@@ -113,7 +113,12 @@
           </div>
         <% end %>
       </div>
-      <.pagination items={@orders} meta={@meta} params={@params} class="flex justify-between items-center w-full" />
+      <.pagination
+        items={@orders}
+        meta={@meta}
+        params={@params}
+        class="flex w-full items-center justify-between"
+      />
     </div>
   </section>
 </main>

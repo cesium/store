@@ -6,8 +6,7 @@ defmodule StoreWeb.Backoffice.DashboardLive.Index do
 
   @impl true
   def mount(params, _session, socket) do
-    {:ok,
-     assign(socket, :orders, list_history(params) |> Enum.reverse())}
+    {:ok, assign(socket, :orders, list_history(params) |> Enum.reverse())}
   end
 
   @impl true
