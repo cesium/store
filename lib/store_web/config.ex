@@ -6,19 +6,7 @@ defmodule StoreWeb.Config do
 
   @conn StoreWeb.Endpoint
 
-  def user_pages() do
-    base_pages()
-  end
-
-  def admin_pages() do
-    adm_pages()
-  end
-
-  def guest_pages() do
-    g_pages()
-  end
-
-  defp base_pages do
+  def user_pages do
     [
       %{
         key: :home,
@@ -41,7 +29,7 @@ defmodule StoreWeb.Config do
     ]
   end
 
-  defp adm_pages() do
+  def admin_pages do
     [
       %{
         key: :dashboard,
@@ -69,7 +57,7 @@ defmodule StoreWeb.Config do
     ]
   end
 
-  defp g_pages() do
+  def guest_pages do
     [
       %{
         key: :home,
