@@ -93,7 +93,7 @@
 
           <div class="flex flex-1 items-center justify-end">
             <%= if assigns[:current_user] do %>
-              <%= link to: Routes.user_session_path(@socket, :new),class: "hidden text-sm font-semibold text-black hover:text-[#f47c58] lg:block" do %>
+              <%= link to: Routes.user_session_path(StoreWeb.Endpoint, :delete), method: :delete ,class: "hidden text-sm font-semibold text-black hover:text-[#f47c58] lg:block" do %>
                 Logout
               <% end %>
             <% else %>
