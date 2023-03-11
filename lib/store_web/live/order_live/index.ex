@@ -61,7 +61,7 @@ defmodule StoreWeb.OrderLive.Index do
   end
 
   defp list_displayable_user_orders(params, user) do
-    case Inventory.list_displayable_user_orders(params, preloads: [:products], where: [user_id: user.id]) do
+    case Inventory.list_orders(params, preloads: [:products], where: [user_id: user.id]) do
       {:ok, {orders, meta}} ->
         %{orders: orders, meta: meta}
 

@@ -1,7 +1,7 @@
 <main>
   <section aria-labelledby="recent-heading" class="mt-16">
     <div>
-      <div class="space-y-8">
+      <div class="h-[70vh] relative space-y-8 overflow-auto">
         <%= for order <- @orders do %>
           <%= if order.status != :draft and order.status != :ordered and order.status != :canceled do %>
             <div class="flex items-center justify-center border-t border-b border-gray-200 bg-white shadow-sm sm:border">
@@ -45,6 +45,7 @@
           <% end %>
         <% end %>
       </div>
+      <.pagination items={@orders} meta={@meta} params={@params} class="flex justify-between items-center w-full" />
     </div>
   </section>
 </main>

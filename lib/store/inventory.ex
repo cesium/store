@@ -164,26 +164,6 @@ defmodule Store.Inventory do
     |> Flop.validate_and_run(flop, for: Order)
   end
 
-  def list_displayable_user_orders(params \\ %{})
-
-  def list_displayable_user_orders(opts) when is_list(opts) do
-    Order
-    |> apply_filters(opts)
-    |> order_by(desc: :inserted_at)
-    |> where([o], o.status not in [:draft, :cancelled])
-    |> Repo.all()
-  end
-
-  def list_displayable_user_orders(flop) do
-    Flop.validate_and_run(Order, flop, for: Order)
-  end
-
-  def list_displayable_user_orders(%{} = flop, opts) when is_list(opts) do
-    Order
-    |> apply_filters(opts)
-    |> Flop.validate_and_run(flop, for: Order)
-  end
-
   def update_status(order, attrs) do
     order
     |> Order.changeset(attrs)
@@ -536,10 +516,22 @@ defmodule Store.Inventory do
     |> Repo.insert()
   end
 
+  def list_orders_history(params \\ %{})
+
   def list_orders_history(opts) when is_list(opts) do
     OrderHistory
     |> apply_filters(opts)
     |> Repo.all()
+  end
+
+  def list_orders_history(flop) do
+    Flop.validate_and_run(OrderHistory, flop, for: OrderHistory)
+  end
+
+  def list_orders_history(%{} = flop, opts) when is_list(opts) do
+    OrderHistory
+    |> apply_filters(opts)
+    |> Flop.validate_and_run(flop, for: OrderHistory)
   end
 
   def get_order_product_by_ids(order_id, product_id) do
