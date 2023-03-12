@@ -136,6 +136,8 @@ defmodule Store.Inventory do
 
   alias Store.Inventory.Order
 
+  def list_orders(params \\ %{})
+
   @doc """
   Returns the list of orders.
 
@@ -151,6 +153,25 @@ defmodule Store.Inventory do
     |> order_by(desc: :inserted_at)
     |> Repo.all()
   end
+
+  def list_orders(flop) do
+    Flop.validate_and_run(Order, flop, for: Order)
+  end
+
+  def list_orders(%{} = flop, opts) when is_list(opts) do
+    Order
+    |> apply_filters(opts)
+    |> Flop.validate_and_run(flop, for: Order)
+  end
+
+  def list_displayable_orders(%{} = flop, opts) when is_list(opts) do
+    Order
+    |> status_filter([:ordered, :ready, :paid, :delivered])
+    |> apply_filters(opts)
+    |> Flop.validate_and_run(flop, for: Order)
+  end
+
+  defp status_filter(q, status), do: where(q, [o], o.status in ^status)
 
   def update_status(order, attrs) do
     order
@@ -504,10 +525,29 @@ defmodule Store.Inventory do
     |> Repo.insert()
   end
 
+  def list_orders_history(params \\ %{})
+
   def list_orders_history(opts) when is_list(opts) do
     OrderHistory
     |> apply_filters(opts)
     |> Repo.all()
+  end
+
+  def list_orders_history(flop) do
+    Flop.validate_and_run(OrderHistory, flop, for: OrderHistory)
+  end
+
+  def list_orders_history(%{} = flop, opts) when is_list(opts) do
+    OrderHistory
+    |> apply_filters(opts)
+    |> Flop.validate_and_run(flop, for: OrderHistory)
+  end
+
+  def list_displayable_orders_history(%{} = flop, opts) when is_list(opts) do
+    OrderHistory
+    |> status_filter([:ready, :paid, :delivered])
+    |> apply_filters(opts)
+    |> Flop.validate_and_run(flop, for: OrderHistory)
   end
 
   def get_order_product_by_ids(order_id, product_id) do

@@ -6,6 +6,11 @@ defmodule Store.Inventory.OrderHistory do
   @required_fields ~w(admin_id status order_id)a
   @status ~w(draft ordered ready paid canceled delivered)a
 
+  @derive {
+    Flop.Schema,
+    filterable: [:status], sortable: [:updated_at], default_limit: 5
+  }
+
   schema "orders_history" do
     belongs_to :admin, User
     field :status, Ecto.Enum, values: @status, default: :draft
