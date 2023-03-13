@@ -12,14 +12,15 @@
         <div class="flex h-10 items-center justify-between">
           <h1 class="flex-1 text-lg font-medium">Store</h1>
           <!-- Action buttons -->
-          <%= submit do %>
+          <div>
             <div
+              phx-click={show_modal()}
               type="button"
-              class="bg-secondary inline-flex w-14 items-center justify-center rounded-md border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg:primary xl:w-full"
+              class="bg-secondary cursor-pointer flex w-full items-center justify-center rounded-md border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg:primary xl:w-full"
             >
               Save
             </div>
-          <% end %>
+          </div>
         </div>
       </div>
 
@@ -258,5 +259,15 @@
         </div>
       </div>
     </div>
+    <.modal>
+      <div class="p-6 text-center">
+        <svg aria-hidden="true" class="mx-auto mb-4 w-14 h-14" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <h3 class="mb-5 text-lg font-normal">Are you sure you want to save these changes?</h3>
+        <button type="submit" class="text-white bg-secondary hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+            Yes, I'm sure
+        </button>
+        <button phx-click={hide_modal()} type="button" class="bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 focus:z-10">No, cancel</button>
+      </div>
+    </.modal>
   </.form>
 </div>
