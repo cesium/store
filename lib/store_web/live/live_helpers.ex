@@ -28,7 +28,7 @@ defmodule StoreWeb.LiveHelpers do
     assigns = assign_new(assigns, :hide_close_button, fn -> nil end)
 
     ~H"""
-    <div id="modal" class="phx-modal fade-in hidden" phx-remove={hide_modal()}>
+    <div id="modal" class="phx-modal fade-in hidden px-2" phx-remove={hide_modal()}>
       <div
         id="modal-content"
         class="phx-modal-content fade-in-scale max-w-md rounded-xl"
