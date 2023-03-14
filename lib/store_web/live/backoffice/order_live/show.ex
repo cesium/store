@@ -1,7 +1,7 @@
 defmodule StoreWeb.Backoffice.OrderLive.Show do
   use StoreWeb, :live_view
-
   import Store.Inventory
+  alias Phoenix.LiveView.JS
   alias Store.Repo
   alias Store.Inventory
   alias Store.Uploaders
@@ -10,7 +10,7 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
   alias Store.Mailer
   @impl true
   def mount(%{"id" => id}, _session, socket) do
-    {:ok, assign(socket, order: Inventory.get_order!(id))}
+    {:ok, assign(socket, order: Inventory.get_order!(id), confirm_event: "")}
   end
 
   @impl true
@@ -19,6 +19,7 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
      socket
      |> assign(:current_page, :orders)
      |> assign(:page_title, page_title(socket.assigns.live_action))
+     |> assign(:confirm_event, "")
      |> assign(:order, Inventory.get_order!(id) |> Repo.preload(:products))}
   end
 
@@ -35,6 +36,7 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
 
     {:noreply,
      socket
+     |> assign(:confirm_event, "")
      |> put_flash(:info, "Order status updated successfly")
      |> push_redirect(to: socket.assigns.return_to)}
   end
@@ -52,6 +54,7 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
 
     {:noreply,
      socket
+     |> assign(:confirm_event, "")
      |> put_flash(:info, "Order status updated successfly")
      |> push_redirect(to: socket.assigns.return_to)}
   end
@@ -67,8 +70,15 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
 
     {:noreply,
      socket
+     |> assign(:confirm_event, "")
      |> put_flash(:info, "Order status updated successfly")
      |> push_redirect(to: socket.assigns.return_to)}
+  end
+
+  def handle_event("confirm", %{"confirm_event" => confirm_event}, socket) do
+    {:noreply,
+     socket
+     |> assign(:confirm_event, confirm_event)}
   end
 
   defp user_email(id) do
