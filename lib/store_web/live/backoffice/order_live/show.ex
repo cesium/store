@@ -8,7 +8,6 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
   alias Store.Accounts
   alias StoreWeb.Emails.OrdersEmail
   alias Store.Mailer
-  alias JS
   @impl true
   def mount(%{"id" => id}, _session, socket) do
     {:ok, assign(socket, order: Inventory.get_order!(id), confirm_event: "")}
