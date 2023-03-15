@@ -1,6 +1,10 @@
 <h1 align="center">
   <a href="https://store.cesium.di.uminho.pt">
-    <img src="priv/static/images/store-banner.png">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="priv/static/images/store-banner-dark.png">
+      <source media="(prefers-color-scheme: light)" srcset="priv/static/images/store-banner-light.png">
+      <img alt="store" height="auto" width="800px">
+    </picture>
   </a>
 </h1>
 
