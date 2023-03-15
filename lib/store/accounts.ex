@@ -27,10 +27,9 @@ defmodule Store.Accounts do
     Repo.get_by(User, email: email)
   end
 
-  def get_email_by_userid(id) do
-    user = Repo.get_by(User, id: id)
-
-    user.email
+  def get_email_by_user_id(id) do
+    Repo.get_by(User, id: id)
+    |> then(fn user -> user.email end)
   end
 
   @doc """
