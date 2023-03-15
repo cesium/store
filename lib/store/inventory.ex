@@ -565,6 +565,14 @@ defmodule Store.Inventory do
     |> apply_filters(opts)
   end
 
+  def list_orders_for_product(product_id) do
+    OrdersProducts
+    |> where(product_id: ^product_id)
+    |> Repo.all()
+    |> Repo.preload(:order)
+    |> IO.inspect()
+  end
+
   defp broadcast({:error, _reason} = error, _event), do: error
 
   defp broadcast({:ok, %Product{} = product}, event)
