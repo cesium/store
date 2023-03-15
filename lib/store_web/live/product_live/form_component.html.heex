@@ -193,8 +193,8 @@
                         <%= order_for_product.quantity %>
                       </td>
                       <td class="relative whitespace-nowrap py-4 pr-4 pl-3 text-right text-sm font-medium sm:pr-6">
-                        <%= live_redirect to: Routes.admin_order_show_path(@socket, :show, order_for_product.order),class: "text-indigo-600 hover:text-indigo-900" do %>
-                          Ver Order
+                        <%= live_redirect to: Routes.admin_order_show_path(@socket, :show, order_for_product.order),class: "text-[#f47c58]" do %>
+                          View order
                         <% end %>
                       </td>
                     </tr>
