@@ -570,7 +570,6 @@ defmodule Store.Inventory do
     |> where(product_id: ^product_id)
     |> Repo.all()
     |> Repo.preload(:order)
-    |> IO.inspect()
   end
 
   defp broadcast({:error, _reason} = error, _event), do: error
