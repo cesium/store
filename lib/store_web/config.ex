@@ -32,6 +32,12 @@ defmodule StoreWeb.Config do
   def admin_pages do
     [
       %{
+        key: :home,
+        title: "Home",
+        url: Routes.home_index_path(@conn, :index),
+        tabs: []
+      },
+      %{
         key: :dashboard,
         title: "Dashboard",
         url: Routes.admin_dashboard_index_path(@conn, :index),
