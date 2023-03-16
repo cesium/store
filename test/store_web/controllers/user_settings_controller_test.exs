@@ -28,7 +28,7 @@ defmodule StoreWeb.UserSettingsControllerTest do
 
       assert redirected_to(new_password_conn) == Routes.user_settings_path(conn, :edit)
       assert get_session(new_password_conn, :user_token) != get_session(conn, :user_token)
-      assert get_flash(new_password_conn, :info) =~ "Password updated successfully"
+      assert get_flash(new_password_conn, :success) =~ "Password updated successfully."
       assert Accounts.get_user_by_email_and_password(user.email, "new valid password")
     end
 
@@ -96,7 +96,7 @@ defmodule StoreWeb.UserSettingsControllerTest do
     test "updates the user email once", %{conn: conn, user: user, token: token, email: email} do
       conn = get(conn, Routes.user_settings_path(conn, :confirm_email, token))
       assert redirected_to(conn) == Routes.user_settings_path(conn, :edit)
-      assert get_flash(conn, :info) =~ "Email changed successfully"
+      assert get_flash(conn, :success) =~ "Email changed successfully."
       refute Accounts.get_user_by_email(user.email)
       assert Accounts.get_user_by_email(email)
 
