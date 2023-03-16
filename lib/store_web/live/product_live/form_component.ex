@@ -4,6 +4,7 @@ defmodule StoreWeb.ProductLive.FormComponent do
 
   import Store.Inventory
   alias Store.Uploaders
+  import Store.Accounts
 
   def mount(%{"id" => id}, _session, socket) do
     {:ok,
@@ -64,5 +65,9 @@ defmodule StoreWeb.ProductLive.FormComponent do
       |> Enum.map(fn {_, size} -> size end)
 
     list
+  end
+
+  defp orders_for_product(product_id) do
+    list_orders_for_product(product_id)
   end
 end

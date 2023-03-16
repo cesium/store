@@ -47,7 +47,7 @@ defmodule StoreWeb.Router do
     live_session :user_product, on_mount: [{StoreWeb.Hooks, :current_user}] do
       live "/", HomeLive.Index, :index
       live "/products", ProductLive.Index, :index
-      live "/products/:id/edit", ProductLive.Edit, :edit
+      live "/products/:id", ProductLive.Edit, :edit
     end
   end
 

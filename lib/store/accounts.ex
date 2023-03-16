@@ -27,6 +27,11 @@ defmodule Store.Accounts do
     Repo.get_by(User, email: email)
   end
 
+  def get_email_by_user_id(id) do
+    Repo.get_by(User, id: id)
+    |> then(fn user -> user.email end)
+  end
+
   @doc """
   Gets a user by email and password.
 
