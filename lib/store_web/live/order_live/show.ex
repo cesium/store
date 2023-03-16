@@ -28,7 +28,7 @@ defmodule StoreWeb.OrderLive.Show do
 
     {:noreply,
      socket
-     |> put_flash(:success, "Order canceled successfly")
+     |> put_flash(:success, "Order canceled successfly.")
      |> redirect(to: Routes.order_index_path(socket, :index))}
   end
 

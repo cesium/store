@@ -2,13 +2,13 @@ defmodule Store.Accounts do
   @moduledoc """
   The Accounts context.
   """
-
   import Ecto.Query, warn: false
-  alias Store.Repo
 
+  alias Store.Repo
   alias Store.Accounts.{User, UserToken, UserNotifier}
   alias StoreWeb.Emails.AuthEmails
   alias Store.Mailer
+
   ## Database getters
 
   @doc """

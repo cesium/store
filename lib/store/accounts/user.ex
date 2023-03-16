@@ -12,7 +12,9 @@ defmodule Store.Accounts.User do
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
     field :partnership, :boolean, default: false
+
     has_many :orders, Store.Inventory.Order
+
     timestamps()
   end
 

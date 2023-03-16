@@ -1,13 +1,16 @@
 defmodule Store.Inventory.OrdersProducts do
   use Store.Schema
+
   alias StoreWeb.Inventory.Product
   alias Store.Inventory.Order
 
   schema "orders_products" do
-    belongs_to :order, Order
-    belongs_to :product, Product
     field :quantity, :integer, default: 1
     field :size, Ecto.Enum, values: ~w(XS S M L XL XXL)a
+
+    belongs_to :order, Order
+    belongs_to :product, Product
+
     timestamps()
   end
 

@@ -37,7 +37,7 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
     {:noreply,
      socket
      |> assign(:confirm_event, "")
-     |> put_flash(:info, "Order status updated successfly")
+     |> put_flash(:info, "Order status updated successfly.")
      |> push_redirect(to: socket.assigns.return_to)}
   end
 
@@ -55,7 +55,7 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
     {:noreply,
      socket
      |> assign(:confirm_event, "")
-     |> put_flash(:info, "Order status updated successfly")
+     |> put_flash(:info, "Order status updated successfly.")
      |> push_redirect(to: socket.assigns.return_to)}
   end
 
@@ -71,7 +71,7 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
     {:noreply,
      socket
      |> assign(:confirm_event, "")
-     |> put_flash(:info, "Order status updated successfly")
+     |> put_flash(:info, "Order status updated successfly.")
      |> push_redirect(to: socket.assigns.return_to)}
   end
 

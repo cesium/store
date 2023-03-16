@@ -9,7 +9,7 @@ defmodule Store.Uploaders.ProductImage do
   alias StoreWeb.Inventory.Product
 
   @versions [:original, :medium, :thumb]
-  @extension_whitelist ~w(.jpg .jpeg .gif .png)
+  @extension_whitelist ~w(.jpg .jpeg .png)
 
   def validate({file, _}) do
     file.file_name
@@ -18,7 +18,7 @@ defmodule Store.Uploaders.ProductImage do
     |> then(&Enum.member?(@extension_whitelist, &1))
     |> case do
       true -> :ok
-      false -> {:error, "invalid file type"}
+      false -> {:error, "Invalid file type. Only .jpg, .jpeg and .png are allowed."}
     end
   end
 

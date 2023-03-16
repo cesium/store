@@ -3,6 +3,7 @@ defmodule Store.Inventory.OrderHistory do
 
   alias Store.Accounts.User
   alias Store.Inventory.Order
+
   @required_fields ~w(admin_id status order_id)a
   @status ~w(draft ordered ready paid canceled delivered)a
 
@@ -12,9 +13,11 @@ defmodule Store.Inventory.OrderHistory do
   }
 
   schema "orders_history" do
-    belongs_to :admin, User
     field :status, Ecto.Enum, values: @status, default: :draft
+
+    belongs_to :admin, User
     belongs_to :order, Order
+
     timestamps()
   end
 
