@@ -3,8 +3,10 @@ defmodule StoreWeb.Inventory.Product do
   A product.
   """
   use Store.Schema
+
   alias Store.Inventory.Order
   alias Store.Uploaders
+  alias Store.Inventory.OrdersProducts
 
   @required_fields ~w(name description
                       price price_partnership stock max_per_user pre_order)a
@@ -20,7 +22,8 @@ defmodule StoreWeb.Inventory.Product do
     field :max_per_user, :integer
     field :image, Uploaders.ProductImage.Type
     field :pre_order, :boolean, default: false
-    many_to_many :order, Order, join_through: Store.Inventory.OrdersProducts
+
+    many_to_many :order, Order, join_through: OrdersProducts
 
     embeds_one :sizes, Sizes, on_replace: :delete do
       field :xs_size, :integer

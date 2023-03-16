@@ -33,7 +33,7 @@ defmodule StoreWeb.CartLive.Index do
 
     {:noreply,
      socket
-     |> put_flash(:info, "Order placed successfully")
+     |> put_flash(:success, "Order successfully created.")
      |> push_redirect(to: Routes.order_index_path(socket, :index))}
   end
 

@@ -2,8 +2,8 @@ defmodule Store.Inventory do
   @moduledoc """
   The Inventory context.
   """
-
   use Store.Context
+
   alias StoreWeb.Accounts.User
   alias StoreWeb.Inventory.Product
   alias Store.Inventory.Order
@@ -350,7 +350,7 @@ defmodule Store.Inventory do
         if order_product.quantity + val <= product.max_per_user do
           update_order_product(order_product, %{quantity: order_product.quantity + val})
         else
-          {:error, "The maximum quantity for this product per user is #{product.max_per_user}"}
+          {:error, "The maximum quantity for this product per user is #{product.max_per_user}."}
         end
       else
         add_product_to_order(order, product, product_params)
@@ -365,8 +365,8 @@ defmodule Store.Inventory do
     {val, _} = Integer.parse(product_params["quantity"])
     size = product_params["size"]
 
-    if update_stock_sizes(product, size, val) == {:error, "Not enough stock"} do
-      {:error, "Not enough stock"}
+    if update_stock_sizes(product, size, val) == {:error, "Not enough stock."} do
+      {:error, "Not enough stock."}
     else
       create_order_product(%{
         order_id: order.id,
@@ -391,7 +391,7 @@ defmodule Store.Inventory do
     values = Map.values(new_sizes) |> Enum.filter(&is_integer/1)
 
     if Enum.any?(values, &(&1 < 0)) or product.stock - quantity < 0 do
-      {:error, "Not enough stock"}
+      {:error, "Not enough stock."}
     else
       product
       |> Product.changeset(%{
@@ -443,7 +443,7 @@ defmodule Store.Inventory do
       end
 
     if quantity < 0 do
-      {:error, "You must buy at least one product"}
+      {:error, "You must buy at least one product."}
     else
       quantity
     end
