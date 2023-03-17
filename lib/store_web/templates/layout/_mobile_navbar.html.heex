@@ -25,14 +25,14 @@
     <div class="flex h-16 items-center justify-between px-6">
       <button
         @click="navbar = false"
-        class="inline-flex items-center justify-center p-2 text-black transition-all duration-200 ease-in"
+        class="inline-flex items-center justify-center pl-1 text-black transition-all duration-200 ease-in"
       >
         <span class="sr-only">Close main menu</span>
         <Heroicons.Solid.x class="h-6 w-6" />
       </button>
       <%= live_redirect to: Routes.home_index_path(@socket, :index) do %>
         <img
-          class="h-10 w-auto py-1"
+          class="h-10 w-auto py-1 pl-3"
           src={Routes.static_path(@socket, "/images/logos/logo_lettering.svg")}
           alt="CeSIUM Logo"
         />
