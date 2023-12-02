@@ -16,6 +16,6 @@ defmodule StoreWeb.ProductLive.Edit do
      |> assign(:current_page, :products)
      |> assign(:page_title, "Edit Product")
      |> assign(:product, Inventory.get_product!(id, []))
-     |> assign(:current_user, socket.assigns.current_user)}
+     |> assign(:current_user, socket.assigns[:current_user] || nil)}
   end
 end
