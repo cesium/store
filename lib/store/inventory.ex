@@ -377,38 +377,33 @@ defmodule Store.Inventory do
     end
   end
 
-  def update_stock_sizes(product, size, quantity) do
-    new_sizes =
-      case size do
-        "XS" -> Map.put(product.sizes, :xs_size, product.sizes.xs_size - quantity)
-        "S" -> Map.put(product.sizes, :s_size, product.sizes.s_size - quantity)
-        "M" -> Map.put(product.sizes, :m_size, product.sizes.m_size - quantity)
-        "L" -> Map.put(product.sizes, :l_size, product.sizes.l_size - quantity)
-        "XL" -> Map.put(product.sizes, :xl_size, product.sizes.xl_size - quantity)
-        "XXL" -> Map.put(product.sizes, :xxl_size, product.sizes.xxl_size - quantity)
-      end
+  def update_stock_sizes(product, "XS", quantity), do: update_stock(product, :xs_size, quantity)
+  def update_stock_sizes(product, "S", quantity), do: update_stock(product, :s_size, quantity)
+  def update_stock_sizes(product, "M", quantity), do: update_stock(product, :m_size, quantity)
+  def update_stock_sizes(product, "L", quantity), do: update_stock(product, :l_size, quantity)
+  def update_stock_sizes(product, "XL", quantity), do: update_stock(product, :xl_size, quantity)
+  def update_stock_sizes(product, "XXL", quantity), do: update_stock(product, :xxl_size, quantity)
 
-    values = Map.values(new_sizes) |> Enum.filter(&is_integer/1)
+  def update_stock(product, size_key, quantity) do
+    updated_sizes =
+      product.sizes
+      |> Map.update(size_key, 0, &(&1 - quantity))
 
-    if Enum.any?(values, &(&1 < 0)) or product.stock - quantity < 0 do
+    product_stock = Enum.sum(Map.values(updated_sizes))
+
+    if product_stock < 0 do
       {:error, "Not enough stock."}
     else
-      product
-      |> Product.changeset(%{
-        stock: product.stock - quantity,
-        sizes: %{
-          xs_size: new_sizes.xs_size,
-          s_size: new_sizes.s_size,
-          m_size: new_sizes.m_size,
-          l_size: new_sizes.l_size,
-          xl_size: new_sizes.xl_size,
-          xxl_size: new_sizes.xxl_size
-        }
-      })
-      |> Repo.update!()
-
-      {:ok, "Product added to cart"}
+      update_product_stock_sizes(product, updated_sizes, product_stock)
     end
+  end
+
+  def update_product_stock_sizes(product, updated_sizes, product_stock) do
+    product
+    |> Product.changeset(%{stock: product_stock, sizes: updated_sizes})
+    |> Repo.update!()
+
+    {:ok, "Product added to cart"}
   end
 
   @doc """
