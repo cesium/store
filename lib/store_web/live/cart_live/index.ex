@@ -3,7 +3,6 @@ defmodule StoreWeb.CartLive.Index do
   use StoreWeb, :live_view
   import Store.Inventory
   alias Store.Repo
-  alias Store.Inventory.Order
   alias Store.Mailer
   alias StoreWeb.Emails.OrdersEmail
 
