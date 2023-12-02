@@ -171,6 +171,13 @@ defmodule Store.Inventory do
     |> Flop.validate_and_run(flop, for: Order)
   end
 
+  def list_user_draft_order(user_id) do
+    Order
+    |> where(user_id: ^user_id)
+    |> where(status: :draft)
+    |> Repo.one()
+  end
+
   defp status_filter(q, status), do: where(q, [o], o.status in ^status)
 
   def update_status(order, attrs) do
@@ -186,6 +193,13 @@ defmodule Store.Inventory do
   """
   def list_orders_products() do
     OrdersProducts
+    |> Repo.all()
+  end
+
+  def list_order_products(order_id) do
+    OrdersProducts
+    |> where(order_id: ^order_id)
+    |> preload([:product])
     |> Repo.all()
   end
 
@@ -338,20 +352,37 @@ defmodule Store.Inventory do
       |> Repo.preload([:user, :products])
 
     if order do
-      order_product =
+      order_products =
         OrdersProducts
         |> where(order_id: ^order.id)
         |> where(product_id: ^product.id)
-        |> Repo.one()
+        |> Repo.all()
 
-      {val, _} = Integer.parse(product_params["quantity"])
+      quantity = String.to_integer(product_params["quantity"])
 
-      if order_product != nil do
-        if order_product.quantity + val <= product.max_per_user do
-          update_order_product(order_product, %{quantity: order_product.quantity + val})
-        else
-          {:error, "The maximum quantity for this product per user is #{product.max_per_user}."}
+      total_quantity_user =
+        Enum.reduce(order_products, 0, fn order_product, acc -> acc + order_product.quantity end)
+
+      if order_products != nil do
+        if total_quantity_user + quantity > product.max_per_user,
+          do:
+            {:error, "The maximum quantity for this product per user is #{product.max_per_user}."}
+
+        controlo =
+          for(order_product <- order_products) do
+            if order_product.size == String.to_existing_atom(product_params["size"]) do
+              update_order_product(order_product, %{quantity: order_product.quantity + quantity})
+              1
+            else
+              0
+            end
+          end
+
+        if Enum.sum(controlo) == 0 do
+          add_product_to_order(order, product, product_params)
         end
+
+        {:ok, product}
       else
         add_product_to_order(order, product, product_params)
       end
@@ -389,12 +420,22 @@ defmodule Store.Inventory do
       product.sizes
       |> Map.update(size_key, 0, &(&1 - quantity))
 
-    product_stock = Enum.sum(Map.values(updated_sizes))
+    product_stock =
+      updated_sizes
+      |> Map.values()
+      |> Enum.filter(&is_number(&1))
+      |> Enum.sum()
 
-    if product_stock < 0 do
+    size_stock = Map.get(updated_sizes, size_key)
+
+    if size_stock < 0 do
       {:error, "Not enough stock."}
     else
-      update_product_stock_sizes(product, updated_sizes, product_stock)
+      transformed_sizes =
+        Map.from_struct(updated_sizes)
+        |> Map.drop([:id])
+
+      update_product_stock_sizes(product, transformed_sizes, product_stock)
     end
   end
 
@@ -469,17 +510,15 @@ defmodule Store.Inventory do
       |> where(status: :draft)
       |> Repo.one()
 
-    order =
-      order
-      |> Repo.preload(:products)
+    order_products =
+      OrdersProducts
+      |> where(order_id: ^order.id)
+      |> preload([:product])
+      |> Repo.all()
 
-    if order do
-      Enum.reduce(order.products, 0, fn product, acc ->
-        acc + product.price
-      end)
-    else
-      0
-    end
+    Enum.reduce(order_products, 0, fn order_product, acc ->
+      acc + order_product.quantity * order_product.product.price
+    end)
   end
 
   def total_price_partnership_cart(id) do
@@ -545,10 +584,11 @@ defmodule Store.Inventory do
     |> Flop.validate_and_run(flop, for: OrderHistory)
   end
 
-  def get_order_product_by_ids(order_id, product_id) do
+  def get_order_product_by_ids(order_id, product_id, size) do
     OrdersProducts
     |> where(order_id: ^order_id)
     |> where(product_id: ^product_id)
+    |> where(size: ^size)
     |> Repo.one()
   end
 

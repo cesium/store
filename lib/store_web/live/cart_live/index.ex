@@ -9,8 +9,12 @@ defmodule StoreWeb.CartLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, socket}
-    {:ok, assign(socket, :orders, list_orders(preloads: :products))}
+    order = list_user_draft_order(socket.assigns.current_user.id)
+
+    {:ok,
+     socket
+     |> assign(:order, order)
+     |> assign(:order_products, list_order_products(order.id))}
   end
 
   @impl true
@@ -37,35 +41,20 @@ defmodule StoreWeb.CartLive.Index do
      |> push_redirect(to: Routes.order_index_path(socket, :index))}
   end
 
-  def handle_event("delete", %{"id" => id}, socket) do
+  def handle_event("delete", %{"id" => id, "size" => size}, socket) do
     current_user = socket.assigns.current_user
 
-    order = get_order_draft_by_id(current_user.id, preloads: :products)
+    size = String.to_existing_atom(size)
+    order = get_order_draft_by_id(current_user.id, preloads: [])
+    order_product = get_order_product_by_ids(order.id, id, size)
 
-    quantity = Enum.count(order.products)
+    product = get_product!(order_product.product_id, preloads: [])
+    update_stock(product, size, order_product.quantity)
+    Repo.delete(order_product)
 
-    if quantity == 1 do
-      order
-      |> Order.changeset(%{status: :canceled})
-      |> Repo.update!()
-    else
-      order_product = get_order_product_by_ids(order.id, id)
-
-      Repo.delete(order_product)
-    end
-
-    {:noreply, socket}
-  end
-
-  defp get_quantity(order_id, product_id) do
-    order_product = get_order_product_by_ids(order_id, product_id)
-
-    order_product.quantity
-  end
-
-  defp get_size(order_id, product_id) do
-    order_product = get_order_product_by_ids(order_id, product_id)
-
-    order_product.size
+    {:noreply,
+     socket
+     |> put_flash(:info, "Product removed from cart successfully.")
+     |> push_redirect(to: Routes.cart_index_path(socket, :index))}
   end
 end
