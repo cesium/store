@@ -344,7 +344,7 @@ defmodule Store.Inventory do
   alias Store.Accounts.User
 
   def purchase(%User{} = user, %Product{} = product, product_params) do
-    order = get_user_draft_order(user)
+    order = get_order_draft_by_id(user.id, preloads: [])
 
     case order do
       %Order{} ->
@@ -353,13 +353,6 @@ defmodule Store.Inventory do
       nil ->
         handle_new_order(user, product, product_params)
     end
-  end
-
-  defp get_user_draft_order(user) do
-    Order
-    |> where(user_id: ^user.id, status: :draft)
-    |> Repo.one()
-    |> Repo.preload([:user, :products])
   end
 
   defp handle_existing_order(order, product, product_params) do
