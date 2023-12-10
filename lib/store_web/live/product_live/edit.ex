@@ -11,10 +11,12 @@ defmodule StoreWeb.ProductLive.Edit do
 
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
+    product = Inventory.get_product!(id, [])
+
     {:noreply,
      socket
      |> assign(:current_page, :products)
-     |> assign(:page_title, "Edit Product")
+     |> assign(:page_title, "#{product.name}")
      |> assign(:product, Inventory.get_product!(id, []))
      |> assign(:current_user, socket.assigns[:current_user] || nil)}
   end
