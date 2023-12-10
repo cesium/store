@@ -1,82 +1,101 @@
 defmodule StoreWeb.Emails.OrdersEmail do
   use Phoenix.Swoosh, view: StoreWeb.EmailView, layout: {StoreWeb.LayoutView, :email}
+
   alias Store.Inventory
-  alias Store.Repo
-  alias StoreWeb.Router.Helpers, as: Routes
+  alias Store.Mailer
+  alias Store.Utils
 
   def ready(id, to: email) do
     frontend_url = Application.fetch_env!(:store, StoreWeb.Endpoint)[:frontend_url]
 
-    new()
-    |> from({"CeSIUM - Store", "noreply@store.cesium.di.uminho.pt"})
-    |> to(email)
-    |> subject("[CeSIUM - Store] A tua encomenda encontra-se pronta para levantamento!")
-    |> reply_to("noreply@store.cesium.di.uminho.pt")
-    |> assign(:link, frontend_url <> "/orders/" <> id)
-    |> assign(:order, Inventory.get_order!(id) |> Repo.preload(:products))
-    |> assign(:qr_code_base64, draw_qr_code_base64(id))
-    |> render_body("order_status_ready.html")
+    email =
+      new()
+      |> from({"CeSIUM - Store", "noreply@store.cesium.di.uminho.pt"})
+      |> to(email)
+      |> subject("[CeSIUM - Store] A tua encomenda encontra-se pronta para levantamento!")
+      |> reply_to("noreply@store.cesium.di.uminho.pt")
+      |> assign(:link, frontend_url <> "/orders/" <> id)
+      |> assign(:order, Inventory.get_order!(id, preloads: [:products]))
+      |> assign(:qr_code_base64, Utils.draw_qr_code_base64(id))
+      |> render_body("order_status_ready.html")
+
+    Task.start(fn -> {:ok, _metadata} = Mailer.deliver(email) end)
+
+    {:ok, email}
   end
 
   def ordered(id, to: email) do
     frontend_url = Application.fetch_env!(:store, StoreWeb.Endpoint)[:frontend_url]
 
-    new()
-    |> from({"CeSIUM - Store", "noreply@store.cesium.di.uminho.pt"})
-    |> to(email)
-    |> subject("[CeSIUM - Store] A tua encomenda foi realizada com sucesso!")
-    |> reply_to("noreply@store.cesium.di.uminho.pt")
-    |> assign(:link, frontend_url <> "/orders/" <> id)
-    |> assign(:order, Inventory.get_order!(id) |> Repo.preload(:products))
-    |> assign(:qr_code_base64, draw_qr_code_base64(id))
-    |> render_body("order_status_ordered.html")
+    email =
+      new()
+      |> from({"CeSIUM - Store", "noreply@store.cesium.di.uminho.pt"})
+      |> to(email)
+      |> subject("[CeSIUM - Store] A tua encomenda foi realizada com sucesso!")
+      |> reply_to("noreply@store.cesium.di.uminho.pt")
+      |> assign(:link, frontend_url <> "/orders/" <> id)
+      |> assign(:order, Inventory.get_order!(id, preloads: [:products]))
+      |> assign(:qr_code_base64, Utils.draw_qr_code_base64(id))
+      |> render_body("order_status_ordered.html")
+
+    Task.start(fn -> {:ok, _metadata} = Mailer.deliver(email) end)
+
+    {:ok, email}
   end
 
   def paid(id, to: email) do
     frontend_url = Application.fetch_env!(:store, StoreWeb.Endpoint)[:frontend_url]
 
-    new()
-    |> from({"CeSIUM - Store", "noreply@store.cesium.di.uminho.pt"})
-    |> to(email)
-    |> subject("[CeSIUM - Store] A tua encomenda foi paga com sucesso!")
-    |> reply_to("noreply@store.cesium.di.uminho.pt")
-    |> assign(:link, frontend_url <> "/orders/" <> id)
-    |> assign(:order, Inventory.get_order!(id) |> Repo.preload(:products))
-    |> assign(:qr_code_base64, draw_qr_code_base64(id))
-    |> render_body("order_status_paid.html")
+    email =
+      new()
+      |> from({"CeSIUM - Store", "noreply@store.cesium.di.uminho.pt"})
+      |> to(email)
+      |> subject("[CeSIUM - Store] A tua encomenda foi paga com sucesso!")
+      |> reply_to("noreply@store.cesium.di.uminho.pt")
+      |> assign(:link, frontend_url <> "/orders/" <> id)
+      |> assign(:order, Inventory.get_order!(id, preloads: [:products]))
+      |> assign(:qr_code_base64, Utils.draw_qr_code_base64(id))
+      |> render_body("order_status_paid.html")
+
+    Task.start(fn -> {:ok, _metadata} = Mailer.deliver(email) end)
+
+    {:ok, email}
   end
 
   def delivered(id, to: email) do
     frontend_url = Application.fetch_env!(:store, StoreWeb.Endpoint)[:frontend_url]
 
-    new()
-    |> from({"CeSIUM - Store", "noreply@store.cesium.di.uminho.pt"})
-    |> to(email)
-    |> subject("[CeSIUM - Store] A tua encomenda foi entregue com sucesso!")
-    |> reply_to("noreply@store.cesium.di.uminho.pt")
-    |> assign(:link, frontend_url <> "/orders/" <> id)
-    |> assign(:order, Inventory.get_order!(id) |> Repo.preload(:products))
-    |> render_body("order_status_delivered.html")
+    email =
+      new()
+      |> from({"CeSIUM - Store", "noreply@store.cesium.di.uminho.pt"})
+      |> to(email)
+      |> subject("[CeSIUM - Store] A tua encomenda foi entregue com sucesso!")
+      |> reply_to("noreply@store.cesium.di.uminho.pt")
+      |> assign(:link, frontend_url <> "/orders/" <> id)
+      |> assign(:order, Inventory.get_order!(id, preloads: [:products]))
+      |> render_body("order_status_delivered.html")
+
+    Task.start(fn -> {:ok, _metadata} = Mailer.deliver(email) end)
+
+    {:ok, email}
   end
 
   def canceled(id, to: email) do
     frontend_url = Application.fetch_env!(:store, StoreWeb.Endpoint)[:frontend_url]
 
-    new()
-    |> from({"CeSIUM - Store", "noreply@store.cesium.di.uminho.pt"})
-    |> to(email)
-    |> subject("[CeSIUM - Store] A tua encomenda foi cancelada!")
-    |> reply_to("noreply@store.cesium.di.uminho.pt")
-    |> assign(:link, frontend_url <> "/orders/" <> id)
-    |> assign(:order, Inventory.get_order!(id) |> Repo.preload(:products))
-    |> assign(:qr_code_base64, draw_qr_code_base64(id))
-    |> render_body("order_status_canceled.html")
-  end
+    email =
+      new()
+      |> from({"CeSIUM - Store", "noreply@store.cesium.di.uminho.pt"})
+      |> to(email)
+      |> subject("[CeSIUM - Store] A tua encomenda foi cancelada!")
+      |> reply_to("noreply@store.cesium.di.uminho.pt")
+      |> assign(:link, frontend_url <> "/orders/" <> id)
+      |> assign(:order, Inventory.get_order!(id, preloads: [:products]))
+      |> assign(:qr_code_base64, Utils.draw_qr_code_base64(id))
+      |> render_body("order_status_canceled.html")
 
-  defp draw_qr_code_base64(order_id) do
-    Routes.admin_order_show_path(StoreWeb.Endpoint, :show, order_id)
-    |> QRCodeEx.encode()
-    |> QRCodeEx.png(color: <<0, 0, 0>>, width: 140)
-    |> Base.encode64()
+    Task.start(fn -> {:ok, _metadata} = Mailer.deliver(email) end)
+
+    {:ok, email}
   end
 end

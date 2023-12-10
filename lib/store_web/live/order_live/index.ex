@@ -1,13 +1,12 @@
 defmodule StoreWeb.OrderLive.Index do
-  @moduledoc false
-  import Ecto.Query
   use StoreWeb, :live_view
-  alias Store.Repo
-  import Store.Inventory, except: [list_displayable_user_orders: 2]
+
+  import StoreWeb.Components.Pagination
+
   alias Store.Inventory
   alias Store.Inventory.Order
   alias Store.Uploaders
-  import StoreWeb.Components.Pagination
+  alias Store.Utils
 
   @impl true
   def mount(params, _socket, socket) do
@@ -25,37 +24,12 @@ defmodule StoreWeb.OrderLive.Index do
      |> apply_action(socket.assigns.live_action, params)}
   end
 
-  defp apply_action(socket, :edit, %{"id" => id}) do
-    socket
-    |> assign(:page_title, "Edit Order")
-    |> assign(:order, Inventory.get_order!(id))
-  end
-
-  defp apply_action(socket, :new, _params) do
-    socket
-    |> assign(:page_title, "New Order")
-    |> assign(:order, %Order{})
-  end
-
-  defp apply_action(socket, :index, _params) do
-    socket
-    |> assign(:page_title, "Listing Orders")
-    |> assign(:order, nil)
-  end
-
   @impl true
   def handle_event("checkout", _payload, socket) do
     current_user = socket.assigns.current_user
 
-    order =
-      Order
-      |> where(status: :draft)
-      |> where(user_id: ^current_user.id)
-      |> Repo.one()
-
-    order
-    |> Order.changeset(%{status: :ordered})
-    |> Repo.update!()
+    Inventory.list_user_draft_order(current_user.id)
+    |> Inventory.update_order(%{status: :ordered})
 
     {:noreply, socket}
   end
@@ -73,9 +47,21 @@ defmodule StoreWeb.OrderLive.Index do
     end
   end
 
-  defp draw_qr_code(order) do
-    Routes.admin_order_show_path(StoreWeb.Endpoint, :show, order.id)
-    |> QRCodeEx.encode()
-    |> QRCodeEx.svg(color: "#1F2937", width: 295, background_color: :transparent)
+  defp apply_action(socket, :edit, %{"id" => id}) do
+    socket
+    |> assign(:page_title, "Edit Order")
+    |> assign(:order, Inventory.get_order!(id, preloads: []))
+  end
+
+  defp apply_action(socket, :new, _params) do
+    socket
+    |> assign(:page_title, "New Order")
+    |> assign(:order, %Order{})
+  end
+
+  defp apply_action(socket, :index, _params) do
+    socket
+    |> assign(:page_title, "Listing Orders")
+    |> assign(:order, nil)
   end
 end

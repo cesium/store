@@ -2,9 +2,10 @@ defmodule StoreWeb.ProductLive.FormComponent do
   @moduledoc false
   use StoreWeb, :live_component
 
-  import Store.Inventory
+  alias Store.Accounts
+  alias Store.Inventory
   alias Store.Uploaders
-  import Store.Accounts
+  alias Store.Utils
 
   def mount(%{"id" => id}, _session, socket) do
     {:ok,
@@ -15,13 +16,13 @@ defmodule StoreWeb.ProductLive.FormComponent do
   def handle_params(%{"id" => id}, _, socket) do
     {:noreply,
      socket
-     |> assign(:product, get_product!(id, preloads: :order))
+     |> assign(:product, Inventory.get_product!(id, preloads: :order))
      |> assign(:current_page, :products)}
   end
 
   @impl true
   def update(%{product: product} = assigns, socket) do
-    changeset = change_product(product)
+    changeset = Inventory.change_product(product, %{})
 
     {:ok,
      socket
@@ -34,7 +35,7 @@ defmodule StoreWeb.ProductLive.FormComponent do
     product = socket.assigns.product
     user = socket.assigns.user
 
-    case purchase(user, product, product_params) do
+    case Inventory.purchase(user, product, product_params) do
       {:ok, _product} ->
         {:noreply,
          socket
@@ -68,6 +69,6 @@ defmodule StoreWeb.ProductLive.FormComponent do
   end
 
   defp orders_for_product(product_id) do
-    list_orders_for_product(product_id)
+    Inventory.list_orders_for_product(product_id)
   end
 end

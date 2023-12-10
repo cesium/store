@@ -1,16 +1,16 @@
 defmodule StoreWeb.Backoffice.OrderLive.Show do
   use StoreWeb, :live_view
-  import Store.Inventory
+
   alias Phoenix.LiveView.JS
-  alias Store.Repo
+  alias Store.Accounts
   alias Store.Inventory
   alias Store.Uploaders
-  alias Store.Accounts
+  alias Store.Utils
   alias StoreWeb.Emails.OrdersEmail
-  alias Store.Mailer
+
   @impl true
   def mount(%{"id" => id}, _session, socket) do
-    {:ok, assign(socket, order: Inventory.get_order!(id), confirm_event: "")}
+    {:ok, assign(socket, order: Inventory.get_order!(id, preloads: []), confirm_event: "")}
   end
 
   @impl true
@@ -20,25 +20,25 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
      |> assign(:current_page, :orders)
      |> assign(:page_title, page_title(socket.assigns.live_action))
      |> assign(:confirm_event, "")
-     |> assign(:order, Inventory.get_order!(id) |> Repo.preload(:products))}
+     |> assign(:order, Inventory.get_order!(id, preloads: [:products]))}
   end
 
   @impl true
   def handle_event("paid", _payload, socket) do
     order = socket.assigns.order
     admin = socket.assigns.current_user
-    Inventory.update_status(order, %{status: :paid})
+
+    Inventory.update_order(order, %{status: :paid})
 
     Inventory.create_orders_history(%{status: :paid, admin_id: admin.id, order_id: order.id})
 
     user = Accounts.get_user!(order.user_id)
-    OrdersEmail.paid(order.id, to: user.email) |> Mailer.deliver()
+    OrdersEmail.paid(order.id, to: user.email)
 
     {:noreply,
      socket
      |> assign(:confirm_event, "")
-     |> put_flash(:info, "Order status updated successfly.")
-     |> push_redirect(to: socket.assigns.return_to)}
+     |> put_flash(:info, "Order status updated successfly.")}
   end
 
   @impl true
@@ -50,13 +50,12 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
     Inventory.create_orders_history(%{status: :delivered, admin_id: admin.id, order_id: order.id})
 
     user = Accounts.get_user!(order.user_id)
-    OrdersEmail.delivered(order.id, to: user.email) |> Mailer.deliver()
+    OrdersEmail.delivered(order.id, to: user.email)
 
     {:noreply,
      socket
      |> assign(:confirm_event, "")
-     |> put_flash(:info, "Order status updated successfly.")
-     |> push_redirect(to: socket.assigns.return_to)}
+     |> put_flash(:info, "Order status updated successfly.")}
   end
 
   def handle_event("ready", _payload, socket) do
@@ -66,7 +65,7 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
     Inventory.create_orders_history(%{status: :ready, admin_id: admin.id, order_id: order.id})
 
     user = Accounts.get_user!(order.user_id)
-    OrdersEmail.ready(order.id, to: user.email) |> Mailer.deliver()
+    OrdersEmail.ready(order.id, to: user.email)
 
     {:noreply,
      socket
@@ -79,10 +78,6 @@ defmodule StoreWeb.Backoffice.OrderLive.Show do
     {:noreply,
      socket
      |> assign(:confirm_event, confirm_event)}
-  end
-
-  defp user_email(id) do
-    Accounts.get_user!(id).email
   end
 
   defp page_title(:show), do: "Show Order"

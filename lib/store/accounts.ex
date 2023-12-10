@@ -7,7 +7,6 @@ defmodule Store.Accounts do
   alias Store.Repo
   alias Store.Accounts.{User, UserToken, UserNotifier}
   alias StoreWeb.Emails.AuthEmails
-  alias Store.Mailer
 
   ## Database getters
 
@@ -28,6 +27,25 @@ defmodule Store.Accounts do
   end
 
   def get_email_by_user_id(id) do
+    Repo.get_by(User, id: id)
+    |> then(fn user -> user.email end)
+  end
+
+  @doc """
+   Gets a user email by id.
+
+  ## Examples
+
+      iex> get_user_email(id)
+      "foo@example.com"
+
+      iex> get_user_email(nil)
+      nil
+
+  """
+  def get_user_email(nil), do: nil
+
+  def get_user_email(id) do
     Repo.get_by(User, id: id)
     |> then(fn user -> user.email end)
   end
@@ -291,7 +309,6 @@ defmodule Store.Accounts do
       Repo.insert!(user_token)
 
       AuthEmails.confirm_account_email(confirmation_url_fun.(encoded_token), to: user.email)
-      |> Mailer.deliver()
     end
   end
 

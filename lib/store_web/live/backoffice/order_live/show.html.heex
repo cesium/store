@@ -12,7 +12,7 @@
             <dl class="grid flex-1 grid-cols-2 flex-col gap-x-6 text-sm sm:col-span-3 sm:grid-cols-4 lg:col-span-2">
               <div>
                 <dt class="font-semibold uppercase">Order User</dt>
-                <dd class="mt-1"><%= user_email(@order.user_id) %></dd>
+                <dd class="mt-1"><%= Accounts.get_user_email(@order.user_id) %></dd>
               </div>
               <div class="hidden sm:block">
                 <dt class="font-semibold uppercase">Date placed</dt>
@@ -22,11 +22,11 @@
               </div>
               <div>
                 <dt class="font-semibold uppercase">Total amount</dt>
-                <dd class="mt-1 font-medium"><%= total_price(@order) %> €</dd>
+                <dd class="mt-1 font-medium"><%= Inventory.total_price(@order) %> €</dd>
               </div>
               <div>
                 <dt class="font-semibold uppercase">Status</dt>
-                <dd class="mt-1 font-medium"><%= capitalize_status(@order.status) %></dd>
+                <dd class="mt-1 font-medium"><%= Utils.capitalize_status(@order.status) %></dd>
               </div>
             </dl>
             <!-- Add a button at the final at the grid -->
@@ -133,6 +133,7 @@
     </div>
   </section>
 </main>
+
 <.modal hide_close_button={true}>
   <%= if @confirm_event != "" do %>
     <button

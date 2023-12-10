@@ -1,19 +1,18 @@
 defmodule StoreWeb.CartLive.Index do
   @moduledoc false
   use StoreWeb, :live_view
-  import Store.Inventory
-  alias Store.Repo
-  alias Store.Mailer
+
+  alias Store.Inventory
   alias StoreWeb.Emails.OrdersEmail
 
   @impl true
   def mount(_params, _session, socket) do
-    order = list_user_draft_order(socket.assigns.current_user.id)
+    order = Inventory.list_user_draft_order(socket.assigns.current_user.id)
 
     {:ok,
      socket
      |> assign(:order, order)
-     |> assign(:order_products, list_order_products(order.id))}
+     |> assign(:order_products, Inventory.list_order_products(order.id))}
   end
 
   @impl true
@@ -27,12 +26,11 @@ defmodule StoreWeb.CartLive.Index do
   def handle_event("checkout", _payload, socket) do
     current_user = socket.assigns.current_user
 
-    order = get_order_draft_by_id(current_user.id, preloads: [])
+    order = Inventory.get_order_draft_by_id(current_user.id, preloads: [])
 
-    order
-    |> update_order(%{status: :ordered})
+    Inventory.update_order(order, %{status: :ordered})
 
-    OrdersEmail.ordered(order.id, to: current_user.email) |> Mailer.deliver()
+    OrdersEmail.ordered(order.id, to: current_user.email)
 
     {:noreply,
      socket
@@ -44,12 +42,12 @@ defmodule StoreWeb.CartLive.Index do
     current_user = socket.assigns.current_user
 
     size = String.to_existing_atom(size)
-    order = get_order_draft_by_id(current_user.id, preloads: [])
-    order_product = get_order_product_by_ids(order.id, id, size)
+    order = Inventory.get_order_draft_by_id(current_user.id, preloads: [])
+    order_product = Inventory.get_order_product_by_ids(order.id, id, size)
 
-    product = get_product!(order_product.product_id, preloads: [])
-    update_stock(product, size, order_product.quantity)
-    Repo.delete(order_product)
+    product = Inventory.get_product!(order_product.product_id, preloads: [])
+    Inventory.update_stock(product, size, order_product.quantity)
+    Inventory.delete_order_product(order_product)
 
     {:noreply,
      socket

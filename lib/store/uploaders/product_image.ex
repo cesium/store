@@ -6,7 +6,7 @@ defmodule Store.Uploaders.ProductImage do
   use Waffle.Definition
   use Waffle.Ecto.Definition
 
-  alias StoreWeb.Inventory.Product
+  alias Store.Inventory.Product
 
   @versions [:original, :medium, :thumb]
   @extension_whitelist ~w(.jpg .jpeg .png)

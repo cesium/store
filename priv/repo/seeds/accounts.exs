@@ -55,6 +55,7 @@ defmodule Store.Repo.Seeds.Accounts do
     |> User.registration_changeset(attrs)
     |> Repo.insert!()
   end
+
 end
 
 Store.Repo.Seeds.Accounts.run()

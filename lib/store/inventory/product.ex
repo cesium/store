@@ -1,4 +1,4 @@
-defmodule StoreWeb.Inventory.Product do
+defmodule Store.Inventory.Product do
   @moduledoc """
   A product.
   """

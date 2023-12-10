@@ -1,7 +1,7 @@
 defmodule Store.Inventory.OrdersProducts do
   use Store.Schema
 
-  alias StoreWeb.Inventory.Product
+  alias Store.Inventory.Product
   alias Store.Inventory.Order
 
   schema "orders_products" do
@@ -10,6 +10,7 @@ defmodule Store.Inventory.OrdersProducts do
 
     belongs_to :order, Order
     belongs_to :product, Product
+    field :price, :integer
 
     timestamps()
   end
@@ -17,7 +18,7 @@ defmodule Store.Inventory.OrdersProducts do
   @doc false
   def changeset(orders_products, attrs) do
     orders_products
-    |> cast(attrs, [:order_id, :product_id, :quantity, :size])
-    |> validate_required([:order_id, :product_id, :quantity, :size])
+    |> cast(attrs, [:order_id, :product_id, :quantity, :size, :price])
+    |> validate_required([:order_id, :product_id, :quantity, :size, :price])
   end
 end

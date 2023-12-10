@@ -1,7 +1,7 @@
 defmodule StoreWeb.Backoffice.ProductLive.New do
   @moduledoc false
   use StoreWeb, :live_view
-  alias StoreWeb.Inventory.Product
+  alias Store.Inventory.Product
 
   @impl true
   def mount(_params, _session, socket) do

@@ -4,11 +4,14 @@ defmodule Store.Inventory do
   """
   use Store.Context
 
-  alias StoreWeb.Accounts.User
-  alias StoreWeb.Inventory.Product
+  alias Store.Accounts.User
+  alias Store.Inventory.Product
   alias Store.Inventory.Order
+  alias Store.Inventory.OrderHistory
   alias Store.Inventory.OrdersProducts
   alias Store.Inventory
+
+  # PRODUCTS
 
   @doc """
   Returns the list of products.
@@ -74,7 +77,7 @@ defmodule Store.Inventory do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_product(%Product{} = product, attrs, after_save \\ &{:ok, &1}) do
+  def update_product(%Product{} = product, attrs \\ %{}, after_save \\ &{:ok, &1}) do
     product
     |> Product.changeset(attrs)
     |> Repo.update()
@@ -96,6 +99,10 @@ defmodule Store.Inventory do
     product
     |> Product.image_changeset(attrs)
     |> Repo.update()
+  end
+
+  def change_product(%Product{} = product, attrs \\ %{}) do
+    Product.changeset(product, attrs)
   end
 
   @doc """
@@ -120,21 +127,6 @@ defmodule Store.Inventory do
     |> Repo.delete()
     |> broadcast(:deleted)
   end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking product changes.
-
-  ## Examples
-
-      iex> change_product(product)
-      %Ecto.Changeset{data: %Product{}}
-
-  """
-  def change_product(%Product{} = product, attrs \\ %{}) do
-    Product.changeset(product, attrs)
-  end
-
-  alias Store.Inventory.Order
 
   def list_orders(params \\ %{})
 
@@ -180,12 +172,6 @@ defmodule Store.Inventory do
 
   defp status_filter(q, status), do: where(q, [o], o.status in ^status)
 
-  def update_status(order, attrs) do
-    order
-    |> Order.changeset(attrs)
-    |> Repo.update()
-  end
-
   @doc """
   Returns the list of orders_products.
     iex> list_orders_products()
@@ -217,7 +203,11 @@ defmodule Store.Inventory do
       ** (Ecto.NoResultsError)
 
   """
-  def get_order!(id), do: Repo.get!(Order, id)
+  def get_order!(id, opts) when is_list(opts) do
+    Order
+    |> apply_filters(opts)
+    |> Repo.get!(id)
+  end
 
   @doc """
   Creates a order.
@@ -291,6 +281,10 @@ defmodule Store.Inventory do
     |> Repo.update()
   end
 
+  def change_order(%Order{} = order, attrs \\ %{}) do
+    Order.changeset(order, attrs)
+  end
+
   @doc """
   Deletes a order.
 
@@ -305,19 +299,6 @@ defmodule Store.Inventory do
   """
   def delete_order(%Order{} = order) do
     Repo.delete(order)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking order changes.
-
-  ## Examples
-
-      iex> change_order(order)
-      %Ecto.Changeset{data: %Order{}}
-
-  """
-  def change_order(%Order{} = order, attrs \\ %{}) do
-    Order.changeset(order, attrs)
   end
 
   @doc """
@@ -341,21 +322,20 @@ defmodule Store.Inventory do
     iex> purchase(user, product)
     {:error, %Ecto.Changeset{}}
   """
-  alias Store.Accounts.User
 
   def purchase(%User{} = user, %Product{} = product, product_params) do
     order = get_order_draft_by_id(user.id, preloads: [])
 
     case order do
       %Order{} ->
-        handle_existing_order(order, product, product_params)
+        handle_existing_order(order, product, product_params, user.partnership)
 
       nil ->
         handle_new_order(user, product, product_params)
     end
   end
 
-  defp handle_existing_order(order, product, product_params) do
+  defp handle_existing_order(order, product, product_params, partnership) do
     quantity = String.to_integer(product_params["quantity"])
 
     order_products =
@@ -374,30 +354,46 @@ defmodule Store.Inventory do
           order_product.size == String.to_existing_atom(product_params["size"])
         end)
 
+      price =
+        case partnership do
+          true -> product.price_partnership
+          false -> product.price
+        end
+
       if size_found do
-        update_order_products(order_products, product_params, quantity)
+        update_order_products(order_products, price, product_params, quantity)
       else
-        add_product_to_order(order, product, product_params)
+        add_product_to_order(order, product, price, product_params)
       end
 
       {:ok, product}
     end
   end
 
-  defp update_order_products(order_products, product_params, quantity) do
+  defp update_order_products(order_products, price, product_params, quantity) do
     Enum.each(order_products, fn order_product ->
       if order_product.size == String.to_existing_atom(product_params["size"]) do
-        update_order_product(order_product, %{quantity: order_product.quantity + quantity})
+        update_order_product(order_product, %{
+          quantity: order_product.quantity + quantity,
+          price: order_product.price + price * quantity
+        })
       end
     end)
   end
 
-  defp handle_new_order(user, product, product_params) do
+  defp handle_new_order(%User{} = user, %Product{} = product, product_params) do
     {:ok, order} = create_order(%{user_id: user.id})
-    add_product_to_order(order, product, product_params)
+
+    price =
+      case user.partnership do
+        true -> product.price_partnership
+        false -> product.price
+      end
+
+    add_product_to_order(order, product, price, product_params)
   end
 
-  def add_product_to_order(%Order{} = order, %Product{} = product, product_params) do
+  def add_product_to_order(%Order{} = order, %Product{} = product, price, product_params) do
     quantity = String.to_integer(product_params["quantity"])
     size = product_params["size"]
 
@@ -408,7 +404,8 @@ defmodule Store.Inventory do
         order_id: order.id,
         product_id: product.id,
         quantity: quantity,
-        size: size
+        size: size,
+        price: price * quantity
       })
     end
   end
@@ -453,17 +450,6 @@ defmodule Store.Inventory do
   end
 
   @doc """
-
-
-  """
-
-  def checkout_order(order) do
-    order
-    |> Order.changeset(%{status: :ordered})
-    |> Repo.update()
-  end
-
-  @doc """
   Function which verifies that the user has 1 or more of each product in his cart.
   ## Examples
    iex> redeem_quantity(user)
@@ -490,12 +476,6 @@ defmodule Store.Inventory do
     end
   end
 
-  def capitalize_status(status) do
-    status
-    |> Atom.to_string()
-    |> String.capitalize()
-  end
-
   def total_price(order) do
     Enum.reduce(order.products, 0, fn product, acc -> acc + product.price end)
   end
@@ -508,21 +488,9 @@ defmodule Store.Inventory do
     total_price(order) - total_price_with_partnership(order)
   end
 
-  def total_price_cart(id) do
-    order =
-      Order
-      |> where(user_id: ^id)
-      |> where(status: :draft)
-      |> Repo.one()
-
-    order_products =
-      OrdersProducts
-      |> where(order_id: ^order.id)
-      |> preload([:product])
-      |> Repo.all()
-
+  def total_price_cart(order_products) do
     Enum.reduce(order_products, 0, fn order_product, acc ->
-      acc + order_product.quantity * order_product.product.price
+      acc + order_product.price
     end)
   end
 
@@ -552,11 +520,9 @@ defmodule Store.Inventory do
     |> Repo.update()
   end
 
-  def discount_cart(id) do
-    total_price_cart(id) - total_price_partnership_cart(id)
+  def discount_cart(id, order_products) do
+    total_price_cart(order_products) - total_price_partnership_cart(id)
   end
-
-  alias Store.Inventory.OrderHistory
 
   def create_orders_history(order) do
     %OrderHistory{}
@@ -610,6 +576,10 @@ defmodule Store.Inventory do
     |> where(product_id: ^product_id)
     |> Repo.all()
     |> Repo.preload(:order)
+  end
+
+  def delete_order_product(%OrdersProducts{} = order_product) do
+    Repo.delete(order_product)
   end
 
   defp broadcast({:error, _reason} = error, _event), do: error

@@ -4,7 +4,7 @@ defmodule Store.InventoryTest do
   alias Store.Inventory
 
   describe "products" do
-    alias StoreWeb.Inventory.Product
+    alias Store.Inventory.Product
     import Store.InventoryFixtures
     import Store.AccountsFixtures
 
@@ -102,7 +102,7 @@ defmodule Store.InventoryTest do
 
     test "get_order!/1 returns the order with given id" do
       order = order_fixture()
-      assert Inventory.get_order!(order.id) == order
+      assert Inventory.get_order!(order.id, preloads: []) == order
     end
 
     test "create_order/1 with valid data creates a order" do
@@ -128,13 +128,13 @@ defmodule Store.InventoryTest do
     test "update_order/2 with invalid data returns error changeset" do
       order = order_fixture()
       assert {:error, %Ecto.Changeset{}} = Inventory.update_order(order, @invalid_attrs)
-      assert order == Inventory.get_order!(order.id)
+      assert order == Inventory.get_order!(order.id, preloads: [])
     end
 
     test "delete_order/1 deletes the order" do
       order = order_fixture()
       assert {:ok, %Order{}} = Inventory.delete_order(order)
-      assert_raise Ecto.NoResultsError, fn -> Inventory.get_order!(order.id) end
+      assert_raise Ecto.NoResultsError, fn -> Inventory.get_order!(order.id, preloads: []) end
     end
 
     test "change_order/1 returns a order changeset" do
