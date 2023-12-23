@@ -7,12 +7,19 @@ defmodule StoreWeb.CartLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    order = Inventory.list_user_draft_order(socket.assigns.current_user.id)
+    user_id = socket.assigns.current_user.id
+    order = Inventory.list_user_draft_order(user_id)
 
-    {:ok,
-     socket
-     |> assign(:order, order)
-     |> assign(:order_products, Inventory.list_order_products(order.id))}
+    order_products =
+      case order do
+        nil ->
+          []
+
+        _ ->
+          Inventory.list_order_products(order.id)
+      end
+
+    {:ok, socket |> assign(:order, order) |> assign(:order_products, order_products)}
   end
 
   @impl true
