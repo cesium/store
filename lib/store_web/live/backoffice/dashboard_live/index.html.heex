@@ -16,11 +16,11 @@
                 </div>
                 <div>
                   <dt class="font-semibold uppercase">Order User</dt>
-                  <dd class="mt-1"><%= user_email(order.order.user_id) %></dd>
+                  <dd class="mt-1"><%= Accounts.get_user_email(order.order.user_id) %></dd>
                 </div>
                 <div>
                   <dt class="font-semibold uppercase">Order Manager</dt>
-                  <dd class="mt-1"><%= user_email(order.admin_id) %></dd>
+                  <dd class="mt-1"><%= Accounts.get_user_email(order.admin_id) %></dd>
                 </div>
                 <div class="hidden sm:block">
                   <dt class="font-semibold uppercase">Date placed</dt>
@@ -36,7 +36,7 @@
                 </div>
                 <div>
                   <dt class="font-semibold uppercase">Status</dt>
-                  <dd class="mt-1 font-medium"><%= capitalize_status(order.status) %></dd>
+                  <dd class="mt-1 font-medium"><%= Utils.capitalize_status(order.status) %></dd>
                 </div>
               </dl>
             </div>

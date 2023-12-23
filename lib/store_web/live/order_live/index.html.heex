@@ -24,15 +24,15 @@
                 <div class="flex flex-col items-center">
                   <dt class="font-semibold uppercase">Total amount</dt>
                   <%= if @current_user.partnership do %>
-                    <dd class="mt-1"><%= total_price_with_partnership(order) %> €</dd>
+                    <dd class="mt-1"><%= Inventory.total_price_with_partnership(order) %> €</dd>
                   <% else %>
-                    <dd class="mt-1"><%= total_price(order) %> €</dd>
+                    <dd class="mt-1"><%= Inventory.total_price(order) %> €</dd>
                   <% end %>
                 </div>
               </dl>
 
               <div class="flex lg:col-span-2 lg:flex lg:items-center lg:justify-end lg:space-x-4">
-                <%= draw_qr_code(order) |> raw %>
+                <%= Utils.draw_qr_code(order) |> raw %>
               </div>
             </div>
             <!-- Products -->

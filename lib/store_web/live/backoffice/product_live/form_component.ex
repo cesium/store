@@ -14,7 +14,7 @@ defmodule StoreWeb.Backoffice.ProductLive.FormComponent do
 
   @impl true
   def update(%{product: product} = assigns, socket) do
-    changeset = Inventory.change_product(product)
+    changeset = Inventory.change_product(product, %{})
 
     {:ok,
      socket

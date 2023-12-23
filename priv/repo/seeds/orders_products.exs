@@ -23,11 +23,14 @@ defmodule Store.Repo.Seeds.OrdersProducts do
 
     for _ <- 1..count do
       %{id: order_id} = Enum.random(orders)
-      %{id: product_id} = Enum.random(products)
+      product = Enum.random(products)
+      quantity = Enum.random(1..3)
       %{
         order_id: order_id,
-        product_id: product_id,
-        size: Enum.random(~w(XS S M L XL XXL)a)
+        product_id: product.id,
+        size: Enum.random(~w(XS S M L XL XXL)a),
+        quantity: quantity,
+        price: product.price * quantity,
       }
     end
   end

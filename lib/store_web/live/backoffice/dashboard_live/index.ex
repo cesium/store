@@ -1,7 +1,10 @@
 defmodule StoreWeb.Backoffice.DashboardLive.Index do
   use StoreWeb, :live_view
-  import Store.Inventory
+
   alias Store.Accounts
+  alias Store.Inventory
+  alias Store.Utils
+
   import StoreWeb.Components.Pagination
 
   @impl true
@@ -26,20 +29,12 @@ defmodule StoreWeb.Backoffice.DashboardLive.Index do
   end
 
   defp list_history(params) do
-    case list_displayable_orders_history(params, preloads: [:order, :admin]) do
+    case Inventory.list_displayable_orders_history(params, preloads: [:order, :admin]) do
       {:ok, {orders, meta}} ->
         %{orders: orders, meta: meta}
 
       {:error, flop} ->
         %{orders: [], meta: flop}
-    end
-  end
-
-  defp user_email(id) do
-    if id == nil do
-      nil
-    else
-      Accounts.get_user!(id).email
     end
   end
 end

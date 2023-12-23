@@ -2,7 +2,7 @@ defmodule Store.Inventory.Order do
   use Store.Schema
 
   alias Store.Accounts.User
-  alias StoreWeb.Inventory.Product
+  alias Store.Inventory.Product
   alias Store.Inventory.OrdersProducts
 
   @required_fields ~w(user_id)a

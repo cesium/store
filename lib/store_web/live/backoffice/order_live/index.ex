@@ -1,11 +1,13 @@
 defmodule StoreWeb.Backoffice.OrderLive.Index do
   use StoreWeb, :live_view
-  import Store.Inventory, except: [list_orders: 1]
+
+  import StoreWeb.Components.Pagination
+
+  alias Store.Accounts
   alias Store.Inventory
   alias Store.Inventory.Order
   alias Store.Uploaders
-  alias Store.Accounts
-  import StoreWeb.Components.Pagination
+  alias Store.Utils
 
   @impl true
   def mount(params, _session, socket) do
@@ -25,7 +27,7 @@ defmodule StoreWeb.Backoffice.OrderLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Order")
-    |> assign(:order, Inventory.get_order!(id))
+    |> assign(:order, Inventory.get_order!(id, preloads: []))
   end
 
   defp apply_action(socket, :new, _params) do
@@ -48,9 +50,5 @@ defmodule StoreWeb.Backoffice.OrderLive.Index do
       {:error, flop} ->
         %{orders: [], meta: flop}
     end
-  end
-
-  defp user_email(id) do
-    Accounts.get_user!(id).email
   end
 end
